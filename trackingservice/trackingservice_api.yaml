@@ -1,0 +1,695 @@
+openapi: 3.0.3
+info:
+  title: Tracking service
+  description: |-
+    Tracking service provides client application the capability to create routes, trips and track the trips. This service is also responsible for generating alerts and notifications in case of special event.
+  termsOfService: https://sanitation.digit.org/
+  contact:
+    email: contact@egovernments.org
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.11
+externalDocs:
+  description: Find out more about DIGIT and egov
+  url: https://core.digit.org/
+servers:
+  - url: https://core.digit.org/api/v3
+
+paths:
+  /poi/_update:
+    put:
+      tags:
+        - poi
+      summary: Update an existing POI
+      description: Update an existing POI by Id
+      operationId: updatePOI
+      requestBody:
+        description: Update an existent POI in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POI'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/POI'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/POI'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid POI ID is supplied
+        '404':
+          description: POI not found
+        '405':
+          description: Validation exception
+
+  /poi/_create:
+    post:
+      tags:
+        - poi
+      summary: Create a new POI
+      description: Create a new POI by Id
+      operationId: createPOI
+      requestBody:
+        description: Create a new POI in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POI'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/POI'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/POI'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '405':
+          description: Validation exception
+
+  /poi/_search:
+    get:
+      tags:
+        - poi
+      summary: Finds POIs
+      description: Search POIs based on multiple filters
+      operationId: findPOI
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+            default: active
+            enum:
+              - active
+              - inactive
+        - name: locationName
+          in: query
+          description: Location name that needs to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/POI'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/POI'
+        '400':
+          description: Invalid search value
+
+  /poi/{poiId}:
+    get:
+      tags:
+        - poi
+      summary: Find POI by ID
+      description: Returns a single POI
+      operationId: getPoiById
+      parameters:
+        - name: poiId
+          in: path
+          description: ID of POI to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/POI'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/POI'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: POI not found
+
+  /route/_update:
+    put:
+      tags:
+        - route
+      summary: Update an existing route
+      description: Update an existing route by Id
+      operationId: updateRoute
+      requestBody:
+        description: Update an existent route in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Route'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Route'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid Route ID is supplied
+        '404':
+          description: Route not found
+        '405':
+          description: Validation exception
+
+  /route/_create:
+    post:
+      tags:
+        - route
+      summary: Create a new Route
+      description: Create a new Route by Id
+      operationId: createRoute
+      requestBody:
+        description: Create a new Route in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Route'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Route'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Route'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '405':
+          description: Validation exception
+
+  /route/_search:
+    get:
+      tags:
+        - route
+      summary: Finds Route
+      description: Search Route based on multiple filters
+      operationId: findRoute
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+            default: active
+            enum:
+              - active
+              - inactive
+        - name: routeName
+          in: query
+          description: route name that needs to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Route'
+        '400':
+          description: Invalid search value
+
+  /route/{routeId}:
+    get:
+      tags:
+        - route
+      summary: Find Route by ID
+      description: Returns a single Route
+      operationId: getRouteById
+      parameters:
+        - name: routeId
+          in: path
+          description: ID of Route to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Route not found
+
+  /trip/_update:
+    put:
+      tags:
+        - trip
+      summary: Update an existing trip
+      description: Update an existing trip by Id
+      operationId: updateTrip
+      requestBody:
+        description: Update an existent trip in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trip'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Trip'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Trip'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid Trip ID is supplied
+        '404':
+          description: Trip not found
+        '405':
+          description: Validation exception
+
+  /trip/_progress:
+    put:
+      tags:
+        - trip
+      summary: Update an existing trip
+      description: Update an existing trip by Id
+      operationId: progressTrip
+      requestBody:
+        description: Update an existent trip in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripProgress'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/TripProgress'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TripProgress'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid Trip ID is supplied
+        '404':
+          description: Trip not found
+        '405':
+          description: Validation exception
+
+  /trip/_create:
+    post:
+      tags:
+        - trip
+      summary: Create a new Trip
+      description: Create a new trip by Id
+      operationId: createTrip
+      requestBody:
+        description: Create a new Trip in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trip'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Trip'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Trip'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trip'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Trip'
+        '405':
+          description: Validation exception
+
+  /trip/_search:
+    get:
+      tags:
+        - trip
+      summary: Finds Trip
+      description: Search Trip based on multiple filters
+      operationId: findTrip
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+            default: active
+            enum:
+              - active
+              - inactive
+        - name: tripName
+          in: query
+          description: Trip name that needs to be considered for filter
+          required: false
+          explode: true
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trip'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trip'
+        '400':
+          description: Invalid search value
+
+  /trip/{tripId}:
+    get:
+      tags:
+        - trip
+      summary: Find Trip by ID
+      description: Returns a single Route
+      operationId: getTripById
+      parameters:
+        - name: tripId
+          in: path
+          description: ID of Trip to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Trip'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Trip'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Trip not found
+
+  /config/_services:
+    get:
+      tags:
+        - config
+      summary: List of services
+      description: Fetch the list of services offered
+      operationId: findServices
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Service'
+        '400':
+          description: Invalid search value
+
+  /config/_alerts:
+    get:
+      tags:
+        - config
+      summary: List of alerts
+      description: Fetch the list of alerts
+      operationId: findAlerts
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Alert'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Alert'
+        '400':
+          description: Invalid search value
+
+components:
+  schemas:
+    POI:
+      type: object
+      properties:
+        id:
+          type: string
+          description: GUID generated during POI creation
+        locationName:
+          type: string
+          example: Any name assigned to the location
+        status:
+          type: string
+          description: POI status to help to exclude or include this in route planning
+          example: active
+          enum:
+            - active
+            - inactive
+        locationDetails:
+          description: A POI can comprise of on geocoordinate in case of single point and multiple geos in case of a polygon
+          type: array
+          xml:
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Location'
+        alert:
+          type: array
+          description: List of alert codes that may be applicable to the location. This is optional
+          items:
+            type: string
+        audit:
+            $ref: '#/components/schemas/Audit'
+      xml:
+        name: poi
+
+    Location:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: float
+        longitude:
+          type: number
+          format: float
+      xml:
+        name: location
+
+    Audit:
+      type: object
+      properties:
+        createdBy:
+          type: string
+          example: Id of the user who created the entity
+        createdDate:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          example: Id of the user who updated the entity
+        updatedDate:
+          type: string
+          format: date-time
+      xml:
+        name: audit
+            
+    Route:
+      type: object
+      properties:
+        id:
+          type: string
+          description: GUID generated during Route creation
+        name:
+          type: string
+        startPoi:
+          type: string
+          description: POI id of the start location for a route
+        endPoi:
+          type: string
+          description: POI id of the end location for a route
+        intermediatePois:
+          type: array
+          items:
+            type: string
+            description: POI ids of all the locations which are in the route.
+        status:
+          type: string
+          description: Route status to help to exclude or include this in trip planning
+          example: active
+          enum:
+            - active
+            - inactive
+        audit:
+            $ref: '#/components/schemas/Audit'
+
+      xml:
+        name: route
+
+    Trip:
+      type: object
+      properties:
+        operatorId:
+          type: string
+          description: User id of the operator
+        routeId:
+          type: string
+          description: Id of the assigned route
+        serviceCode:
+          type: string
+          description: Code of the service which will be rendered through this trip
+        status:
+          type: string
+          description: Trip status as progress is made
+          example: created
+          enum:
+            - created
+            - in progress
+            - completed
+            - cancelled
+        plannedStartTime:
+          type: string
+          format: date-time
+        plannedEndTime:
+          type: string
+          format: date-time
+        actualStartTime:
+          type: string
+          format: date-time
+        actualEndTime:
+          type: string
+          format: date-time
+        audit:
+            $ref: '#/components/schemas/Audit'
+      xml:
+        name: trip
+
+    Alert:
+      type: object
+      properties:
+        alerts:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            properties:
+              code:
+                type: string
+                description: A unique code assigned to alerts of different types
+              title:
+                type: string
+                description: Title of the alert which can be displayed on client side
+      xml:
+        name: alert
+
+    Service:
+      type: object
+      description: Citizen service provided by the government agency
+      properties:
+        alerts:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            properties:
+              code:
+                type: string
+                description: Unique code given to each service
+              name:
+                type: string
+                description: Name of the service. For example - Mosquito fumigation, Fecal sludge pickup
+              ulbId:
+                type: string
+                description: Identifier of the ULB where this service is offered
+      xml:
+        name: service
+
+        
+    TripProgress:
+      type: object
+      description: Trip progress is shared by the client continuously as the operator is moving
+      properties:
+        progressReportedTime:
+          type: string
+          format: date-time
+          description: Time at which the client app is reporting this data
+        progressData:
+          type: array
+          xml:
+            wrapped: true
+          items:
+            properties:
+              progressTime:
+                type: string
+                format: date-time
+                description: Actual time at which the operator was present at the location
+              latitude:
+                type: number
+                format: float
+              longitude:
+                type: number
+                format: float
+      xml:
+        name: tripprogress
