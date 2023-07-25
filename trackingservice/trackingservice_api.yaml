@@ -16,12 +16,22 @@ externalDocs:
 servers:
   - url: https://core.digit.org/api/v3
 
+tags:
+  - name: POI
+    description: Points of interest (POI) are a combination of location and additional details about that specific location. A POI can be a single LatLong or a polygon (combination of multiple LatLongs)
+  - name: Route
+    description: Route is a sequence of POIs. Route indicate the path the operator should take while delivering a service.
+  - name: Trip
+    description: Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.
+  - name: Config
+    description: Tracking service requires certain configuration information. This includes the list of services supported and types of anomalies for which notifications should be sent out. Configuration information is attached to a trip.
+    
 paths:
   /poi/_update:
     put:
       tags:
-        - poi
-      summary: Update an existing POI
+        - POI
+      summary: Update an existing POI using its id
       description: Update an existing POI by Id
       operationId: updatePOI
       requestBody:
@@ -50,8 +60,8 @@ paths:
   /poi/_create:
     post:
       tags:
-        - poi
-      summary: Create a new POI
+        - POI
+      summary: Create a new POI by providing location coordinates and additional details
       description: Create a new POI by Id
       operationId: createPOI
       requestBody:
@@ -76,8 +86,8 @@ paths:
   /poi/_search:
     get:
       tags:
-        - poi
-      summary: Finds POIs
+        - POI
+      summary: Finds POIs based on a specific parameters
       description: Search POIs based on multiple filters
       operationId: findPOI
       parameters:
@@ -120,8 +130,8 @@ paths:
   /poi/{poiId}:
     get:
       tags:
-        - poi
-      summary: Find POI by ID
+        - POI
+      summary: Find POI by its id
       description: Returns a single POI
       operationId: getPoiById
       parameters:
@@ -149,8 +159,8 @@ paths:
   /route/_update:
     put:
       tags:
-        - route
-      summary: Update an existing route
+        - Route
+      summary: Update an existing route by id
       description: Update an existing route by Id
       operationId: updateRoute
       requestBody:
@@ -179,8 +189,8 @@ paths:
   /route/_create:
     post:
       tags:
-        - route
-      summary: Create a new Route
+        - Route
+      summary: Create a new route by providing a list of POIs
       description: Create a new Route by Id
       operationId: createRoute
       requestBody:
@@ -205,8 +215,8 @@ paths:
   /route/_search:
     get:
       tags:
-        - route
-      summary: Finds Route
+        - Route
+      summary: Find Route based on supported parameters
       description: Search Route based on multiple filters
       operationId: findRoute
       parameters:
@@ -249,8 +259,8 @@ paths:
   /route/{routeId}:
     get:
       tags:
-        - route
-      summary: Find Route by ID
+        - Route
+      summary: Find Route by its id
       description: Returns a single Route
       operationId: getRouteById
       parameters:
@@ -278,8 +288,8 @@ paths:
   /trip/_update:
     put:
       tags:
-        - trip
-      summary: Update an existing trip
+        - Trip
+      summary: Update details of an existing trip using its id. Updatable fields include its service code, planned schedule, route id and operator id
       description: Update an existing trip by Id
       operationId: updateTrip
       requestBody:
@@ -308,8 +318,8 @@ paths:
   /trip/_progress:
     put:
       tags:
-        - trip
-      summary: Update an existing trip
+        - Trip
+      summary: Provide geo location update of the operator who is on move. 
       description: Update an existing trip by Id
       operationId: progressTrip
       requestBody:
@@ -338,8 +348,8 @@ paths:
   /trip/_create:
     post:
       tags:
-        - trip
-      summary: Create a new Trip
+        - Trip
+      summary: Create a new trip based on the required set of parameters
       description: Create a new trip by Id
       operationId: createTrip
       requestBody:
@@ -371,8 +381,8 @@ paths:
   /trip/_search:
     get:
       tags:
-        - trip
-      summary: Finds Trip
+        - Trip
+      summary: Find trip using supported parameters
       description: Search Trip based on multiple filters
       operationId: findTrip
       parameters:
@@ -415,8 +425,8 @@ paths:
   /trip/{tripId}:
     get:
       tags:
-        - trip
-      summary: Find Trip by ID
+        - Trip
+      summary: Find trip by its id
       description: Returns a single Route
       operationId: getTripById
       parameters:
@@ -444,8 +454,8 @@ paths:
   /config/_services:
     get:
       tags:
-        - config
-      summary: List of services
+        - Config
+      summary: Get the list of services provided by ULBs. Service id is passed during trip creation.
       description: Fetch the list of services offered
       operationId: findServices
 
@@ -469,8 +479,8 @@ paths:
   /config/_alerts:
     get:
       tags:
-        - config
-      summary: List of alerts
+        - Config
+      summary: Get the list of alerts. Alerts are tagged to POIs
       description: Fetch the list of alerts
       operationId: findAlerts
 
@@ -674,7 +684,7 @@ components:
         progressReportedTime:
           type: string
           format: date-time
-          description: Time at which the client app is reporting this data
+          description: Time at which the client app is reporting this data. This can be different from the time when the geo data was recorded as the app might be offline at that time but reporting it later once the app is online.
         progressData:
           type: array
           xml:
@@ -685,11 +695,8 @@ components:
                 type: string
                 format: date-time
                 description: Actual time at which the operator was present at the location
-              latitude:
-                type: number
-                format: float
-              longitude:
-                type: number
-                format: float
+              location:
+                $ref: '#/components/schemas/Location'
+
       xml:
         name: tripprogress
