@@ -25,6 +25,8 @@ public class ConfigService {
         alert.setCode("IL-DUMP");
         alert.setTitle("Illegal dump yard");
         alertlist.add(alert);
+
+        alert = new Alert();
         alert.setCode("IL-AREA");
         alert.setTitle("Illegal area for the trip");
         alertlist.add(alert);
@@ -35,9 +37,13 @@ public class ConfigService {
         TripService service = new TripService();
         service.setCode("SANIT-FSCS");
         service.setName("Fecal Sludge Collection Service");
+        service.setUlbId("Amritsar");
         servicelist.add(service);
+
+        service = new TripService();
         service.setCode("HEALTH-FUMIG");
         service.setName("Mosquito Fumigation");
+        service.setUlbId("Cuttack");
         servicelist.add(service);
         return servicelist;
     }

@@ -47,7 +47,7 @@ public class ConfigApiController implements ConfigApi {
 
         List<Alert> alerts = configService.getTripAlerts();
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(alerts));
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @Override
     public ResponseEntity<List<TripService>> findServices(){
@@ -55,7 +55,7 @@ public class ConfigApiController implements ConfigApi {
 
         List<TripService> services = configService.getTripServices();
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(services));
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
