@@ -5,8 +5,8 @@
  */
 package org.openapitools.api;
 
-import org.openapitools.model.Alert;
-import org.openapitools.model.Service;
+import org.openapitools.model.TripAlert;
+import org.openapitools.model.TripService;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T10:39:40.023515100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Config", description = "Tracking service requires certain configuration information. This includes the list of services supported and types of anomalies for which notifications should be sent out. Configuration information is attached to a trip.")
 public interface ConfigApi {
@@ -56,8 +56,7 @@ public interface ConfigApi {
         tags = { "Config" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Alert.class))),
-                @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Alert.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TripAlert.class)))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid search value")
         }
@@ -65,21 +64,16 @@ public interface ConfigApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/config/_alerts",
-        produces = { "application/json", "application/xml" }
+        produces = { "application/json" }
     )
-    default ResponseEntity<List<Alert>> findAlerts(
+    default ResponseEntity<List<TripAlert>> findAlerts(
         
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"alerts\" : [ { \"code\" : \"code\", \"title\" : \"title\" }, { \"code\" : \"code\", \"title\" : \"title\" } ] }, { \"alerts\" : [ { \"code\" : \"code\", \"title\" : \"title\" }, { \"code\" : \"code\", \"title\" : \"title\" } ] } ]";
+                    String exampleString = "[ { \"code\" : \"code\", \"title\" : \"title\" }, { \"code\" : \"code\", \"title\" : \"title\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<alert> <alerts> </alerts> </alert>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
                     break;
                 }
             }
@@ -103,8 +97,7 @@ public interface ConfigApi {
         tags = { "Config" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Service.class))),
-                @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Service.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = TripService.class)))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid search value")
         }
@@ -112,21 +105,16 @@ public interface ConfigApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/config/_services",
-        produces = { "application/json", "application/xml" }
+        produces = { "application/json" }
     )
-    default ResponseEntity<List<Service>> findServices(
+    default ResponseEntity<List<TripService>> findServices(
         
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"alerts\" : [ { \"code\" : \"code\", \"ulbId\" : \"ulbId\", \"name\" : \"name\" }, { \"code\" : \"code\", \"ulbId\" : \"ulbId\", \"name\" : \"name\" } ] }, { \"alerts\" : [ { \"code\" : \"code\", \"ulbId\" : \"ulbId\", \"name\" : \"name\" }, { \"code\" : \"code\", \"ulbId\" : \"ulbId\", \"name\" : \"name\" } ] } ]";
+                    String exampleString = "[ { \"code\" : \"code\", \"ulbId\" : \"ulbId\", \"name\" : \"name\" }, { \"code\" : \"code\", \"ulbId\" : \"ulbId\", \"name\" : \"name\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<service> <alerts> </alerts> </service>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
                     break;
                 }
             }

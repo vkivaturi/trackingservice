@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T10:39:40.023515100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -57,8 +57,7 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Trip.class)),
-                @Content(mediaType = "application/xml", schema = @Schema(implementation = Trip.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Trip.class))
             }),
             @ApiResponse(responseCode = "405", description = "Validation exception")
         }
@@ -66,8 +65,8 @@ public interface TripApi {
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/trip/_create",
-        produces = { "application/json", "application/xml" },
-        consumes = { "application/json", "application/xml", "application/x-www-form-urlencoded" }
+        produces = { "application/json" },
+        consumes = { "application/json" }
     )
     default ResponseEntity<Trip> createTrip(
         @Parameter(name = "Trip", description = "Create a new Trip in the system", required = true) @Valid @RequestBody Trip trip
@@ -77,11 +76,6 @@ public interface TripApi {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2000-01-23T04:56:07.000+00:00\", \"plannedStartTime\" : \"2000-01-23T04:56:07.000+00:00\", \"serviceCode\" : \"serviceCode\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"plannedEndTime\" : \"2000-01-23T04:56:07.000+00:00\", \"actualEndTime\" : \"2000-01-23T04:56:07.000+00:00\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<trip> <routeId>aeiou</routeId> <serviceCode>aeiou</serviceCode> <status>created</status> <operator> <id>aeiou</id> <name>aeiou</name> <email>aeiou</email> <contactNumber>aeiou</contactNumber> <vehicleNumber>aeiou</vehicleNumber> </operator> <plannedStartTime>2000-01-23T04:56:07.000Z</plannedStartTime> <plannedEndTime>2000-01-23T04:56:07.000Z</plannedEndTime> <actualStartTime>2000-01-23T04:56:07.000Z</actualStartTime> <actualEndTime>2000-01-23T04:56:07.000Z</actualEndTime> <audit> <createdBy>Id of the user who created the entity</createdBy> <createdDate>2000-01-23T04:56:07.000Z</createdDate> <updatedBy>Id of the user who updated the entity</updatedBy> <updatedDate>2000-01-23T04:56:07.000Z</updatedDate> </audit> </trip>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
                     break;
                 }
             }
@@ -107,8 +101,7 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Trip.class))),
-                @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Trip.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Trip.class)))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid search value")
         }
@@ -116,7 +109,7 @@ public interface TripApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/trip/_search",
-        produces = { "application/json", "application/xml" }
+        produces = { "application/json" }
     )
     default ResponseEntity<List<Trip>> findTrip(
         @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
@@ -127,11 +120,6 @@ public interface TripApi {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "[ { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2000-01-23T04:56:07.000+00:00\", \"plannedStartTime\" : \"2000-01-23T04:56:07.000+00:00\", \"serviceCode\" : \"serviceCode\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"plannedEndTime\" : \"2000-01-23T04:56:07.000+00:00\", \"actualEndTime\" : \"2000-01-23T04:56:07.000+00:00\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }, { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2000-01-23T04:56:07.000+00:00\", \"plannedStartTime\" : \"2000-01-23T04:56:07.000+00:00\", \"serviceCode\" : \"serviceCode\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"plannedEndTime\" : \"2000-01-23T04:56:07.000+00:00\", \"actualEndTime\" : \"2000-01-23T04:56:07.000+00:00\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<trip> <routeId>aeiou</routeId> <serviceCode>aeiou</serviceCode> <status>created</status> <operator> <id>aeiou</id> <name>aeiou</name> <email>aeiou</email> <contactNumber>aeiou</contactNumber> <vehicleNumber>aeiou</vehicleNumber> </operator> <plannedStartTime>2000-01-23T04:56:07.000Z</plannedStartTime> <plannedEndTime>2000-01-23T04:56:07.000Z</plannedEndTime> <actualStartTime>2000-01-23T04:56:07.000Z</actualStartTime> <actualEndTime>2000-01-23T04:56:07.000Z</actualEndTime> <audit> <createdBy>Id of the user who created the entity</createdBy> <createdDate>2000-01-23T04:56:07.000Z</createdDate> <updatedBy>Id of the user who updated the entity</updatedBy> <updatedDate>2000-01-23T04:56:07.000Z</updatedDate> </audit> </trip>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
                     break;
                 }
             }
@@ -157,8 +145,7 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Trip.class)),
-                @Content(mediaType = "application/xml", schema = @Schema(implementation = Trip.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Trip.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
             @ApiResponse(responseCode = "404", description = "Trip not found")
@@ -167,7 +154,7 @@ public interface TripApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/trip/{tripId}",
-        produces = { "application/json", "application/xml" }
+        produces = { "application/json" }
     )
     default ResponseEntity<Trip> getTripById(
         @Parameter(name = "tripId", description = "ID of Trip to return", required = true, in = ParameterIn.PATH) @PathVariable("tripId") String tripId
@@ -177,11 +164,6 @@ public interface TripApi {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2000-01-23T04:56:07.000+00:00\", \"plannedStartTime\" : \"2000-01-23T04:56:07.000+00:00\", \"serviceCode\" : \"serviceCode\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"plannedEndTime\" : \"2000-01-23T04:56:07.000+00:00\", \"actualEndTime\" : \"2000-01-23T04:56:07.000+00:00\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<trip> <routeId>aeiou</routeId> <serviceCode>aeiou</serviceCode> <status>created</status> <operator> <id>aeiou</id> <name>aeiou</name> <email>aeiou</email> <contactNumber>aeiou</contactNumber> <vehicleNumber>aeiou</vehicleNumber> </operator> <plannedStartTime>2000-01-23T04:56:07.000Z</plannedStartTime> <plannedEndTime>2000-01-23T04:56:07.000Z</plannedEndTime> <actualStartTime>2000-01-23T04:56:07.000Z</actualStartTime> <actualEndTime>2000-01-23T04:56:07.000Z</actualEndTime> <audit> <createdBy>Id of the user who created the entity</createdBy> <createdDate>2000-01-23T04:56:07.000Z</createdDate> <updatedBy>Id of the user who updated the entity</updatedBy> <updatedDate>2000-01-23T04:56:07.000Z</updatedDate> </audit> </trip>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
                     break;
                 }
             }
@@ -216,7 +198,7 @@ public interface TripApi {
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/trip/_progress",
-        consumes = { "application/json", "application/xml", "application/x-www-form-urlencoded" }
+        consumes = { "application/json" }
     )
     default ResponseEntity<Void> progressTrip(
         @Parameter(name = "TripProgress", description = "Update an existent trip in the system", required = true) @Valid @RequestBody TripProgress tripProgress
@@ -251,7 +233,7 @@ public interface TripApi {
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/trip/_update",
-        consumes = { "application/json", "application/xml", "application/x-www-form-urlencoded" }
+        consumes = { "application/json" }
     )
     default ResponseEntity<Void> updateTrip(
         @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip

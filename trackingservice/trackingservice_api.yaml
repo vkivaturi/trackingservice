@@ -25,7 +25,7 @@ tags:
     description: Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.
   - name: Config
     description: Tracking service requires certain configuration information. This includes the list of services supported and types of anomalies for which notifications should be sent out. Configuration information is attached to a trip.
-    
+
 paths:
   /poi/_update:
     put:
@@ -38,12 +38,6 @@ paths:
         description: Update an existent POI in the system
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/POI'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/POI'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/POI'
         required: true
@@ -68,12 +62,6 @@ paths:
         description: Create a new POI in the system
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/POI'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/POI'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/POI'
         required: true
@@ -118,11 +106,6 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/POI'          
-            application/xml:
-              schema:
-                type: array
-                items:
                   $ref: '#/components/schemas/POI'
         '400':
           description: Invalid search value
@@ -147,9 +130,6 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/POI'          
-            application/xml:
-              schema:
                 $ref: '#/components/schemas/POI'
         '400':
           description: Invalid ID supplied
@@ -167,12 +147,6 @@ paths:
         description: Update an existent route in the system
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/Route'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Route'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/Route'
         required: true
@@ -197,12 +171,6 @@ paths:
         description: Create a new Route in the system
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/Route'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Route'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/Route'
         required: true
@@ -247,11 +215,6 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Route'          
-            application/xml:
-              schema:
-                type: array
-                items:
                   $ref: '#/components/schemas/Route'
         '400':
           description: Invalid search value
@@ -276,9 +239,6 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Route'          
-            application/xml:
-              schema:
                 $ref: '#/components/schemas/Route'
         '400':
           description: Invalid ID supplied
@@ -298,12 +258,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Trip'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Trip'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Trip'
         required: true
       responses:
         '200':
@@ -319,19 +273,13 @@ paths:
     put:
       tags:
         - Trip
-      summary: Provide geo location update of the operator who is on move. 
+      summary: Provide geo location update of the operator who is on move.
       description: Update an existing trip by Id
       operationId: progressTrip
       requestBody:
         description: Update an existent trip in the system
         content:
           application/json:
-            schema:
-              $ref: '#/components/schemas/TripProgress'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/TripProgress'
-          application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/TripProgress'
         required: true
@@ -358,21 +306,12 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Trip'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Trip'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/Trip'
         required: true
       responses:
         '200':
           description: Successful operation
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/Trip'          
-            application/xml:
               schema:
                 $ref: '#/components/schemas/Trip'
         '405':
@@ -413,11 +352,6 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Trip'          
-            application/xml:
-              schema:
-                type: array
-                items:
                   $ref: '#/components/schemas/Trip'
         '400':
           description: Invalid search value
@@ -442,9 +376,6 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trip'          
-            application/xml:
-              schema:
                 $ref: '#/components/schemas/Trip'
         '400':
           description: Invalid ID supplied
@@ -467,12 +398,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Service'          
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Service'
+                  $ref: '#/components/schemas/TripService'
         '400':
           description: Invalid search value
 
@@ -492,12 +418,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Alert'          
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Alert'
+                  $ref: '#/components/schemas/TripAlert'
         '400':
           description: Invalid search value
 
@@ -540,10 +461,7 @@ components:
           items:
             type: string
         audit:
-            $ref: '#/components/schemas/Audit'
-      xml:
-        name: poi
-
+          $ref: '#/components/schemas/Audit'
     Location:
       type: object
       properties:
@@ -553,9 +471,6 @@ components:
         longitude:
           type: number
           format: float
-      xml:
-        name: location
-
     Audit:
       type: object
       properties:
@@ -571,9 +486,6 @@ components:
         updatedDate:
           type: string
           format: date-time
-      xml:
-        name: audit
-            
     Route:
       type: object
       properties:
@@ -601,10 +513,7 @@ components:
             - active
             - inactive
         audit:
-            $ref: '#/components/schemas/Audit'
-
-      xml:
-        name: route
+          $ref: '#/components/schemas/Audit'
     Operator:
       type: object
       properties:
@@ -623,9 +532,7 @@ components:
         vehicleNumber:
           type: string
           description: Vehicle number of the operator
-      xml:
-        name: operator
-      
+
     Trip:
       type: object
       properties:
@@ -659,50 +566,32 @@ components:
           type: string
           format: date-time
         audit:
-            $ref: '#/components/schemas/Audit'
-      xml:
-        name: trip
+          $ref: '#/components/schemas/Audit'
 
-    Alert:
+    TripAlert:
       type: object
       properties:
-        alerts:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            properties:
-              code:
-                type: string
-                description: A unique code assigned to alerts of different types
-              title:
-                type: string
-                description: Title of the alert which can be displayed on client side
-      xml:
-        name: alert
+        code:
+          type: string
+          description: A unique code assigned to alerts of different types
+        title:
+          type: string
+          description: Title of the alert which can be displayed on client side
 
-    Service:
+    TripService:
       type: object
       description: Citizen service provided by the government agency
       properties:
-        alerts:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            properties:
-              code:
-                type: string
-                description: Unique code given to each service
-              name:
-                type: string
-                description: Name of the service. For example - Mosquito fumigation, Fecal sludge pickup
-              ulbId:
-                type: string
-                description: Identifier of the ULB where this service is offered
-      xml:
-        name: service
-        
+        code:
+          type: string
+          description: Unique code given to each service
+        name:
+          type: string
+          description: Name of the service. For example - Mosquito fumigation, Fecal sludge pickup
+        ulbId:
+          type: string
+          description: Identifier of the ULB where this service is offered
+
     TripProgress:
       type: object
       description: Trip progress is shared by the client continuously as the operator is moving
@@ -723,6 +612,3 @@ components:
                 description: Actual time at which the operator was present at the location
               location:
                 $ref: '#/components/schemas/Location'
-
-      xml:
-        name: tripprogress

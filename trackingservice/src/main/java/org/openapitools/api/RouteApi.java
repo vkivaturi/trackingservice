@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T10:39:40.023515100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Route", description = "Route is a sequence of POIs. Route indicate the path the operator should take while delivering a service.")
 public interface RouteApi {
@@ -62,7 +62,7 @@ public interface RouteApi {
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/route/_create",
-        consumes = { "application/json", "application/xml", "application/x-www-form-urlencoded" }
+        consumes = { "application/json" }
     )
     default ResponseEntity<Void> createRoute(
         @Parameter(name = "Route", description = "Create a new Route in the system", required = true) @Valid @RequestBody Route route
@@ -88,8 +88,7 @@ public interface RouteApi {
         tags = { "Route" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Route.class))),
-                @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = Route.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Route.class)))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid search value")
         }
@@ -97,7 +96,7 @@ public interface RouteApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/route/_search",
-        produces = { "application/json", "application/xml" }
+        produces = { "application/json" }
     )
     default ResponseEntity<List<Route>> findRoute(
         @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
@@ -108,11 +107,6 @@ public interface RouteApi {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "[ { \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }, { \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<route> <id>aeiou</id> <name>aeiou</name> <startPoi>aeiou</startPoi> <endPoi>aeiou</endPoi> <intermediatePois>aeiou</intermediatePois> <status>active</status> <audit> <createdBy>Id of the user who created the entity</createdBy> <createdDate>2000-01-23T04:56:07.000Z</createdDate> <updatedBy>Id of the user who updated the entity</updatedBy> <updatedDate>2000-01-23T04:56:07.000Z</updatedDate> </audit> </route>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
                     break;
                 }
             }
@@ -138,8 +132,7 @@ public interface RouteApi {
         tags = { "Route" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Route.class)),
-                @Content(mediaType = "application/xml", schema = @Schema(implementation = Route.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = Route.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
             @ApiResponse(responseCode = "404", description = "Route not found")
@@ -148,7 +141,7 @@ public interface RouteApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/route/{routeId}",
-        produces = { "application/json", "application/xml" }
+        produces = { "application/json" }
     )
     default ResponseEntity<Route> getRouteById(
         @Parameter(name = "routeId", description = "ID of Route to return", required = true, in = ParameterIn.PATH) @PathVariable("routeId") String routeId
@@ -158,11 +151,6 @@ public interface RouteApi {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<route> <id>aeiou</id> <name>aeiou</name> <startPoi>aeiou</startPoi> <endPoi>aeiou</endPoi> <intermediatePois>aeiou</intermediatePois> <status>active</status> <audit> <createdBy>Id of the user who created the entity</createdBy> <createdDate>2000-01-23T04:56:07.000Z</createdDate> <updatedBy>Id of the user who updated the entity</updatedBy> <updatedDate>2000-01-23T04:56:07.000Z</updatedDate> </audit> </route>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
                     break;
                 }
             }
@@ -197,7 +185,7 @@ public interface RouteApi {
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/route/_update",
-        consumes = { "application/json", "application/xml", "application/x-www-form-urlencoded" }
+        consumes = { "application/json" }
     )
     default ResponseEntity<Void> updateRoute(
         @Parameter(name = "Route", description = "Update an existent route in the system", required = true) @Valid @RequestBody Route route

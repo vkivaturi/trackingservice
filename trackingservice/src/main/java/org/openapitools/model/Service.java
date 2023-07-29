@@ -4,9 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.ArrayList;
-import java.util.List;
-import org.openapitools.model.ServiceAlertsInner;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -22,38 +19,73 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "Service", description = "Citizen service provided by the government agency")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T10:39:40.023515100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T17:17:16.820768500+05:30[Asia/Calcutta]")
 public class Service {
 
-  @Valid
-  private List<@Valid ServiceAlertsInner> alerts;
+  private String code;
 
-  public Service alerts(List<@Valid ServiceAlertsInner> alerts) {
-    this.alerts = alerts;
-    return this;
-  }
+  private String name;
 
-  public Service addAlertsItem(ServiceAlertsInner alertsItem) {
-    if (this.alerts == null) {
-      this.alerts = new ArrayList<>();
-    }
-    this.alerts.add(alertsItem);
+  private String ulbId;
+
+  public Service code(String code) {
+    this.code = code;
     return this;
   }
 
   /**
-   * Get alerts
-   * @return alerts
+   * Unique code given to each service
+   * @return code
   */
-  @Valid 
-  @Schema(name = "alerts", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("alerts")
-  public List<@Valid ServiceAlertsInner> getAlerts() {
-    return alerts;
+  
+  @Schema(name = "code", description = "Unique code given to each service", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("code")
+  public String getCode() {
+    return code;
   }
 
-  public void setAlerts(List<@Valid ServiceAlertsInner> alerts) {
-    this.alerts = alerts;
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public Service name(String name) {
+    this.name = name;
+    return this;
+  }
+
+  /**
+   * Name of the service. For example - Mosquito fumigation, Fecal sludge pickup
+   * @return name
+  */
+  
+  @Schema(name = "name", description = "Name of the service. For example - Mosquito fumigation, Fecal sludge pickup", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("name")
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public Service ulbId(String ulbId) {
+    this.ulbId = ulbId;
+    return this;
+  }
+
+  /**
+   * Identifier of the ULB where this service is offered
+   * @return ulbId
+  */
+  
+  @Schema(name = "ulbId", description = "Identifier of the ULB where this service is offered", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("ulbId")
+  public String getUlbId() {
+    return ulbId;
+  }
+
+  public void setUlbId(String ulbId) {
+    this.ulbId = ulbId;
   }
 
   @Override
@@ -65,19 +97,23 @@ public class Service {
       return false;
     }
     Service service = (Service) o;
-    return Objects.equals(this.alerts, service.alerts);
+    return Objects.equals(this.code, service.code) &&
+        Objects.equals(this.name, service.name) &&
+        Objects.equals(this.ulbId, service.ulbId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(alerts);
+    return Objects.hash(code, name, ulbId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Service {\n");
-    sb.append("    alerts: ").append(toIndentedString(alerts)).append("\n");
+    sb.append("    code: ").append(toIndentedString(code)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    ulbId: ").append(toIndentedString(ulbId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

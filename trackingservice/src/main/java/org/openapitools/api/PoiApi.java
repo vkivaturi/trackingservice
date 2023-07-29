@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T10:39:40.023515100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "POI", description = "Points of interest (POI) are a combination of location and additional details about that specific location. A POI can be a single LatLong or a polygon (combination of multiple LatLongs)")
 public interface PoiApi {
@@ -62,7 +62,7 @@ public interface PoiApi {
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/poi/_create",
-        consumes = { "application/json", "application/xml", "application/x-www-form-urlencoded" }
+        consumes = { "application/json" }
     )
     default ResponseEntity<Void> createPOI(
         @Parameter(name = "POI", description = "Create a new POI in the system", required = true) @Valid @RequestBody POI POI
@@ -88,8 +88,7 @@ public interface PoiApi {
         tags = { "POI" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = POI.class))),
-                @Content(mediaType = "application/xml", array = @ArraySchema(schema = @Schema(implementation = POI.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = POI.class)))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid search value")
         }
@@ -97,7 +96,7 @@ public interface PoiApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/poi/_search",
-        produces = { "application/json", "application/xml" }
+        produces = { "application/json" }
     )
     default ResponseEntity<List<POI>> findPOI(
         @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
@@ -108,11 +107,6 @@ public interface PoiApi {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "[ { \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"status\" : \"active\" }, { \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"status\" : \"active\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<poi> <id>aeiou</id> <locationName>Any name assigned to the location</locationName> <status>active</status> <type>point</type> <locationDetails> <location> <latitude>1.3579</latitude> <longitude>1.3579</longitude> </location> </locationDetails> <alert>aeiou</alert> <audit> <createdBy>Id of the user who created the entity</createdBy> <createdDate>2000-01-23T04:56:07.000Z</createdDate> <updatedBy>Id of the user who updated the entity</updatedBy> <updatedDate>2000-01-23T04:56:07.000Z</updatedDate> </audit> </poi>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
                     break;
                 }
             }
@@ -138,8 +132,7 @@ public interface PoiApi {
         tags = { "POI" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = POI.class)),
-                @Content(mediaType = "application/xml", schema = @Schema(implementation = POI.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = POI.class))
             }),
             @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
             @ApiResponse(responseCode = "404", description = "POI not found")
@@ -148,7 +141,7 @@ public interface PoiApi {
     @RequestMapping(
         method = RequestMethod.GET,
         value = "/poi/{poiId}",
-        produces = { "application/json", "application/xml" }
+        produces = { "application/json" }
     )
     default ResponseEntity<POI> getPoiById(
         @Parameter(name = "poiId", description = "ID of POI to return", required = true, in = ParameterIn.PATH) @PathVariable("poiId") String poiId
@@ -158,11 +151,6 @@ public interface PoiApi {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"status\" : \"active\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/xml"))) {
-                    String exampleString = "<poi> <id>aeiou</id> <locationName>Any name assigned to the location</locationName> <status>active</status> <type>point</type> <locationDetails> <location> <latitude>1.3579</latitude> <longitude>1.3579</longitude> </location> </locationDetails> <alert>aeiou</alert> <audit> <createdBy>Id of the user who created the entity</createdBy> <createdDate>2000-01-23T04:56:07.000Z</createdDate> <updatedBy>Id of the user who updated the entity</updatedBy> <updatedDate>2000-01-23T04:56:07.000Z</updatedDate> </audit> </poi>";
-                    ApiUtil.setExampleResponse(request, "application/xml", exampleString);
                     break;
                 }
             }
@@ -197,7 +185,7 @@ public interface PoiApi {
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/poi/_update",
-        consumes = { "application/json", "application/xml", "application/x-www-form-urlencoded" }
+        consumes = { "application/json" }
     )
     default ResponseEntity<Void> updatePOI(
         @Parameter(name = "POI", description = "Update an existent POI in the system", required = true) @Valid @RequestBody POI POI

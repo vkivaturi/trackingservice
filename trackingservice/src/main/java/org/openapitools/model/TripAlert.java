@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -16,18 +15,17 @@ import java.util.*;
 import javax.annotation.Generated;
 
 /**
- * AlertAlertsInner
+ * TripAlert
  */
 
-@JsonTypeName("Alert_alerts_inner")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T10:39:40.023515100+05:30[Asia/Calcutta]")
-public class AlertAlertsInner {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
+public class TripAlert {
 
   private String code;
 
   private String title;
 
-  public AlertAlertsInner code(String code) {
+  public TripAlert code(String code) {
     this.code = code;
     return this;
   }
@@ -47,7 +45,7 @@ public class AlertAlertsInner {
     this.code = code;
   }
 
-  public AlertAlertsInner title(String title) {
+  public TripAlert title(String title) {
     this.title = title;
     return this;
   }
@@ -75,9 +73,9 @@ public class AlertAlertsInner {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    AlertAlertsInner alertAlertsInner = (AlertAlertsInner) o;
-    return Objects.equals(this.code, alertAlertsInner.code) &&
-        Objects.equals(this.title, alertAlertsInner.title);
+    TripAlert tripAlert = (TripAlert) o;
+    return Objects.equals(this.code, tripAlert.code) &&
+        Objects.equals(this.title, tripAlert.title);
   }
 
   @Override
@@ -88,7 +86,7 @@ public class AlertAlertsInner {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class AlertAlertsInner {\n");
+    sb.append("class TripAlert {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("}");

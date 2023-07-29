@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -16,12 +15,12 @@ import java.util.*;
 import javax.annotation.Generated;
 
 /**
- * ServiceAlertsInner
+ * Citizen service provided by the government agency
  */
 
-@JsonTypeName("Service_alerts_inner")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T10:39:40.023515100+05:30[Asia/Calcutta]")
-public class ServiceAlertsInner {
+@Schema(name = "TripService", description = "Citizen service provided by the government agency")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
+public class TripService {
 
   private String code;
 
@@ -29,7 +28,7 @@ public class ServiceAlertsInner {
 
   private String ulbId;
 
-  public ServiceAlertsInner code(String code) {
+  public TripService code(String code) {
     this.code = code;
     return this;
   }
@@ -49,7 +48,7 @@ public class ServiceAlertsInner {
     this.code = code;
   }
 
-  public ServiceAlertsInner name(String name) {
+  public TripService name(String name) {
     this.name = name;
     return this;
   }
@@ -69,7 +68,7 @@ public class ServiceAlertsInner {
     this.name = name;
   }
 
-  public ServiceAlertsInner ulbId(String ulbId) {
+  public TripService ulbId(String ulbId) {
     this.ulbId = ulbId;
     return this;
   }
@@ -97,10 +96,10 @@ public class ServiceAlertsInner {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ServiceAlertsInner serviceAlertsInner = (ServiceAlertsInner) o;
-    return Objects.equals(this.code, serviceAlertsInner.code) &&
-        Objects.equals(this.name, serviceAlertsInner.name) &&
-        Objects.equals(this.ulbId, serviceAlertsInner.ulbId);
+    TripService tripService = (TripService) o;
+    return Objects.equals(this.code, tripService.code) &&
+        Objects.equals(this.name, tripService.name) &&
+        Objects.equals(this.ulbId, tripService.ulbId);
   }
 
   @Override
@@ -111,7 +110,7 @@ public class ServiceAlertsInner {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class ServiceAlertsInner {\n");
+    sb.append("class TripService {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    ulbId: ").append(toIndentedString(ulbId)).append("\n");

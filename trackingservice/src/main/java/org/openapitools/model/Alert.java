@@ -4,9 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.ArrayList;
-import java.util.List;
-import org.openapitools.model.AlertAlertsInner;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -21,38 +18,51 @@ import javax.annotation.Generated;
  * Alert
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T10:39:40.023515100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T17:17:16.820768500+05:30[Asia/Calcutta]")
 public class Alert {
 
-  @Valid
-  private List<@Valid AlertAlertsInner> alerts;
+  private String code;
 
-  public Alert alerts(List<@Valid AlertAlertsInner> alerts) {
-    this.alerts = alerts;
-    return this;
-  }
+  private String title;
 
-  public Alert addAlertsItem(AlertAlertsInner alertsItem) {
-    if (this.alerts == null) {
-      this.alerts = new ArrayList<>();
-    }
-    this.alerts.add(alertsItem);
+  public Alert code(String code) {
+    this.code = code;
     return this;
   }
 
   /**
-   * Get alerts
-   * @return alerts
+   * A unique code assigned to alerts of different types
+   * @return code
   */
-  @Valid 
-  @Schema(name = "alerts", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("alerts")
-  public List<@Valid AlertAlertsInner> getAlerts() {
-    return alerts;
+  
+  @Schema(name = "code", description = "A unique code assigned to alerts of different types", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("code")
+  public String getCode() {
+    return code;
   }
 
-  public void setAlerts(List<@Valid AlertAlertsInner> alerts) {
-    this.alerts = alerts;
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public Alert title(String title) {
+    this.title = title;
+    return this;
+  }
+
+  /**
+   * Title of the alert which can be displayed on client side
+   * @return title
+  */
+  
+  @Schema(name = "title", description = "Title of the alert which can be displayed on client side", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("title")
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   @Override
@@ -64,19 +74,21 @@ public class Alert {
       return false;
     }
     Alert alert = (Alert) o;
-    return Objects.equals(this.alerts, alert.alerts);
+    return Objects.equals(this.code, alert.code) &&
+        Objects.equals(this.title, alert.title);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(alerts);
+    return Objects.hash(code, title);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Alert {\n");
-    sb.append("    alerts: ").append(toIndentedString(alerts)).append("\n");
+    sb.append("    code: ").append(toIndentedString(code)).append("\n");
+    sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("}");
     return sb.toString();
   }
