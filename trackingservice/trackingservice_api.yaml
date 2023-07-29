@@ -519,6 +519,14 @@ components:
           enum:
             - active
             - inactive
+        type:
+          type: string
+          description: POI type helps identify the shape of the location
+          example: point
+          enum:
+            - point
+            - line
+            - polygon
         locationDetails:
           description: A POI can comprise of on geocoordinate in case of single point and multiple geos in case of a polygon
           type: array
@@ -597,13 +605,30 @@ components:
 
       xml:
         name: route
-
+    Operator:
+      type: object
+      properties:
+        id:
+          type: string
+          description: User id of the operator
+        name:
+          type: string
+          description: Name of the operator
+        email:
+          type: string
+          description: Email id of the operator
+        contactNumber:
+          type: string
+          description: Phone number of the operator
+        vehicleNumber:
+          type: string
+          description: Vehicle number of the operator
+      xml:
+        name: operator
+      
     Trip:
       type: object
       properties:
-        operatorId:
-          type: string
-          description: User id of the operator
         routeId:
           type: string
           description: Id of the assigned route
@@ -619,6 +644,8 @@ components:
             - in progress
             - completed
             - cancelled
+        operator:
+          $ref: '#/components/schemas/Operator'
         plannedStartTime:
           type: string
           format: date-time
@@ -675,7 +702,6 @@ components:
                 description: Identifier of the ULB where this service is offered
       xml:
         name: service
-
         
     TripProgress:
       type: object
