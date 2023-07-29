@@ -4,6 +4,10 @@
 # target directory
 */target/*
 
+# IDE files
+.idea
+*/.idea/*
+
 # Log file
 *.log
 
