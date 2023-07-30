@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,6 +61,18 @@ public class PoiApiController implements PoiApi {
     }
 
     @Override
+    public ResponseEntity<POI> getPoiById(
+            @Parameter(name = "poiId", description = "ID of POI to return", required = true, in = ParameterIn.PATH) @PathVariable("poiId") String poiId
+    ) {
+        logger.info("## getPOIbyId is invoked");
+        //TODO - Replace null with POI object
+        List<POI> pois = poiService.getPOIsBySearch(null);
+        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(pois));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+    @Override
     public ResponseEntity<Void> createPOI(
             @Parameter(name = "POI", description = "Create a new POI in the system", required = true) @Valid @RequestBody POI POI
     ) {
@@ -67,4 +80,14 @@ public class PoiApiController implements PoiApi {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+
+    @Override
+    public ResponseEntity<Void> updatePOI(
+            @Parameter(name = "POI", description = "Update an existent POI in the system", required = true) @Valid @RequestBody POI POI
+    ) {
+        logger.info("## updatePOI is invoked");
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
 }
