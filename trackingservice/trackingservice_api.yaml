@@ -398,7 +398,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TripService'
+                  $ref: '#/components/schemas/ServiceType'
         '400':
           description: Invalid search value
 
@@ -418,7 +418,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TripAlert'
+                  $ref: '#/components/schemas/LocationAlert'
         '400':
           description: Invalid search value
 
@@ -479,13 +479,15 @@ components:
           example: Id of the user who created the entity
         createdDate:
           type: string
-          format: date-time
+          example: 2023-07-30T10:24:10.547Z
+          description: Date and time in ISO_DATE_TIME format
         updatedBy:
           type: string
           example: Id of the user who updated the entity
         updatedDate:
           type: string
-          format: date-time
+          example: 2023-07-30T10:24:10.547Z
+          description: Date and time in ISO_DATE_TIME format
     Route:
       type: object
       properties:
@@ -555,20 +557,24 @@ components:
           $ref: '#/components/schemas/Operator'
         plannedStartTime:
           type: string
-          format: date-time
+          example: 2023-07-30T10:24:10.547Z
+          description: Date and time in ISO_DATE_TIME format
         plannedEndTime:
           type: string
-          format: date-time
+          example: 2023-07-30T10:24:10.547Z
+          description: Date and time in ISO_DATE_TIME format
         actualStartTime:
           type: string
-          format: date-time
+          example: 2023-07-30T10:24:10.547Z
+          description: Date and time in ISO_DATE_TIME format
         actualEndTime:
           type: string
-          format: date-time
+          example: 2023-07-30T10:24:10.547Z
+          description: Date and time in ISO_DATE_TIME format
         audit:
           $ref: '#/components/schemas/Audit'
 
-    TripAlert:
+    LocationAlert:
       type: object
       properties:
         code:
@@ -578,7 +584,7 @@ components:
           type: string
           description: Title of the alert which can be displayed on client side
 
-    TripService:
+    ServiceType:
       type: object
       description: Citizen service provided by the government agency
       properties:
@@ -598,8 +604,8 @@ components:
       properties:
         progressReportedTime:
           type: string
-          format: date-time
-          description: Time at which the client app is reporting this data. This can be different from the time when the geo data was recorded as the app might be offline at that time but reporting it later once the app is online.
+          example: 2023-07-30T10:24:10.547Z
+          description: Date and time in ISO_DATE_TIME format. Time at which the client app is reporting this data. This can be different from the time when the geo data was recorded as the app might be offline at that time but reporting it later once the app is online.
         progressData:
           type: array
           xml:
@@ -608,7 +614,7 @@ components:
             properties:
               progressTime:
                 type: string
-                format: date-time
-                description: Actual time at which the operator was present at the location
+                example: 2023-07-30T10:24:10.547Z
+                description: Date and time in ISO_DATE_TIME format. Actual time at which the operator was present at the location
               location:
                 $ref: '#/components/schemas/Location'

@@ -5,10 +5,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.time.OffsetDateTime;
 import org.openapitools.model.Audit;
 import org.openapitools.model.Operator;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -23,7 +21,7 @@ import javax.annotation.Generated;
  * Trip
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
 public class Trip {
 
   private String routeId;
@@ -73,17 +71,13 @@ public class Trip {
 
   private Operator operator;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime plannedStartTime;
+  private String plannedStartTime;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime plannedEndTime;
+  private String plannedEndTime;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime actualStartTime;
+  private String actualStartTime;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime actualEndTime;
+  private String actualEndTime;
 
   private Audit audit;
 
@@ -167,83 +161,83 @@ public class Trip {
     this.operator = operator;
   }
 
-  public Trip plannedStartTime(OffsetDateTime plannedStartTime) {
+  public Trip plannedStartTime(String plannedStartTime) {
     this.plannedStartTime = plannedStartTime;
     return this;
   }
 
   /**
-   * Get plannedStartTime
+   * Date and time in ISO_DATE_TIME format
    * @return plannedStartTime
   */
-  @Valid 
-  @Schema(name = "plannedStartTime", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  
+  @Schema(name = "plannedStartTime", example = "2023-07-30T10:24:10.547Z", description = "Date and time in ISO_DATE_TIME format", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("plannedStartTime")
-  public OffsetDateTime getPlannedStartTime() {
+  public String getPlannedStartTime() {
     return plannedStartTime;
   }
 
-  public void setPlannedStartTime(OffsetDateTime plannedStartTime) {
+  public void setPlannedStartTime(String plannedStartTime) {
     this.plannedStartTime = plannedStartTime;
   }
 
-  public Trip plannedEndTime(OffsetDateTime plannedEndTime) {
+  public Trip plannedEndTime(String plannedEndTime) {
     this.plannedEndTime = plannedEndTime;
     return this;
   }
 
   /**
-   * Get plannedEndTime
+   * Date and time in ISO_DATE_TIME format
    * @return plannedEndTime
   */
-  @Valid 
-  @Schema(name = "plannedEndTime", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  
+  @Schema(name = "plannedEndTime", example = "2023-07-30T10:24:10.547Z", description = "Date and time in ISO_DATE_TIME format", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("plannedEndTime")
-  public OffsetDateTime getPlannedEndTime() {
+  public String getPlannedEndTime() {
     return plannedEndTime;
   }
 
-  public void setPlannedEndTime(OffsetDateTime plannedEndTime) {
+  public void setPlannedEndTime(String plannedEndTime) {
     this.plannedEndTime = plannedEndTime;
   }
 
-  public Trip actualStartTime(OffsetDateTime actualStartTime) {
+  public Trip actualStartTime(String actualStartTime) {
     this.actualStartTime = actualStartTime;
     return this;
   }
 
   /**
-   * Get actualStartTime
+   * Date and time in ISO_DATE_TIME format
    * @return actualStartTime
   */
-  @Valid 
-  @Schema(name = "actualStartTime", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  
+  @Schema(name = "actualStartTime", example = "2023-07-30T10:24:10.547Z", description = "Date and time in ISO_DATE_TIME format", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("actualStartTime")
-  public OffsetDateTime getActualStartTime() {
+  public String getActualStartTime() {
     return actualStartTime;
   }
 
-  public void setActualStartTime(OffsetDateTime actualStartTime) {
+  public void setActualStartTime(String actualStartTime) {
     this.actualStartTime = actualStartTime;
   }
 
-  public Trip actualEndTime(OffsetDateTime actualEndTime) {
+  public Trip actualEndTime(String actualEndTime) {
     this.actualEndTime = actualEndTime;
     return this;
   }
 
   /**
-   * Get actualEndTime
+   * Date and time in ISO_DATE_TIME format
    * @return actualEndTime
   */
-  @Valid 
-  @Schema(name = "actualEndTime", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  
+  @Schema(name = "actualEndTime", example = "2023-07-30T10:24:10.547Z", description = "Date and time in ISO_DATE_TIME format", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("actualEndTime")
-  public OffsetDateTime getActualEndTime() {
+  public String getActualEndTime() {
     return actualEndTime;
   }
 
-  public void setActualEndTime(OffsetDateTime actualEndTime) {
+  public void setActualEndTime(String actualEndTime) {
     this.actualEndTime = actualEndTime;
   }
 

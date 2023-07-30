@@ -4,8 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.time.OffsetDateTime;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -20,18 +18,16 @@ import javax.annotation.Generated;
  * Audit
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
 public class Audit {
 
   private String createdBy;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime createdDate;
+  private String createdDate;
 
   private String updatedBy;
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime updatedDate;
+  private String updatedDate;
 
   public Audit createdBy(String createdBy) {
     this.createdBy = createdBy;
@@ -53,23 +49,23 @@ public class Audit {
     this.createdBy = createdBy;
   }
 
-  public Audit createdDate(OffsetDateTime createdDate) {
+  public Audit createdDate(String createdDate) {
     this.createdDate = createdDate;
     return this;
   }
 
   /**
-   * Get createdDate
+   * Date and time in ISO_DATE_TIME format
    * @return createdDate
   */
-  @Valid 
-  @Schema(name = "createdDate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  
+  @Schema(name = "createdDate", example = "2023-07-30T10:24:10.547Z", description = "Date and time in ISO_DATE_TIME format", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("createdDate")
-  public OffsetDateTime getCreatedDate() {
+  public String getCreatedDate() {
     return createdDate;
   }
 
-  public void setCreatedDate(OffsetDateTime createdDate) {
+  public void setCreatedDate(String createdDate) {
     this.createdDate = createdDate;
   }
 
@@ -93,23 +89,23 @@ public class Audit {
     this.updatedBy = updatedBy;
   }
 
-  public Audit updatedDate(OffsetDateTime updatedDate) {
+  public Audit updatedDate(String updatedDate) {
     this.updatedDate = updatedDate;
     return this;
   }
 
   /**
-   * Get updatedDate
+   * Date and time in ISO_DATE_TIME format
    * @return updatedDate
   */
-  @Valid 
-  @Schema(name = "updatedDate", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  
+  @Schema(name = "updatedDate", example = "2023-07-30T10:24:10.547Z", description = "Date and time in ISO_DATE_TIME format", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("updatedDate")
-  public OffsetDateTime getUpdatedDate() {
+  public String getUpdatedDate() {
     return updatedDate;
   }
 
-  public void setUpdatedDate(OffsetDateTime updatedDate) {
+  public void setUpdatedDate(String updatedDate) {
     this.updatedDate = updatedDate;
   }
 

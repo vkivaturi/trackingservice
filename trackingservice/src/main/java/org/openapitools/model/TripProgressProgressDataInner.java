@@ -5,9 +5,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
 import org.openapitools.model.Location;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -23,31 +21,30 @@ import javax.annotation.Generated;
  */
 
 @JsonTypeName("TripProgress_progressData_inner")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
 public class TripProgressProgressDataInner {
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime progressTime;
+  private String progressTime;
 
   private Location location;
 
-  public TripProgressProgressDataInner progressTime(OffsetDateTime progressTime) {
+  public TripProgressProgressDataInner progressTime(String progressTime) {
     this.progressTime = progressTime;
     return this;
   }
 
   /**
-   * Actual time at which the operator was present at the location
+   * Date and time in ISO_DATE_TIME format. Actual time at which the operator was present at the location
    * @return progressTime
   */
-  @Valid 
-  @Schema(name = "progressTime", description = "Actual time at which the operator was present at the location", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  
+  @Schema(name = "progressTime", example = "2023-07-30T10:24:10.547Z", description = "Date and time in ISO_DATE_TIME format. Actual time at which the operator was present at the location", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("progressTime")
-  public OffsetDateTime getProgressTime() {
+  public String getProgressTime() {
     return progressTime;
   }
 
-  public void setProgressTime(OffsetDateTime progressTime) {
+  public void setProgressTime(String progressTime) {
     this.progressTime = progressTime;
   }
 

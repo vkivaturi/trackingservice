@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Route", description = "Route is a sequence of POIs. Route indicate the path the operator should take while delivering a service.")
 public interface RouteApi {
@@ -105,7 +105,7 @@ public interface RouteApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }, { \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" } ]";
+                    String exampleString = "[ { \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }, { \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -149,7 +149,7 @@ public interface RouteApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }";
+                    String exampleString = "{ \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

@@ -18,9 +18,9 @@ import javax.annotation.Generated;
  * Citizen service provided by the government agency
  */
 
-@Schema(name = "TripService", description = "Citizen service provided by the government agency")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
-public class TripService {
+@Schema(name = "ServiceType", description = "Citizen service provided by the government agency")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
+public class ServiceType {
 
   private String code;
 
@@ -28,7 +28,7 @@ public class TripService {
 
   private String ulbId;
 
-  public TripService code(String code) {
+  public ServiceType code(String code) {
     this.code = code;
     return this;
   }
@@ -48,7 +48,7 @@ public class TripService {
     this.code = code;
   }
 
-  public TripService name(String name) {
+  public ServiceType name(String name) {
     this.name = name;
     return this;
   }
@@ -68,7 +68,7 @@ public class TripService {
     this.name = name;
   }
 
-  public TripService ulbId(String ulbId) {
+  public ServiceType ulbId(String ulbId) {
     this.ulbId = ulbId;
     return this;
   }
@@ -96,10 +96,10 @@ public class TripService {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TripService tripService = (TripService) o;
-    return Objects.equals(this.code, tripService.code) &&
-        Objects.equals(this.name, tripService.name) &&
-        Objects.equals(this.ulbId, tripService.ulbId);
+    ServiceType serviceType = (ServiceType) o;
+    return Objects.equals(this.code, serviceType.code) &&
+        Objects.equals(this.name, serviceType.name) &&
+        Objects.equals(this.ulbId, serviceType.ulbId);
   }
 
   @Override
@@ -110,7 +110,7 @@ public class TripService {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TripService {\n");
+    sb.append("class ServiceType {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    ulbId: ").append(toIndentedString(ulbId)).append("\n");

@@ -15,17 +15,17 @@ import java.util.*;
 import javax.annotation.Generated;
 
 /**
- * Alert
+ * LocationAlert
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T17:17:16.820768500+05:30[Asia/Calcutta]")
-public class Alert {
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
+public class LocationAlert {
 
   private String code;
 
   private String title;
 
-  public Alert code(String code) {
+  public LocationAlert code(String code) {
     this.code = code;
     return this;
   }
@@ -45,7 +45,7 @@ public class Alert {
     this.code = code;
   }
 
-  public Alert title(String title) {
+  public LocationAlert title(String title) {
     this.title = title;
     return this;
   }
@@ -73,9 +73,9 @@ public class Alert {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Alert alert = (Alert) o;
-    return Objects.equals(this.code, alert.code) &&
-        Objects.equals(this.title, alert.title);
+    LocationAlert locationAlert = (LocationAlert) o;
+    return Objects.equals(this.code, locationAlert.code) &&
+        Objects.equals(this.title, locationAlert.title);
   }
 
   @Override
@@ -86,7 +86,7 @@ public class Alert {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Alert {\n");
+    sb.append("class LocationAlert {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
     sb.append("}");

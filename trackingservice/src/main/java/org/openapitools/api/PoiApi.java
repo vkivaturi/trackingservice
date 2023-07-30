@@ -32,7 +32,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "POI", description = "Points of interest (POI) are a combination of location and additional details about that specific location. A POI can be a single LatLong or a polygon (combination of multiple LatLongs)")
 public interface PoiApi {
@@ -105,7 +105,7 @@ public interface PoiApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"status\" : \"active\" }, { \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"status\" : \"active\" } ]";
+                    String exampleString = "[ { \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"status\" : \"active\" }, { \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"status\" : \"active\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -149,7 +149,7 @@ public interface PoiApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"audit\" : { \"createdDate\" : \"2000-01-23T04:56:07.000+00:00\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2000-01-23T04:56:07.000+00:00\" }, \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"status\" : \"active\" }";
+                    String exampleString = "{ \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"status\" : \"active\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

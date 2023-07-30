@@ -4,11 +4,9 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.openapitools.model.TripProgressProgressDataInner;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -24,32 +22,31 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "TripProgress", description = "Trip progress is shared by the client continuously as the operator is moving")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
 public class TripProgress {
 
-  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  private OffsetDateTime progressReportedTime;
+  private String progressReportedTime;
 
   @Valid
   private List<@Valid TripProgressProgressDataInner> progressData;
 
-  public TripProgress progressReportedTime(OffsetDateTime progressReportedTime) {
+  public TripProgress progressReportedTime(String progressReportedTime) {
     this.progressReportedTime = progressReportedTime;
     return this;
   }
 
   /**
-   * Time at which the client app is reporting this data. This can be different from the time when the geo data was recorded as the app might be offline at that time but reporting it later once the app is online.
+   * Date and time in ISO_DATE_TIME format. Time at which the client app is reporting this data. This can be different from the time when the geo data was recorded as the app might be offline at that time but reporting it later once the app is online.
    * @return progressReportedTime
   */
-  @Valid 
-  @Schema(name = "progressReportedTime", description = "Time at which the client app is reporting this data. This can be different from the time when the geo data was recorded as the app might be offline at that time but reporting it later once the app is online.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  
+  @Schema(name = "progressReportedTime", example = "2023-07-30T10:24:10.547Z", description = "Date and time in ISO_DATE_TIME format. Time at which the client app is reporting this data. This can be different from the time when the geo data was recorded as the app might be offline at that time but reporting it later once the app is online.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("progressReportedTime")
-  public OffsetDateTime getProgressReportedTime() {
+  public String getProgressReportedTime() {
     return progressReportedTime;
   }
 
-  public void setProgressReportedTime(OffsetDateTime progressReportedTime) {
+  public void setProgressReportedTime(String progressReportedTime) {
     this.progressReportedTime = progressReportedTime;
   }
 

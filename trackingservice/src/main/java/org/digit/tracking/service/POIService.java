@@ -1,9 +1,7 @@
 package org.digit.tracking.service;
 
-import org.openapitools.model.Alert;
 import org.openapitools.model.Location;
 import org.openapitools.model.POI;
-import org.openapitools.model.TripService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

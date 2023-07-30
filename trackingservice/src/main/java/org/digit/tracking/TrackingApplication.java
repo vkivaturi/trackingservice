@@ -1,4 +1,4 @@
-package org.openapitools;
+package org.digit.tracking;
 
 import com.fasterxml.jackson.databind.Module;
 import org.openapitools.jackson.nullable.JsonNullableModule;
@@ -6,23 +6,21 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.FullyQualifiedAnnotationBeanNameGenerator;
 
 @SpringBootApplication(
     nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
 )
 @ComponentScan(
-    basePackages = {"org.openapitools", "org.openapitools.api" , "org.openapitools.configuration"},
+    basePackages = { "org.digit"},
     nameGenerator = FullyQualifiedAnnotationBeanNameGenerator.class
 )
-public class OpenApiGeneratorApplication {
+public class TrackingApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OpenApiGeneratorApplication.class, args);
+        SpringApplication.run(TrackingApplication.class, args);
     }
-
-    @Bean(name = "org.openapitools.OpenApiGeneratorApplication.jsonNullableModule")
+    @Bean(name = "org.digit.tracking.TrackingApplication.jsonNullableModule")
     public Module jsonNullableModule() {
         return new JsonNullableModule();
     }

@@ -34,10 +34,10 @@ public class TripService {
         trip.setOperator(operator);
 
         trip.setStatus(Trip.StatusEnum.IN_PROGRESS);
-        trip.setPlannedStartTime(OffsetDateTime.parse("2023-07-30T19:20:17.555Z"));
-        trip.setPlannedEndTime(OffsetDateTime.now());
-        trip.setActualStartTime(OffsetDateTime.now());
-        trip.setActualEndTime(OffsetDateTime.now());
+        trip.setPlannedStartTime("2023-07-30T19:20:17.555Z");
+        trip.setPlannedEndTime("2023-07-30T19:30:17.555Z");
+        trip.setActualStartTime("2023-07-30T19:40:17.555Z");
+        trip.setActualEndTime("2023-07-30T19:50:17.555Z");
 
         triplist.add(trip);
 
@@ -55,10 +55,10 @@ public class TripService {
         trip.setOperator(operator);
 
         trip.setStatus(Trip.StatusEnum.IN_PROGRESS);
-//        trip.setPlannedStartTime(OffsetDateTime.parse("2023-07-30T19:20:17.555Z"));
-//        trip.setPlannedEndTime(OffsetDateTime.parse("2023-07-30T20:20:17.555Z"));
-//        trip.setActualStartTime(OffsetDateTime.parse("2023-07-30T20:20:17.555Z"));
-//        trip.setActualEndTime(OffsetDateTime.parse("2023-07-30T21:20:17.555Z"));
+        trip.setPlannedStartTime("2023-07-30T19:20:17.555Z");
+        trip.setPlannedEndTime("2023-07-30T20:20:17.555Z");
+        trip.setActualStartTime("2023-07-30T20:20:17.555Z");
+        trip.setActualEndTime("2023-07-30T21:20:17.555Z");
 
         triplist.add(trip);
 
