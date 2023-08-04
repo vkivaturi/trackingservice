@@ -6,6 +6,7 @@ import org.digit.tracking.service.POIService;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.PoiApi;
+import org.openapitools.model.LocationAlert;
 import org.openapitools.model.POI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,8 +75,14 @@ public class PoiController implements PoiApi {
             @Parameter(name = "POI", description = "Create a new POI in the system", required = true) @Valid @RequestBody POI POI
     ) {
         logger.info("## createPOI is invoked");
-        return new ResponseEntity<>(HttpStatus.OK);
 
+//        String poiId = poiService.createPOI(POI);
+//        //TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(alerts));
+//        if (poiId != null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+//        }else {
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
     }
 
     @Override

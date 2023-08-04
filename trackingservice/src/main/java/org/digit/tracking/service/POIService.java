@@ -1,7 +1,9 @@
 package org.digit.tracking.service;
 
+import org.digit.tracking.data.PoiDao;
 import org.openapitools.model.Location;
 import org.openapitools.model.POI;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,9 +12,16 @@ import java.util.List;
 
 @Service
 public class POIService {
+
+    @Autowired
+    PoiDao poiDao;
     public List<POI> getPOIsBySearch(POI poi) {
         //TODO - Mock list of alerts. Replace with database call
         return fetchPOIsFromDB(poi);
+    }
+
+    public String createPOI(POI poi) {
+        return poiDao.createPOI(poi);
     }
 
     private List<POI> fetchPOIsFromDB(POI searchPoi) {
