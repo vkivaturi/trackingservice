@@ -6,7 +6,7 @@ import org.digit.tracking.service.RouteService;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.RouteApi;
-import org.openapitools.model.POI;
+import org.openapitools.model.ACK;
 import org.openapitools.model.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class RouteController implements RouteApi {
     }
 
     @Override
-    public ResponseEntity<Void> createRoute(
+    public ResponseEntity<ACK> createRoute(
             @Parameter(name = "Route", description = "Create a new Route in the system", required = true) @Valid @RequestBody Route route
     ) {
         logger.info("## createRoute is invoked");
@@ -60,7 +60,7 @@ public class RouteController implements RouteApi {
         }
     }
     @Override
-    public ResponseEntity<Void> updateRoute(
+    public ResponseEntity<ACK> updateRoute(
             @Parameter(name = "Route", description = "Update an existent route in the system", required = true) @Valid @RequestBody Route route
     ) {
         logger.info("## updateRoute is invoked");

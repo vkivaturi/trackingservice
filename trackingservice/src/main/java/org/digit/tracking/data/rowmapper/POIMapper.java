@@ -1,4 +1,4 @@
-package org.digit.tracking.data;
+package org.digit.tracking.data.rowmapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,7 +21,8 @@ public class POIMapper implements RowMapper<POI> {
         poi.setLocationDetails(DbUtil.dbJsonToList(rs, "locationDetails", Location.class));
         poi.setAlert(DbUtil.dbJsonToList(rs, "alert", String.class));
         poi.setStatus(POI.StatusEnum.valueOf(rs.getString("status").toUpperCase()));
-        poi.setAudit(DbUtil.getAuditDetails(rs));
+        poi.setUserId(rs.getString("userId"));
+        //poi.setAudit(DbUtil.getAuditDetails(rs));
         return poi;
     }
 }

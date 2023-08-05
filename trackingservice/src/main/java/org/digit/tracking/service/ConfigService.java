@@ -1,12 +1,11 @@
 package org.digit.tracking.service;
 
-import org.digit.tracking.data.ConfigDao;
+import org.digit.tracking.data.dao.ConfigDao;
 import org.openapitools.model.LocationAlert;
 import org.openapitools.model.ServiceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

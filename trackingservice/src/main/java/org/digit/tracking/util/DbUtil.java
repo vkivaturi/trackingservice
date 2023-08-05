@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.openapitools.model.Audit;
 import org.openapitools.model.Location;
+import org.openapitools.model.Operator;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -28,7 +29,7 @@ public class DbUtil {
         audit.setUpdatedDate(rs.getString("updatedDate"));
         return audit;
     }
-
+    //Common method to convert JSON in database to an object list
     public static List dbJsonToList(ResultSet rs, String dbColumn, Class<?> T) throws SQLException {
         //Fetch database field into a string json
         String jsonString = rs.getString(dbColumn);
@@ -53,4 +54,20 @@ public class DbUtil {
         return dbJsonList;
     }
 
+    //Convert JSON of Operator entity to an object
+    public static Operator dbJsonToOperator(ResultSet rs, String dbColumn, Class<?> T) throws SQLException {
+        //Fetch database field into a string json
+        String jsonString = rs.getString(dbColumn);
+        //Convert json string to array of string
+        ObjectMapper mapper = new ObjectMapper();
+
+        Operator dbJson = new Operator();
+
+        try {
+            dbJson = mapper.readValue(jsonString, Operator.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        return dbJson;
+    }
 }

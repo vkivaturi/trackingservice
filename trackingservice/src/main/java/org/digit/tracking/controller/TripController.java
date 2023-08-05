@@ -6,6 +6,7 @@ import org.digit.tracking.service.TripService;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.TripApi;
+import org.openapitools.model.ACK;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
 
@@ -50,16 +51,20 @@ public class TripController implements TripApi {
     }
 
     @Override
-    public ResponseEntity<Trip> createTrip(
+    public ResponseEntity<ACK> createTrip(
             @Parameter(name = "Trip", description = "Create a new Trip in the system", required = true) @Valid @RequestBody Trip trip
     ) {
         logger.info("## createTrip is invoked");
-        return new ResponseEntity<>(HttpStatus.OK);
-
+        String tripId = tripService.createdTrip(trip);
+        if (tripId != null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
-    public ResponseEntity<Void> progressTrip(
+    public ResponseEntity<ACK> progressTrip(
             @Parameter(name = "TripProgress", description = "Update an existent trip in the system", required = true) @Valid @RequestBody TripProgress tripProgress
     ) {
         logger.info("## progressTrip is invoked");
@@ -67,7 +72,7 @@ public class TripController implements TripApi {
     }
 
     @Override
-    public ResponseEntity<Void> updateTrip(
+    public ResponseEntity<ACK> updateTrip(
             @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip
     ) {
         logger.info("## updateTrip is invoked");
@@ -91,10 +96,8 @@ public class TripController implements TripApi {
             @Parameter(name = "tripId", description = "ID of Trip to return", required = true, in = ParameterIn.PATH) @PathVariable("tripId") String tripId
     ) {
         logger.info("## getTripById is invoked");
-        //TODO - Replace null with Trip object
-        List<Trip> trips = tripService.getTripsBySearch(null);
+        List<Trip> trips = tripService.getTripById(tripId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(trips));
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

@@ -18,7 +18,7 @@ import javax.annotation.Generated;
  * Operator
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T13:45:38.588501500+05:30[Asia/Calcutta]")
 public class Operator {
 
   private String id;
@@ -37,11 +37,11 @@ public class Operator {
   }
 
   /**
-   * User id of the operator
+   * User id of the operator of the service (for example, a vehicle driver)
    * @return id
   */
   
-  @Schema(name = "id", description = "User id of the operator", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "id", description = "User id of the operator of the service (for example, a vehicle driver)", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("id")
   public String getId() {
     return id;

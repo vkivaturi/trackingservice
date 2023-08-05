@@ -1,4 +1,4 @@
-package org.digit.tracking.data;
+package org.digit.tracking.data.rowmapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

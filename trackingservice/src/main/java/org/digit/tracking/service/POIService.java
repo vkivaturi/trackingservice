@@ -1,6 +1,6 @@
 package org.digit.tracking.service;
 
-import org.digit.tracking.data.PoiDao;
+import org.digit.tracking.data.dao.PoiDao;
 import org.openapitools.model.Location;
 import org.openapitools.model.POI;
 import org.springframework.beans.factory.annotation.Autowired;

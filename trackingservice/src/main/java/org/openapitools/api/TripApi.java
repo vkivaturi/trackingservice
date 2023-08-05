@@ -5,6 +5,7 @@
  */
 package org.openapitools.api;
 
+import org.openapitools.model.ACK;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -33,7 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T13:45:38.588501500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -57,9 +58,11 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = Trip.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             }),
-            @ApiResponse(responseCode = "405", description = "Validation exception")
+            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
         }
     )
     @RequestMapping(
@@ -68,13 +71,13 @@ public interface TripApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Trip> createTrip(
+    default ResponseEntity<ACK> createTrip(
         @Parameter(name = "Trip", description = "Create a new Trip in the system", required = true) @Valid @RequestBody Trip trip
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
+                    String exampleString = "{ \"id\" : \"116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1\", \"responseMessage\" : \"Update is succesful\", \"responseCode\" : \"CODE-123\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -103,7 +106,9 @@ public interface TripApi {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Trip.class)))
             }),
-            @ApiResponse(responseCode = "400", description = "Invalid search value")
+            @ApiResponse(responseCode = "400", description = "Invalid search value", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
         }
     )
     @RequestMapping(
@@ -118,7 +123,7 @@ public interface TripApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }, { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" } ]";
+                    String exampleString = "[ { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }, { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -147,8 +152,12 @@ public interface TripApi {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Trip.class))
             }),
-            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-            @ApiResponse(responseCode = "404", description = "Trip not found")
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Trip not found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
         }
     )
     @RequestMapping(
@@ -162,7 +171,7 @@ public interface TripApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
+                    String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -189,20 +198,38 @@ public interface TripApi {
         description = "Update an existing trip by Id",
         tags = { "Trip" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "400", description = "Invalid Trip ID is supplied"),
-            @ApiResponse(responseCode = "404", description = "Trip not found"),
-            @ApiResponse(responseCode = "405", description = "Validation exception")
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid Trip ID is supplied", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Trip not found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
         }
     )
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/trip/_progress",
+        produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Void> progressTrip(
+    default ResponseEntity<ACK> progressTrip(
         @Parameter(name = "TripProgress", description = "Update an existent trip in the system", required = true) @Valid @RequestBody TripProgress tripProgress
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"id\" : \"116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1\", \"responseMessage\" : \"Update is succesful\", \"responseCode\" : \"CODE-123\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -224,20 +251,38 @@ public interface TripApi {
         description = "Update an existing trip by Id",
         tags = { "Trip" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "400", description = "Invalid Trip ID is supplied"),
-            @ApiResponse(responseCode = "404", description = "Trip not found"),
-            @ApiResponse(responseCode = "405", description = "Validation exception")
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid Trip ID is supplied", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Trip not found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
         }
     )
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/trip/_update",
+        produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Void> updateTrip(
+    default ResponseEntity<ACK> updateTrip(
         @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"id\" : \"116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1\", \"responseMessage\" : \"Update is succesful\", \"responseCode\" : \"CODE-123\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

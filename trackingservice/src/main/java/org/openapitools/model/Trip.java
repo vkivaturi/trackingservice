@@ -5,7 +5,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.model.Audit;
 import org.openapitools.model.Operator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -21,8 +20,10 @@ import javax.annotation.Generated;
  * Trip
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T13:45:38.588501500+05:30[Asia/Calcutta]")
 public class Trip {
+
+  private String id;
 
   private String routeId;
 
@@ -34,7 +35,7 @@ public class Trip {
   public enum StatusEnum {
     CREATED("created"),
     
-    IN_PROGRESS("in progress"),
+    IN_PROGRESS("in_progress"),
     
     COMPLETED("completed"),
     
@@ -79,7 +80,27 @@ public class Trip {
 
   private String actualEndTime;
 
-  private Audit audit;
+  private String userId;
+
+  public Trip id(String id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Id of the trip
+   * @return id
+  */
+  
+  @Schema(name = "id", description = "Id of the trip", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("id")
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public Trip routeId(String routeId) {
     this.routeId = routeId;
@@ -241,24 +262,24 @@ public class Trip {
     this.actualEndTime = actualEndTime;
   }
 
-  public Trip audit(Audit audit) {
-    this.audit = audit;
+  public Trip userId(String userId) {
+    this.userId = userId;
     return this;
   }
 
   /**
-   * Get audit
-   * @return audit
+   * DIGIT Id of the user performing this action
+   * @return userId
   */
-  @Valid 
-  @Schema(name = "audit", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("audit")
-  public Audit getAudit() {
-    return audit;
+  
+  @Schema(name = "userId", example = "rajan123", description = "DIGIT Id of the user performing this action", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("userId")
+  public String getUserId() {
+    return userId;
   }
 
-  public void setAudit(Audit audit) {
-    this.audit = audit;
+  public void setUserId(String userId) {
+    this.userId = userId;
   }
 
   @Override
@@ -270,7 +291,8 @@ public class Trip {
       return false;
     }
     Trip trip = (Trip) o;
-    return Objects.equals(this.routeId, trip.routeId) &&
+    return Objects.equals(this.id, trip.id) &&
+        Objects.equals(this.routeId, trip.routeId) &&
         Objects.equals(this.serviceCode, trip.serviceCode) &&
         Objects.equals(this.status, trip.status) &&
         Objects.equals(this.operator, trip.operator) &&
@@ -278,18 +300,19 @@ public class Trip {
         Objects.equals(this.plannedEndTime, trip.plannedEndTime) &&
         Objects.equals(this.actualStartTime, trip.actualStartTime) &&
         Objects.equals(this.actualEndTime, trip.actualEndTime) &&
-        Objects.equals(this.audit, trip.audit);
+        Objects.equals(this.userId, trip.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(routeId, serviceCode, status, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, audit);
+    return Objects.hash(id, routeId, serviceCode, status, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Trip {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    routeId: ").append(toIndentedString(routeId)).append("\n");
     sb.append("    serviceCode: ").append(toIndentedString(serviceCode)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
@@ -298,7 +321,7 @@ public class Trip {
     sb.append("    plannedEndTime: ").append(toIndentedString(plannedEndTime)).append("\n");
     sb.append("    actualStartTime: ").append(toIndentedString(actualStartTime)).append("\n");
     sb.append("    actualEndTime: ").append(toIndentedString(actualEndTime)).append("\n");
-    sb.append("    audit: ").append(toIndentedString(audit)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

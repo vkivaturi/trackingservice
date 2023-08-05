@@ -1,5 +1,6 @@
-package org.digit.tracking.data;
+package org.digit.tracking.data.dao;
 
+import org.digit.tracking.data.rowmapper.RouteMapper;
 import org.digit.tracking.util.DbUtil;
 import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Route;
@@ -10,16 +11,18 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 public class RouteDao {
     Logger logger = LoggerFactory.getLogger(RouteDao.class);
     final String sqlFetchRouteById = "SELECT id, startPoi, endPoi, name, status, intermediatePois, " +
-            "createdDate, createdBy, updatedDate, updatedBy FROM Route where id = ?";
+            "userId FROM Route where id = ?";
     final String sqlFetchRouteByFilters = "SELECT * FROM Route";
     final String sqlCreateRoute = "insert into Route (id, startPoi, endPoi, name, status, intermediatePois, " +
-            "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?,?,?,?,?,?)";
+            "userId, createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?)";
     private DataSource dataSource;
 
     //Datasource bean is injected
@@ -49,9 +52,17 @@ public class RouteDao {
         //Prepare input data for the SQL
         String idLocal = DbUtil.getId();
         String intermediatePois = JsonUtil.getJsonFromObject(route.getIntermediatePois());
+
+        OffsetDateTime offsetDateTime = OffsetDateTime.now();
+        String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
+
+        //Audit information
+        String createdBy = route.getUserId();
+        String updatedBy = route.getUserId();
+
         Object[] args = new Object[]{idLocal, route.getStartPoi(), route.getEndPoi(), route.getName(), route.getStatus().toString(),
-                intermediatePois, route.getAudit().getCreatedDate(),
-                route.getAudit().getCreatedBy(), route.getAudit().getUpdatedDate(), route.getAudit().getUpdatedBy()};
+                intermediatePois, route.getUserId(), currentDateString,
+                createdBy, currentDateString, updatedBy};
 
         int result = jdbcTemplate.update(sqlCreateRoute, args);
         if (result != 0) {

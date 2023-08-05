@@ -1,5 +1,7 @@
-package org.digit.tracking.data;
+package org.digit.tracking.data.dao;
 
+import org.digit.tracking.data.rowmapper.LocationAlertMapper;
+import org.digit.tracking.data.rowmapper.ServiceTypeMapper;
 import org.openapitools.model.LocationAlert;
 import org.openapitools.model.ServiceType;
 import org.slf4j.Logger;

@@ -6,6 +6,7 @@ import org.digit.tracking.service.POIService;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.PoiApi;
+import org.openapitools.model.ACK;
 import org.openapitools.model.LocationAlert;
 import org.openapitools.model.POI;
 import org.slf4j.Logger;
@@ -70,7 +71,7 @@ public class PoiController implements PoiApi {
 
 
     @Override
-    public ResponseEntity<Void> createPOI(
+    public ResponseEntity<ACK> createPOI(
             @Parameter(name = "POI", description = "Create a new POI in the system", required = true) @Valid @RequestBody POI POI
     ) {
         logger.info("## createPOI is invoked");

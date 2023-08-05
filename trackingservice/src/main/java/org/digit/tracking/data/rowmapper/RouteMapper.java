@@ -1,4 +1,4 @@
-package org.digit.tracking.data;
+package org.digit.tracking.data.rowmapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +23,8 @@ public class RouteMapper implements RowMapper<Route> {
         route.setName(rs.getString("name"));
         route.setStatus(Route.StatusEnum.valueOf(rs.getString("status").toUpperCase()));
         route.setIntermediatePois(DbUtil.dbJsonToList(rs, "intermediatePois", String.class));
-        route.setAudit(DbUtil.getAuditDetails(rs));
+        route.setUserId(rs.getString("userId"));
+        //route.setAudit(DbUtil.getAuditDetails(rs));
         return route;
     }
 }

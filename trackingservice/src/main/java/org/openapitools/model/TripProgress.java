@@ -22,13 +22,15 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "TripProgress", description = "Trip progress is shared by the client continuously as the operator is moving")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T13:45:38.588501500+05:30[Asia/Calcutta]")
 public class TripProgress {
 
   private String progressReportedTime;
 
   @Valid
   private List<@Valid TripProgressProgressDataInner> progressData;
+
+  private String userId;
 
   public TripProgress progressReportedTime(String progressReportedTime) {
     this.progressReportedTime = progressReportedTime;
@@ -78,6 +80,26 @@ public class TripProgress {
     this.progressData = progressData;
   }
 
+  public TripProgress userId(String userId) {
+    this.userId = userId;
+    return this;
+  }
+
+  /**
+   * DIGIT Id of the user performing this action
+   * @return userId
+  */
+  
+  @Schema(name = "userId", example = "rajan123", description = "DIGIT Id of the user performing this action", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("userId")
+  public String getUserId() {
+    return userId;
+  }
+
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -88,12 +110,13 @@ public class TripProgress {
     }
     TripProgress tripProgress = (TripProgress) o;
     return Objects.equals(this.progressReportedTime, tripProgress.progressReportedTime) &&
-        Objects.equals(this.progressData, tripProgress.progressData);
+        Objects.equals(this.progressData, tripProgress.progressData) &&
+        Objects.equals(this.userId, tripProgress.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(progressReportedTime, progressData);
+    return Objects.hash(progressReportedTime, progressData, userId);
   }
 
   @Override
@@ -102,6 +125,7 @@ public class TripProgress {
     sb.append("class TripProgress {\n");
     sb.append("    progressReportedTime: ").append(toIndentedString(progressReportedTime)).append("\n");
     sb.append("    progressData: ").append(toIndentedString(progressData)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

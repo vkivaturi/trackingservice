@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.List;
-import org.openapitools.model.Audit;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -22,7 +21,7 @@ import javax.annotation.Generated;
  * Route
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T13:45:38.588501500+05:30[Asia/Calcutta]")
 public class Route {
 
   private String id;
@@ -73,7 +72,7 @@ public class Route {
 
   private StatusEnum status;
 
-  private Audit audit;
+  private String userId;
 
   public Route id(String id) {
     this.id = id;
@@ -203,24 +202,24 @@ public class Route {
     this.status = status;
   }
 
-  public Route audit(Audit audit) {
-    this.audit = audit;
+  public Route userId(String userId) {
+    this.userId = userId;
     return this;
   }
 
   /**
-   * Get audit
-   * @return audit
+   * DIGIT Id of the user performing this action
+   * @return userId
   */
-  @Valid 
-  @Schema(name = "audit", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("audit")
-  public Audit getAudit() {
-    return audit;
+  
+  @Schema(name = "userId", example = "rajan123", description = "DIGIT Id of the user performing this action", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("userId")
+  public String getUserId() {
+    return userId;
   }
 
-  public void setAudit(Audit audit) {
-    this.audit = audit;
+  public void setUserId(String userId) {
+    this.userId = userId;
   }
 
   @Override
@@ -238,12 +237,12 @@ public class Route {
         Objects.equals(this.endPoi, route.endPoi) &&
         Objects.equals(this.intermediatePois, route.intermediatePois) &&
         Objects.equals(this.status, route.status) &&
-        Objects.equals(this.audit, route.audit);
+        Objects.equals(this.userId, route.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, startPoi, endPoi, intermediatePois, status, audit);
+    return Objects.hash(id, name, startPoi, endPoi, intermediatePois, status, userId);
   }
 
   @Override
@@ -256,7 +255,7 @@ public class Route {
     sb.append("    endPoi: ").append(toIndentedString(endPoi)).append("\n");
     sb.append("    intermediatePois: ").append(toIndentedString(intermediatePois)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
-    sb.append("    audit: ").append(toIndentedString(audit)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

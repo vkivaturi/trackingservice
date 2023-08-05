@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.ArrayList;
 import java.util.List;
-import org.openapitools.model.Audit;
 import org.openapitools.model.Location;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -23,7 +22,7 @@ import javax.annotation.Generated;
  * POI
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T13:45:38.588501500+05:30[Asia/Calcutta]")
 public class POI {
 
   private String id;
@@ -112,7 +111,7 @@ public class POI {
   @Valid
   private List<String> alert;
 
-  private Audit audit;
+  private String userId;
 
   public POI id(String id) {
     this.id = id;
@@ -250,24 +249,24 @@ public class POI {
     this.alert = alert;
   }
 
-  public POI audit(Audit audit) {
-    this.audit = audit;
+  public POI userId(String userId) {
+    this.userId = userId;
     return this;
   }
 
   /**
-   * Get audit
-   * @return audit
+   * DIGIT Id of the user performing this action
+   * @return userId
   */
-  @Valid 
-  @Schema(name = "audit", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("audit")
-  public Audit getAudit() {
-    return audit;
+  
+  @Schema(name = "userId", example = "rajan123", description = "DIGIT Id of the user performing this action", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("userId")
+  public String getUserId() {
+    return userId;
   }
 
-  public void setAudit(Audit audit) {
-    this.audit = audit;
+  public void setUserId(String userId) {
+    this.userId = userId;
   }
 
   @Override
@@ -285,12 +284,12 @@ public class POI {
         Objects.equals(this.type, POI.type) &&
         Objects.equals(this.locationDetails, POI.locationDetails) &&
         Objects.equals(this.alert, POI.alert) &&
-        Objects.equals(this.audit, POI.audit);
+        Objects.equals(this.userId, POI.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, locationName, status, type, locationDetails, alert, audit);
+    return Objects.hash(id, locationName, status, type, locationDetails, alert, userId);
   }
 
   @Override
@@ -303,7 +302,7 @@ public class POI {
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    locationDetails: ").append(toIndentedString(locationDetails)).append("\n");
     sb.append("    alert: ").append(toIndentedString(alert)).append("\n");
-    sb.append("    audit: ").append(toIndentedString(audit)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

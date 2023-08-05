@@ -5,6 +5,7 @@
  */
 package org.openapitools.api;
 
+import org.openapitools.model.ACK;
 import org.openapitools.model.Route;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-30T17:09:16.737885200+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T13:45:38.588501500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Route", description = "Route is a sequence of POIs. Route indicate the path the operator should take while delivering a service.")
 public interface RouteApi {
@@ -55,18 +56,32 @@ public interface RouteApi {
         description = "Create a new Route by Id",
         tags = { "Route" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "405", description = "Validation exception")
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
         }
     )
     @RequestMapping(
         method = RequestMethod.POST,
         value = "/route/_create",
+        produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Void> createRoute(
+    default ResponseEntity<ACK> createRoute(
         @Parameter(name = "Route", description = "Create a new Route in the system", required = true) @Valid @RequestBody Route route
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"id\" : \"116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1\", \"responseMessage\" : \"Update is succesful\", \"responseCode\" : \"CODE-123\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -90,7 +105,9 @@ public interface RouteApi {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Route.class)))
             }),
-            @ApiResponse(responseCode = "400", description = "Invalid search value")
+            @ApiResponse(responseCode = "400", description = "Invalid search value", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
         }
     )
     @RequestMapping(
@@ -105,7 +122,7 @@ public interface RouteApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }, { \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" } ]";
+                    String exampleString = "[ { \"startPoi\" : \"startPoi\", \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"userId\" : \"rajan123\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }, { \"startPoi\" : \"startPoi\", \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"userId\" : \"rajan123\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -134,8 +151,12 @@ public interface RouteApi {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Route.class))
             }),
-            @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
-            @ApiResponse(responseCode = "404", description = "Route not found")
+            @ApiResponse(responseCode = "400", description = "Invalid ID supplied", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Route not found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
         }
     )
     @RequestMapping(
@@ -149,7 +170,7 @@ public interface RouteApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"startPoi\" : \"startPoi\", \"audit\" : { \"createdDate\" : \"2023-07-30T10:24:10.547Z\", \"updatedBy\" : \"Id of the user who updated the entity\", \"createdBy\" : \"Id of the user who created the entity\", \"updatedDate\" : \"2023-07-30T10:24:10.547Z\" }, \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }";
+                    String exampleString = "{ \"startPoi\" : \"startPoi\", \"name\" : \"name\", \"endPoi\" : \"endPoi\", \"id\" : \"id\", \"userId\" : \"rajan123\", \"intermediatePois\" : [ \"intermediatePois\", \"intermediatePois\" ], \"status\" : \"active\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -176,20 +197,38 @@ public interface RouteApi {
         description = "Update an existing route by Id",
         tags = { "Route" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "400", description = "Invalid Route ID is supplied"),
-            @ApiResponse(responseCode = "404", description = "Route not found"),
-            @ApiResponse(responseCode = "405", description = "Validation exception")
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid Route ID is supplied", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Route not found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
         }
     )
     @RequestMapping(
         method = RequestMethod.PUT,
         value = "/route/_update",
+        produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Void> updateRoute(
+    default ResponseEntity<ACK> updateRoute(
         @Parameter(name = "Route", description = "Update an existent route in the system", required = true) @Valid @RequestBody Route route
     ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"id\" : \"116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1\", \"responseMessage\" : \"Update is succesful\", \"responseCode\" : \"CODE-123\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
