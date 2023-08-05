@@ -3,6 +3,7 @@ package org.digit.tracking.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.digit.tracking.service.POIService;
+import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.PoiApi;
@@ -78,9 +79,19 @@ public class PoiController implements PoiApi {
 
         String poiId = poiService.createPOI(POI);
         //TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(alerts));
+        //Initialise response object
+        ACK ack = new ACK();
+
         if (poiId != null) {
+            ack.setId(poiId);
+            ack.setResponseCode("CODE-001");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
+            ack.setResponseCode("CODE-002");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

@@ -3,6 +3,7 @@ package org.digit.tracking.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.digit.tracking.service.TripService;
+import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.TripApi;
@@ -56,9 +57,20 @@ public class TripController implements TripApi {
     ) {
         logger.info("## createTrip is invoked");
         String tripId = tripService.createdTrip(trip);
+
+        //Initialise response object
+        ACK ack = new ACK();
+
         if (tripId != null) {
+            ack.setId(tripId);
+            ack.setResponseCode("CODE-001");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
+            ack.setResponseCode("CODE-002");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -68,7 +80,23 @@ public class TripController implements TripApi {
             @Parameter(name = "TripProgress", description = "Update an existent trip in the system", required = true) @Valid @RequestBody TripProgress tripProgress
     ) {
         logger.info("## progressTrip is invoked");
-        return new ResponseEntity<>(HttpStatus.OK);
+        String tripProgressId = tripService.createdTripProgress(tripProgress);
+
+        //Initialise response object
+        ACK ack = new ACK();
+
+        if (tripProgressId != null) {
+            ack.setId(tripProgressId);
+            ack.setResponseCode("CODE-001");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            ack.setResponseCode("CODE-002");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

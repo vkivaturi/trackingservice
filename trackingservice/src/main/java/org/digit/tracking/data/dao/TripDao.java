@@ -4,6 +4,7 @@ import org.digit.tracking.data.rowmapper.TripMapper;
 import org.digit.tracking.util.DbUtil;
 import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Trip;
+import org.openapitools.model.TripProgress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class TripDao {
     final String sqlFetchTripByFilters = "SELECT * FROM Trip";
     final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
             "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
+    final String sqlCreateTripProgress = "insert into TripProgress (id, tripId, progressReportedTime, progressData, userId) " +
+            "values (?,?,?,?,?)";
+
     private DataSource dataSource;
 
     //Datasource bean is injected
@@ -69,6 +73,26 @@ public class TripDao {
             return idLocal;
         } else {
             logger.error("Trip creation failed with id, locationName " + idLocal + " " + trip.getServiceCode());
+            return null;
+        }
+    }
+
+    public String createTripProgress(TripProgress tripProgress) {
+        logger.info("## createTripProgress in table");
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        //Prepare input data for the SQL
+        String idLocal = DbUtil.getId();
+
+        Object[] args = new Object[]{idLocal, tripProgress.getTripId(), tripProgress.getProgressReportedTime(),
+                JsonUtil.getJsonFromObject(tripProgress.getProgressData()), tripProgress.getUserId()};
+
+        int result = jdbcTemplate.update(sqlCreateTripProgress, args);
+        if (result != 0) {
+            logger.info("Trip progress created with id " + idLocal);
+            return idLocal;
+        } else {
+            logger.error("Trip progress creation failed with id, tripId " + idLocal + " " + tripProgress.getTripId());
             return null;
         }
     }

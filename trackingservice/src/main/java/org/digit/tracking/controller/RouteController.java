@@ -3,6 +3,7 @@ package org.digit.tracking.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.digit.tracking.service.RouteService;
+import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.RouteApi;
@@ -53,9 +54,19 @@ public class RouteController implements RouteApi {
         logger.info("## createRoute is invoked");
 
         String routeId = routeService.createRoute(route);
+        //Initialise response object
+        ACK ack = new ACK();
+
         if (routeId != null) {
+            ack.setId(routeId);
+            ack.setResponseCode("CODE-001");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.OK);
         }else {
+            ack.setResponseCode("CODE-002");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

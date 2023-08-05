@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T13:45:38.588501500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T19:49:57.031819500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Config", description = "Tracking service requires certain configuration information. This includes the list of services supported and types of anomalies for which notifications should be sent out. Configuration information is attached to a trip.")
 public interface ConfigApi {

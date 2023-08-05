@@ -3,6 +3,7 @@ package org.digit.tracking.service;
 import org.digit.tracking.data.dao.TripDao;
 import org.openapitools.model.Operator;
 import org.openapitools.model.Trip;
+import org.openapitools.model.TripProgress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,10 @@ public class TripService {
 
     public String createdTrip(Trip trip){
         return tripDao.createTrip(trip);
+    }
+
+    public String createdTripProgress(TripProgress tripProgress){
+        return tripDao.createTripProgress(tripProgress);
     }
 
 }

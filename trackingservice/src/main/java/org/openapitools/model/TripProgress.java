@@ -22,8 +22,10 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "TripProgress", description = "Trip progress is shared by the client continuously as the operator is moving")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T13:45:38.588501500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T19:49:57.031819500+05:30[Asia/Calcutta]")
 public class TripProgress {
+
+  private String tripId;
 
   private String progressReportedTime;
 
@@ -31,6 +33,26 @@ public class TripProgress {
   private List<@Valid TripProgressProgressDataInner> progressData;
 
   private String userId;
+
+  public TripProgress tripId(String tripId) {
+    this.tripId = tripId;
+    return this;
+  }
+
+  /**
+   * Id of the trip to which this progress update belongs to
+   * @return tripId
+  */
+  
+  @Schema(name = "tripId", description = "Id of the trip to which this progress update belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("tripId")
+  public String getTripId() {
+    return tripId;
+  }
+
+  public void setTripId(String tripId) {
+    this.tripId = tripId;
+  }
 
   public TripProgress progressReportedTime(String progressReportedTime) {
     this.progressReportedTime = progressReportedTime;
@@ -109,20 +131,22 @@ public class TripProgress {
       return false;
     }
     TripProgress tripProgress = (TripProgress) o;
-    return Objects.equals(this.progressReportedTime, tripProgress.progressReportedTime) &&
+    return Objects.equals(this.tripId, tripProgress.tripId) &&
+        Objects.equals(this.progressReportedTime, tripProgress.progressReportedTime) &&
         Objects.equals(this.progressData, tripProgress.progressData) &&
         Objects.equals(this.userId, tripProgress.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(progressReportedTime, progressData, userId);
+    return Objects.hash(tripId, progressReportedTime, progressData, userId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class TripProgress {\n");
+    sb.append("    tripId: ").append(toIndentedString(tripId)).append("\n");
     sb.append("    progressReportedTime: ").append(toIndentedString(progressReportedTime)).append("\n");
     sb.append("    progressData: ").append(toIndentedString(progressData)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");

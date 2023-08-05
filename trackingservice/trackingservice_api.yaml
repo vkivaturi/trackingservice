@@ -747,6 +747,9 @@ components:
       type: object
       description: Trip progress is shared by the client continuously as the operator is moving
       properties:
+        tripId:
+          type: string
+          description: Id of the trip to which this progress update belongs to
         progressReportedTime:
           type: string
           example: 2023-07-30T10:24:10.547Z

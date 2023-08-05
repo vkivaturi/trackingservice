@@ -45,6 +45,16 @@ CREATE TABLE "Trip" (
   "updatedBy" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id")
 );
+
+CREATE TABLE "TripProgress" (
+  "id" varchar(100) NOT NULL,
+  "tripId" varchar(100) DEFAULT NULL,
+  "progressReportedTime" varchar(100) DEFAULT NULL,
+  "progressData" json DEFAULT NULL,
+  "userId" varchar(100) DEFAULT NULL,
+  PRIMARY KEY ("id")
+);
+
 CREATE TABLE "ServiceType" (
   "Code" varchar(100) NOT NULL,
   "Name" varchar(100) NOT NULL,
