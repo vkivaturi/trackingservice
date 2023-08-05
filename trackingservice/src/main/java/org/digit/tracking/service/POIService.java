@@ -16,10 +16,12 @@ public class POIService {
     @Autowired
     PoiDao poiDao;
     public List<POI> getPOIsBySearch(POI poi) {
-        //TODO - Mock list of alerts. Replace with database call
         return fetchPOIsFromDB(poi);
     }
 
+    public List<POI> getPOIsById(String poiId) {
+        return poiDao.fetchPOIbyId(poiId);
+    }
     public String createPOI(POI poi) {
         return poiDao.createPOI(poi);
     }

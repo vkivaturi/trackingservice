@@ -63,8 +63,7 @@ public class PoiController implements PoiApi {
             @Parameter(name = "poiId", description = "ID of POI to return", required = true, in = ParameterIn.PATH) @PathVariable("poiId") String poiId
     ) {
         logger.info("## getPOIbyId is invoked");
-        //TODO - Replace null with POI object
-        List<POI> pois = poiService.getPOIsBySearch(null);
+        List<POI> pois = poiService.getPOIsById(poiId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(pois));
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -76,13 +75,13 @@ public class PoiController implements PoiApi {
     ) {
         logger.info("## createPOI is invoked");
 
-//        String poiId = poiService.createPOI(POI);
-//        //TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(alerts));
-//        if (poiId != null) {
+        String poiId = poiService.createPOI(POI);
+        //TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(alerts));
+        if (poiId != null) {
             return new ResponseEntity<>(HttpStatus.OK);
-//        }else {
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
+        }else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

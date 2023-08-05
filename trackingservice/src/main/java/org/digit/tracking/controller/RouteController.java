@@ -6,6 +6,7 @@ import org.digit.tracking.service.RouteService;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.RouteApi;
+import org.openapitools.model.POI;
 import org.openapitools.model.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +51,13 @@ public class RouteController implements RouteApi {
             @Parameter(name = "Route", description = "Create a new Route in the system", required = true) @Valid @RequestBody Route route
     ) {
         logger.info("## createRoute is invoked");
-        return new ResponseEntity<>(HttpStatus.OK);
 
+        String routeId = routeService.createRoute(route);
+        if (routeId != null) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @Override
     public ResponseEntity<Void> updateRoute(
@@ -69,8 +75,8 @@ public class RouteController implements RouteApi {
     ) {
         logger.info("## findRoute is invoked");
         //TODO - Replace null with POI object
-        List<Route> routes = routeService.getRoutesBySearch(null);
-        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(routes));
+//        List<Route> routes = routeService.getRoutesBySearch(null);
+//        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(routes));
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
@@ -79,8 +85,7 @@ public class RouteController implements RouteApi {
             @Parameter(name = "routeId", description = "ID of Route to return", required = true, in = ParameterIn.PATH) @PathVariable("routeId") String routeId
     ) {
         logger.info("## getRouteById is invoked");
-        //TODO - Replace null with Route object
-        List<Route> routes = routeService.getRoutesBySearch(null);
+        List<Route> routes = routeService.getRoutesById(routeId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(routes));
         return new ResponseEntity<>(HttpStatus.OK);
 

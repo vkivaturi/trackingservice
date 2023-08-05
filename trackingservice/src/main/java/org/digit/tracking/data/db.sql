@@ -12,6 +12,21 @@ CREATE TABLE POI (
 	CONSTRAINT POI_PK PRIMARY KEY (id)
 );
 
+CREATE TABLE "Route" (
+  "id" varchar(100) NOT NULL,
+  "startPoi" varchar(100) DEFAULT NULL,
+  "endPoi" varchar(100) DEFAULT NULL,
+  "name" varchar(100) DEFAULT NULL,
+  "status" varchar(100) DEFAULT NULL,
+  "intermediatePois" json DEFAULT NULL,
+  "createdDate" varchar(100) DEFAULT NULL,
+  "createdBy" varchar(100) DEFAULT NULL,
+  "updatedDate" varchar(100) DEFAULT NULL,
+  "updatedBy" varchar(100) DEFAULT NULL,
+  PRIMARY KEY ("id")
+);
+
+
 CREATE TABLE "ServiceType" (
   "Code" varchar(100) NOT NULL,
   "Name" varchar(100) NOT NULL,

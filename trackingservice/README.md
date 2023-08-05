@@ -21,3 +21,5 @@ http://localhost:8080/swagger-ui.html
 Change default port value in application.properties
 
 openapi-generator-cli generate -i trackingservice_api.yaml -g spring
+64.227.176.181
+mvn clean package -Dmaven.test.skip=true
