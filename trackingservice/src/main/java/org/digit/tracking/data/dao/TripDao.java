@@ -3,6 +3,7 @@ package org.digit.tracking.data.dao;
 import org.digit.tracking.data.rowmapper.TripMapper;
 import org.digit.tracking.util.DbUtil;
 import org.digit.tracking.util.JsonUtil;
+import org.openapitools.model.Location;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
 import org.slf4j.Logger;
@@ -25,8 +26,8 @@ public class TripDao {
     final String sqlFetchTripByFilters = "SELECT * FROM Trip";
     final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
             "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
-    final String sqlCreateTripProgress = "insert into TripProgress (id, tripId, progressReportedTime, progressData, userId) " +
-            "values (?,?,?,?,?)";
+    final String sqlCreateTripProgressPoint = "insert into TripProgress (id, tripId, progressReportedTime, positionPoint, userId) " +
+            "values (?,?,?,ST_GeomFromText(?, 4326),?)";
 
     private DataSource dataSource;
 
@@ -77,23 +78,24 @@ public class TripDao {
         }
     }
 
-    public String createTripProgress(TripProgress tripProgress) {
+    public String createTripProgress(Location location, String reportedTime, String progressTime, String tripId, String userId) {
         logger.info("## createTripProgress in table");
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
+        String positionPoint = "POINT(" + location.getLatitude() + " " + location.getLongitude() + ")";
         //Prepare input data for the SQL
         String idLocal = DbUtil.getId();
 
-        Object[] args = new Object[]{idLocal, tripProgress.getTripId(), tripProgress.getProgressReportedTime(),
-                JsonUtil.getJsonFromObject(tripProgress.getProgressData()), tripProgress.getUserId()};
+        Object[] args = new Object[]{idLocal, tripId, reportedTime, positionPoint, userId};
 
-        int result = jdbcTemplate.update(sqlCreateTripProgress, args);
+        int result = jdbcTemplate.update(sqlCreateTripProgressPoint, args);
         if (result != 0) {
             logger.info("Trip progress created with id " + idLocal);
             return idLocal;
         } else {
-            logger.error("Trip progress creation failed with id, tripId " + idLocal + " " + tripProgress.getTripId());
+            logger.error("Trip progress creation failed with id, tripId " + idLocal + " " + tripId);
             return null;
         }
     }
+
 }
