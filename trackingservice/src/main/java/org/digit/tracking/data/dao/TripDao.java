@@ -26,8 +26,8 @@ public class TripDao {
     final String sqlFetchTripByFilters = "SELECT * FROM Trip";
     final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
             "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
-    final String sqlCreateTripProgressPoint = "insert into TripProgress (id, tripId, progressReportedTime, positionPoint, userId) " +
-            "values (?,?,?,ST_GeomFromText(?, 4326),?)";
+    final String sqlCreateTripProgressPoint = "insert into TripProgress (id, tripId, progressReportedTime, progressTime, positionPoint, userId) " +
+            "values (?,?,?,?,ST_GeomFromText(?, 4326),?)";
 
     private DataSource dataSource;
 
@@ -86,7 +86,7 @@ public class TripDao {
         //Prepare input data for the SQL
         String idLocal = DbUtil.getId();
 
-        Object[] args = new Object[]{idLocal, tripId, reportedTime, positionPoint, userId};
+        Object[] args = new Object[]{idLocal, tripId, reportedTime, progressTime, positionPoint, userId};
 
         int result = jdbcTemplate.update(sqlCreateTripProgressPoint, args);
         if (result != 0) {
