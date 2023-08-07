@@ -24,6 +24,10 @@ public class PoiDao {
     final String sqlCreatePoi = "insert into POI (id, locationName, status, type, alert, " +
             "createdDate, createdBy, updatedDate, updatedBy, userId, positionPoint, positionPolygon, positionLine) " +
             "values (?,?,?,?,?,?,?,?,?,?, ST_GeomFromText(?, 4326), ST_GeomFromText(?, 4326), ST_GeomFromText(?, 4326) )";
+    final String sqlUpdatePoi = "update POI set locationName = COALESCE(?, locationName), status = COALESCE(?, status), " +
+            "updatedDate = ? , updatedBy = ?" +
+            "where id = ?";
+
     private DataSource dataSource;
 
     //Datasource bean is injected
@@ -49,6 +53,30 @@ public class PoiDao {
         return poiList;
     }
 
+    //Update POI based on supported fields
+    public String updatePOI(POI poi) {
+        logger.info("## updatePOI inside DAO");
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        OffsetDateTime offsetDateTime = OffsetDateTime.now();
+        String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
+
+        String statusLocal = (poi.getStatus() != null) ? poi.getStatus().toString() : null;
+        //Audit information
+        String updatedBy = poi.getUserId();
+
+        Object[] args = new Object[]{poi.getLocationName(), statusLocal,
+                currentDateString, updatedBy, poi.getId()};
+
+        int result = jdbcTemplate.update(sqlUpdatePoi, args);
+        if (result != 0) {
+            logger.info("POI updated with id " + poi.getId());
+            return poi.getId();
+        } else {
+            logger.error("POI update failed with id " + poi.getId());
+            return null;
+        }
+    }
+
     //Create POI and save it in database
     public String createPOI(POI poi) {
         logger.info("## createPOI");
@@ -69,10 +97,10 @@ public class PoiDao {
             //In case of a POINT, only one LatLong pair will be sent by client app in locationDetails
             positionPoint = "POINT(" + poi.getLocationDetails().get(0).getLatitude() + " " + poi.getLocationDetails().get(0).getLongitude() + ")";
         } else if (poi.getType() == POI.TypeEnum.POLYGON) {
-            StringBuffer polyBuffStr = new StringBuffer();
+            StringBuilder polyBuffStr = new StringBuilder();
             int indx = 1;
             for (Location location : poi.getLocationDetails()) {
-                polyBuffStr.append(location.getLatitude() + " " + location.getLongitude() );
+                polyBuffStr.append(location.getLatitude()).append(" ").append(location.getLongitude());
                 //Avoid a comma after the last element in concatenated list
                 if (indx < poi.getLocationDetails().size()) {
                     indx++;
@@ -81,13 +109,10 @@ public class PoiDao {
             }
             positionPolygon = "POLYGON((" + polyBuffStr + "))";
         } else {
-            //In case of a LINE, only two LatLongs will are required
-//            positionLine = "LINESTRING(" + poi.getLocationDetails().get(0).getLatitude() + " " + poi.getLocationDetails().get(0).getLongitude() + " , "
-//                    + poi.getLocationDetails().get(1).getLatitude() + " " + poi.getLocationDetails().get(1).getLongitude() + ")";
-            StringBuffer polyBuffStr = new StringBuffer();
+            StringBuilder polyBuffStr = new StringBuilder();
             int indx = 1;
             for (Location location : poi.getLocationDetails()) {
-                polyBuffStr.append(location.getLatitude() + " " + location.getLongitude() );
+                polyBuffStr.append(location.getLatitude()).append(" ").append(location.getLongitude());
                 //Avoid a comma after the last element in concatenated list
                 if (indx < poi.getLocationDetails().size()) {
                     indx++;
@@ -95,7 +120,6 @@ public class PoiDao {
                 }
             }
             positionLine = "LINESTRING(" + polyBuffStr + ")";
-
         }
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
@@ -108,8 +132,6 @@ public class PoiDao {
         Object[] args = new Object[]{idLocal, poi.getLocationName(), poi.getStatus().toString(),
                 poi.getType().toString(), alerts, currentDateString,
                 createdBy, currentDateString, updatedBy, poi.getUserId(), positionPoint, positionPolygon, positionLine};
-
-        logger.info(sqlCreatePoi);
 
         int result = jdbcTemplate.update(sqlCreatePoi, args);
         if (result != 0) {

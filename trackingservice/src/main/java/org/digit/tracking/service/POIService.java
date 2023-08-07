@@ -26,6 +26,10 @@ public class POIService {
         return poiDao.createPOI(poi);
     }
 
+    public String updatePOI(POI poi) {
+        return poiDao.updatePOI(poi);
+    }
+
     private List<POI> fetchPOIsFromDB(POI searchPoi) {
         List<POI> poilist = new ArrayList<POI>();
         //Add first POI

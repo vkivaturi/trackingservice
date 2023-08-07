@@ -100,9 +100,23 @@ public class PoiController implements PoiApi {
     public ResponseEntity<Void> updatePOI(
             @Parameter(name = "POI", description = "Update an existent POI in the system", required = true) @Valid @RequestBody POI POI
     ) {
-        logger.info("## updatePOI is invoked");
-        return new ResponseEntity<>(HttpStatus.OK);
+        logger.info("## updatePOI is invoked in controller");
 
+        String poiId = poiService.updatePOI(POI);
+        ACK ack = new ACK();
+
+        if (poiId != null) {
+            ack.setId(poiId);
+            ack.setResponseCode("CODE-001");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            ack.setResponseCode("CODE-002");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
