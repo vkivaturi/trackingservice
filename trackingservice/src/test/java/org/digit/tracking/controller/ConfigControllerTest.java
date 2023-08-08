@@ -1,4 +1,4 @@
-package org.digit.tracking;
+package org.digit.tracking.controller;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
@@ -48,7 +48,7 @@ public class ConfigControllerTest {
     }
 
     @Test
-    public void getAlertsShouldReturnServiceList() throws Exception {
+    public void getAlertsShouldReturnAlertList() throws Exception {
         //Set test data
         List<LocationAlert> alertList= new ArrayList();
         LocationAlert alert = new LocationAlert();
