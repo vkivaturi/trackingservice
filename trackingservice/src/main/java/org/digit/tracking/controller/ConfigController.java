@@ -1,8 +1,8 @@
 package org.digit.tracking.controller;
 
 import org.digit.tracking.service.ConfigService;
-import org.digit.tracking.util.JsonUtil;
-import org.digit.tracking.util.TrackingApiUtil;
+import org.digit.tracking.JsonUtil;
+import org.digit.tracking.TrackingApiUtil;
 import org.openapitools.api.ConfigApi;
 import org.openapitools.model.LocationAlert;
 import org.openapitools.model.ServiceType;

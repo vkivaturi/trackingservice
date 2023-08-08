@@ -1,11 +1,10 @@
 package org.digit.tracking.data.dao;
 
 import org.digit.tracking.data.rowmapper.TripMapper;
-import org.digit.tracking.util.DbUtil;
-import org.digit.tracking.util.JsonUtil;
+import org.digit.tracking.DbUtil;
+import org.digit.tracking.JsonUtil;
 import org.openapitools.model.Location;
 import org.openapitools.model.Trip;
-import org.openapitools.model.TripProgress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

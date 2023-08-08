@@ -1,16 +1,11 @@
 package org.digit.tracking.data.rowmapper;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.digit.tracking.util.DbUtil;
+import org.digit.tracking.DbUtil;
 import org.openapitools.model.*;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class POIMapper implements RowMapper<POI> {
     public POI mapRow(ResultSet rs, int rowNum) throws SQLException {

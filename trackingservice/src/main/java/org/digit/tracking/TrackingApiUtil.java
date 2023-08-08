@@ -1,4 +1,4 @@
-package org.digit.tracking.util;
+package org.digit.tracking;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
