@@ -31,6 +31,8 @@ public class TripDao {
             "updatedDate = ? , updatedBy = ?" +
             "where id = ?";
 
+    final String sqlUpdateTripProgress = "update TripProgress set matchedPoiId = ?, updatedDate = ? , updatedBy = ? where id = ?";
+
     private DataSource dataSource;
 
     //Datasource bean is injected
@@ -121,6 +123,25 @@ public class TripDao {
             return idLocal;
         } else {
             logger.error("Trip progress creation failed with id, tripId " + idLocal + " " + tripId);
+            return null;
+        }
+    }
+
+    //Update trip progress using an id and the supported list of attributes
+    public String updateTripProgress(String tripPogressId, String userId, String matchedPoiId) {
+        logger.info("## updateTripProgress inside DAO");
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        OffsetDateTime offsetDateTime = OffsetDateTime.now();
+        String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
+
+        Object[] args = new Object[]{matchedPoiId, currentDateString, userId, tripPogressId};
+
+        int result = jdbcTemplate.update(sqlUpdateTripProgress, args);
+        if (result != 0) {
+            logger.info("Trip progress updated with id " + tripPogressId);
+            return tripPogressId;
+        } else {
+            logger.error("Trip progress update failed with id " + tripPogressId);
             return null;
         }
     }

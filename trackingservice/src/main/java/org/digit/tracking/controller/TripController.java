@@ -99,7 +99,29 @@ public class TripController implements TripApi {
         }
     }
 
-    @Override
+    public ResponseEntity<ACK> updateTripProgress(
+            @Parameter(name = "TripProgress", description = "Update an existent trip progress in the system", required = true) @Valid @RequestBody TripProgress tripProgress
+    ) {
+        logger.info("## updateTripProgress is invoked");
+
+        String tripProgressId = tripService.updateTripProgress(tripProgress.getId(), tripProgress.getUserId(), tripProgress.getMatchedPoiId());
+        ACK ack = new ACK();
+
+        if (tripProgressId != null) {
+            ack.setId(tripProgressId);
+            ack.setResponseCode("CODE-001");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            ack.setResponseCode("CODE-002");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+        @Override
     public ResponseEntity<ACK> updateTrip(
             @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip
     ) {

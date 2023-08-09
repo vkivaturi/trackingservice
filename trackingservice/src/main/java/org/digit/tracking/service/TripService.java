@@ -26,7 +26,9 @@ public class TripService {
         return tripDao.createTrip(trip);
     }
 
-    public String updateTrip(Trip trip) {return tripDao.updateTrip(trip);}
+    public String updateTrip(Trip trip) {
+        return tripDao.updateTrip(trip);
+    }
 
     public String createdTripProgress(TripProgress tripProgress) {
 
@@ -39,6 +41,10 @@ public class TripService {
         }
         //return tripDao.createTripProgress(tripProgress);
         return tripProgress.getTripId();
+    }
+
+    public String updateTripProgress(String tripProgressId, String userId, String matchedPoiId) {
+        return tripDao.updateTripProgress(tripProgressId, userId, matchedPoiId);
     }
 
 }

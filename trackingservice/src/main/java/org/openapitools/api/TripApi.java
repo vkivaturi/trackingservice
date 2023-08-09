@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-09T17:48:51.100187500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-09T19:25:44.324498900+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -273,6 +273,59 @@ public interface TripApi {
     )
     default ResponseEntity<ACK> updateTrip(
         @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"id\" : \"116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1\", \"responseMessage\" : \"Update is succesful\", \"responseCode\" : \"CODE-123\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * PUT /trip/_progress/_update : Update details of an existing trip progress using its id. Matched POI is the only field which can be updated. Usually this update request is not required on client side, but is sent by internal trip monitoring service
+     * Update an existing trip progress by Id
+     *
+     * @param tripProgress Update an existent trip progress in the system (required)
+     * @return Successful operation (status code 200)
+     *         or Invalid Trip progess ID is supplied (status code 400)
+     *         or Trip progress not found (status code 404)
+     *         or Validation exception (status code 405)
+     */
+    @Operation(
+        operationId = "updateTripProgress",
+        summary = "Update details of an existing trip progress using its id. Matched POI is the only field which can be updated. Usually this update request is not required on client side, but is sent by internal trip monitoring service",
+        description = "Update an existing trip progress by Id",
+        tags = { "Trip" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Successful operation", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "400", description = "Invalid Trip progess ID is supplied", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "404", description = "Trip progress not found", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            }),
+            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.PUT,
+        value = "/trip/_progress/_update",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<ACK> updateTripProgress(
+        @Parameter(name = "TripProgress", description = "Update an existent trip progress in the system", required = true) @Valid @RequestBody TripProgress tripProgress
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {

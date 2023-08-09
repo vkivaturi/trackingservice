@@ -387,6 +387,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/ACK'
 
+  /trip/_progress/_update:
+    put:
+      tags:
+        - Trip
+      summary: Update details of an existing trip progress using its id. Matched POI is the only field which can be updated. Usually this update request is not required on client side, but is sent by internal trip monitoring service
+      description: Update an existing trip progress by Id
+      operationId: updateTripProgress
+      requestBody:
+        description: Update an existent trip progress in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripProgress'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+
+        '400':
+          description: Invalid Trip progess ID is supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+
+        '404':
+          description: Trip progress not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+
+        '405':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+
   /trip/_create:
     post:
       tags:
