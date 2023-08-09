@@ -26,6 +26,8 @@ public class TripService {
         return tripDao.createTrip(trip);
     }
 
+    public String updateTrip(Trip trip) {return tripDao.updateTrip(trip);}
+
     public String createdTripProgress(TripProgress tripProgress) {
 
         //Usually the API receives only one location update. But in case the client app comes back from offline more, there could be bulk updates in a single json

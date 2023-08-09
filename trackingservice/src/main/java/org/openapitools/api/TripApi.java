@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T19:49:57.031819500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-09T17:48:51.100187500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -123,7 +123,7 @@ public interface TripApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }, { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" } ]";
+                    String exampleString = "[ { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }, { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -171,7 +171,7 @@ public interface TripApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
+                    String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

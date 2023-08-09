@@ -1,8 +1,8 @@
 package org.digit.tracking.data.dao;
 
 import org.digit.tracking.data.rowmapper.POIMapper;
-import org.digit.tracking.DbUtil;
-import org.digit.tracking.JsonUtil;
+import org.digit.tracking.util.DbUtil;
+import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Location;
 import org.openapitools.model.POI;
 import org.slf4j.Logger;

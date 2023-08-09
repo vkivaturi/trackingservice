@@ -1,4 +1,4 @@
-package org.digit.tracking;
+package org.digit.tracking.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -3,9 +3,9 @@ package org.digit.tracking.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.digit.tracking.service.TripService;
-import org.digit.tracking.Constants;
-import org.digit.tracking.JsonUtil;
-import org.digit.tracking.TrackingApiUtil;
+import org.digit.tracking.util.Constants;
+import org.digit.tracking.util.JsonUtil;
+import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.TripApi;
 import org.openapitools.model.ACK;
 import org.openapitools.model.Trip;
@@ -104,8 +104,22 @@ public class TripController implements TripApi {
             @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip
     ) {
         logger.info("## updateTrip is invoked");
-        return new ResponseEntity<>(HttpStatus.OK);
 
+        String tripId = tripService.updateTrip(trip);
+        ACK ack = new ACK();
+
+        if (tripId != null) {
+            ack.setId(tripId);
+            ack.setResponseCode("CODE-001");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            ack.setResponseCode("CODE-002");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

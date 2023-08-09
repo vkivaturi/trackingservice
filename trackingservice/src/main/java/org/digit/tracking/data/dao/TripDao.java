@@ -1,8 +1,8 @@
 package org.digit.tracking.data.dao;
 
 import org.digit.tracking.data.rowmapper.TripMapper;
-import org.digit.tracking.DbUtil;
-import org.digit.tracking.JsonUtil;
+import org.digit.tracking.util.DbUtil;
+import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Location;
 import org.openapitools.model.Trip;
 import org.slf4j.Logger;
@@ -27,6 +27,9 @@ public class TripDao {
             "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
     final String sqlCreateTripProgressPoint = "insert into TripProgress (id, tripId, progressReportedTime, progressTime, positionPoint, userId) " +
             "values (?,?,?,?,ST_GeomFromText(?, 4326),?)";
+    final String sqlUpdateTrip = "update Trip set routeId = COALESCE(?, routeId), status = COALESCE(?, status), locationAlerts = COALESCE(?, locationAlerts), " +
+            "updatedDate = ? , updatedBy = ?" +
+            "where id = ?";
 
     private DataSource dataSource;
 
@@ -73,6 +76,31 @@ public class TripDao {
             return idLocal;
         } else {
             logger.error("Trip creation failed with id, locationName " + idLocal + " " + trip.getServiceCode());
+            return null;
+        }
+    }
+
+    //Update trip using an id and the supported list of attributes
+    public String updateTrip(Trip trip) {
+        logger.info("## updateTrip inside DAO");
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        OffsetDateTime offsetDateTime = OffsetDateTime.now();
+        String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
+
+        String statusLocal = (trip.getStatus() != null) ? trip.getStatus().toString() : null;
+        String alerts = (trip.getLocationAlerts() != null) ? JsonUtil.getJsonFromObject(trip.getLocationAlerts()) : null;
+        //Audit information
+        String updatedBy = trip.getUserId();
+
+        Object[] args = new Object[]{trip.getRouteId(), statusLocal, alerts,
+                currentDateString, updatedBy, trip.getId()};
+
+        int result = jdbcTemplate.update(sqlUpdateTrip, args);
+        if (result != 0) {
+            logger.info("Trip updated with id " + trip.getId());
+            return trip.getId();
+        } else {
+            logger.error("Trip update failed with id " + trip.getId());
             return null;
         }
     }

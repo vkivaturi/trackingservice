@@ -5,6 +5,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.ArrayList;
+import java.util.List;
 import org.openapitools.model.Operator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -20,7 +22,7 @@ import javax.annotation.Generated;
  * Trip
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T19:49:57.031819500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-09T17:48:51.100187500+05:30[Asia/Calcutta]")
 public class Trip {
 
   private String id;
@@ -81,6 +83,9 @@ public class Trip {
   private String actualEndTime;
 
   private String userId;
+
+  @Valid
+  private List<String> locationAlerts;
 
   public Trip id(String id) {
     this.id = id;
@@ -282,6 +287,34 @@ public class Trip {
     this.userId = userId;
   }
 
+  public Trip locationAlerts(List<String> locationAlerts) {
+    this.locationAlerts = locationAlerts;
+    return this;
+  }
+
+  public Trip addLocationAlertsItem(String locationAlertsItem) {
+    if (this.locationAlerts == null) {
+      this.locationAlerts = new ArrayList<>();
+    }
+    this.locationAlerts.add(locationAlertsItem);
+    return this;
+  }
+
+  /**
+   * Get locationAlerts
+   * @return locationAlerts
+  */
+  
+  @Schema(name = "locationAlerts", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("locationAlerts")
+  public List<String> getLocationAlerts() {
+    return locationAlerts;
+  }
+
+  public void setLocationAlerts(List<String> locationAlerts) {
+    this.locationAlerts = locationAlerts;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -300,12 +333,13 @@ public class Trip {
         Objects.equals(this.plannedEndTime, trip.plannedEndTime) &&
         Objects.equals(this.actualStartTime, trip.actualStartTime) &&
         Objects.equals(this.actualEndTime, trip.actualEndTime) &&
-        Objects.equals(this.userId, trip.userId);
+        Objects.equals(this.userId, trip.userId) &&
+        Objects.equals(this.locationAlerts, trip.locationAlerts);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, routeId, serviceCode, status, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId);
+    return Objects.hash(id, routeId, serviceCode, status, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId, locationAlerts);
   }
 
   @Override
@@ -322,6 +356,7 @@ public class Trip {
     sb.append("    actualStartTime: ").append(toIndentedString(actualStartTime)).append("\n");
     sb.append("    actualEndTime: ").append(toIndentedString(actualEndTime)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    locationAlerts: ").append(toIndentedString(locationAlerts)).append("\n");
     sb.append("}");
     return sb.toString();
   }

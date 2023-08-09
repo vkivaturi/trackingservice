@@ -718,6 +718,11 @@ components:
           type: string
           description: DIGIT Id of the user performing this action
           example: rajan123
+        locationAlerts:
+          type: array
+          items:
+            type: string
+            description: Alert code list that representing anomalies tagged to this trip.
 
     LocationAlert:
       type: object
@@ -747,6 +752,9 @@ components:
       type: object
       description: Trip progress is shared by the client continuously as the operator is moving
       properties:
+        id:
+          type: string
+          description: Id of the trip progress
         tripId:
           type: string
           description: Id of the trip to which this progress update belongs to
@@ -766,6 +774,9 @@ components:
                 description: Date and time in ISO_DATE_TIME format. Actual time at which the operator was present at the location
               location:
                 $ref: '#/components/schemas/Location'
+        matchedPoiId:
+          type: string
+          description: Id of the POI which matched this location. This is not set by client but is updated by an internal trip monitoring service
         userId:
           type: string
           description: DIGIT Id of the user performing this action

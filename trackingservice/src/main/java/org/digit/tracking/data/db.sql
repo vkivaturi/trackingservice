@@ -43,6 +43,7 @@ CREATE TABLE "Trip" (
   "createdBy" varchar(100) DEFAULT NULL,
   "updatedDate" varchar(100) DEFAULT NULL,
   "updatedBy" varchar(100) DEFAULT NULL,
+  "locationAlerts" json DEFAULT NULL,
   PRIMARY KEY ("id")
 );
 

@@ -1,6 +1,6 @@
 package org.digit.tracking.data.rowmapper;
 
-import org.digit.tracking.DbUtil;
+import org.digit.tracking.util.DbUtil;
 import org.openapitools.model.Route;
 import org.springframework.jdbc.core.RowMapper;
 
