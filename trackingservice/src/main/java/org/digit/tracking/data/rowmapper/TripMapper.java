@@ -9,10 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TripMapper implements RowMapper<Trip> {
+    DbUtil dbUtil = new DbUtil();
     public Trip mapRow(ResultSet rs, int rowNum) throws SQLException {
         Trip trip = new Trip();
         trip.setId(rs.getString("id"));
-        trip.setOperator(DbUtil.dbJsonToOperator(rs, "operator", Operator.class));
+        trip.setOperator(dbUtil.dbJsonToOperator(rs, "operator", Operator.class));
         trip.setServiceCode(rs.getString("serviceCode"));
         trip.setStatus(Trip.StatusEnum.valueOf(rs.getString("status").toUpperCase()));
         trip.setRouteId(rs.getString("routeId"));

@@ -19,6 +19,9 @@ import java.util.List;
 @Service
 public class TripDao {
     Logger logger = LoggerFactory.getLogger(TripDao.class);
+    @Autowired
+    DbUtil dbUtil;
+
     final String sqlFetchTripById = "SELECT id, operator, serviceCode, status, routeId, userId," +
             " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime" +
             " FROM Trip where id = ?";
@@ -60,7 +63,7 @@ public class TripDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         //Prepare input data for the SQL
-        String idLocal = DbUtil.getId();
+        String idLocal = dbUtil.getId();
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
         //Audit information
@@ -113,7 +116,7 @@ public class TripDao {
 
         String positionPoint = "POINT(" + location.getLatitude() + " " + location.getLongitude() + ")";
         //Prepare input data for the SQL
-        String idLocal = DbUtil.getId();
+        String idLocal = dbUtil.getId();
 
         Object[] args = new Object[]{idLocal, tripId, reportedTime, progressTime, positionPoint, userId};
 

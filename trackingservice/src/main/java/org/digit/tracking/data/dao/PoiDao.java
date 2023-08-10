@@ -19,7 +19,12 @@ import java.util.List;
 @Service
 public class PoiDao {
     Logger logger = LoggerFactory.getLogger(PoiDao.class);
-    final String sqlFetchPoiById = "SELECT id, locationName, status, type, locationDetails, alert, userId FROM POI where id = ?";
+
+    @Autowired
+    DbUtil dbUtil;
+    final String sqlFetchPoiById = "SELECT id, locationName, status, type, alert, userId, " +
+            "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
+            "ST_AStext(positionLine) as positionLine FROM POI where id = ?";
     final String sqlFetchPoiByFilters = "SELECT * FROM POI";
     final String sqlCreatePoi = "insert into POI (id, locationName, status, type, alert, " +
             "createdDate, createdBy, updatedDate, updatedBy, userId, positionPoint, positionPolygon, positionLine) " +
@@ -83,7 +88,7 @@ public class PoiDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         //Prepare input data for the SQL
-        String idLocal = DbUtil.getId();
+        String idLocal = dbUtil.getId();
         //String locationDetails = JsonUtil.getJsonFromObject(poi.getLocationDetails());
         String alerts = JsonUtil.getJsonFromObject(poi.getAlert());
 
