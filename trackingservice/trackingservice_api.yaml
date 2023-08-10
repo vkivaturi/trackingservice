@@ -122,6 +122,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/ACK'
 
+  /poi/_searchNearby/{latitude}/{longitude}/{distanceMeters}:
+    get:
+      tags:
+        - POI
+      summary: Find POIs near a user location
+      description: Returns a multiple POIs
+      operationId: searchNearby
+      parameters:
+        - name: latitude
+          in: path
+          description: Latitude of the user location
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: longitude
+          in: path
+          description: longitude of the user location
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: distanceMeters
+          in: path
+          description: Distance near the user to be searched
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/POI'
+        '400':
+          description: Invalid search value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
   /poi/{poiId}:
     get:
       tags:
@@ -626,6 +670,11 @@ components:
           type: string
           description: DIGIT Id of the user performing this action
           example: rajan123
+        distanceMeters:
+          type: integer
+          description: This value is present only in API response for search nearby usecase
+          example: 200000
+
 
     Location:
       type: object

@@ -19,6 +19,9 @@ public class POIService {
         return fetchPOIsFromDB(poi);
     }
 
+    public List<POI> searchNearby(Location userLocation, int distanceMeters) {
+        return poiDao.searchNearby(userLocation, distanceMeters);
+    }
     public List<POI> getPOIsById(String poiId) {
         return poiDao.fetchPOIbyId(poiId);
     }

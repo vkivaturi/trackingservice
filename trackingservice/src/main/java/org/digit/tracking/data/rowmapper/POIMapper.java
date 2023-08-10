@@ -18,6 +18,7 @@ public class POIMapper implements RowMapper<POI> {
         poi.setAlert(dbUtil.dbJsonToList(rs, "alert", String.class));
         poi.setStatus(POI.StatusEnum.valueOf(rs.getString("status").toUpperCase()));
         poi.setUserId(rs.getString("userId"));
+        poi.setDistanceMeters(rs.getInt("distanceMeters"));
         //poi.setAudit(DbUtil.getAuditDetails(rs));
         return poi;
     }
