@@ -1,4 +1,4 @@
-package org.digit.tripmonitoring.service.producer;
+package org.digit.tripmonitoring.service.data;
 
 public class Event {
 

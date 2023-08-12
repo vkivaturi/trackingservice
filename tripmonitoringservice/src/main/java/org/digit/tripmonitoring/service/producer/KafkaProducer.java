@@ -1,5 +1,6 @@
 package org.digit.tripmonitoring.service.producer;
 
+import org.digit.tripmonitoring.service.data.Event;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
