@@ -1,8 +1,8 @@
 package org.digit.tracking.data.dao;
 
 import org.digit.tracking.data.rowmapper.POIMapper;
-import org.digit.tracking.DbUtil;
-import org.digit.tracking.JsonUtil;
+import org.digit.tracking.util.DbUtil;
+import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Location;
 import org.openapitools.model.POI;
 import org.slf4j.Logger;
@@ -19,8 +19,20 @@ import java.util.List;
 @Service
 public class PoiDao {
     Logger logger = LoggerFactory.getLogger(PoiDao.class);
-    final String sqlFetchPoiById = "SELECT id, locationName, status, type, locationDetails, alert, userId FROM POI where id = ?";
+
+    @Autowired
+    DbUtil dbUtil;
+    final String sqlFetchPoiById = "SELECT id, locationName, status, type, alert, userId, " +
+            "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
+            "ST_AStext(positionLine) as positionLine FROM POI where id = ?";
     final String sqlFetchPoiByFilters = "SELECT * FROM POI";
+
+    final String sqlSearchNearby = "SELECT id, locationName, status, type, alert, userId, " +
+            "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
+            "ST_AStext(positionLine) as positionLine, " +
+            "ST_Distance_Sphere(positionPoint, ST_GeomFromText( ?, 4326 )) AS distanceMeters " +
+            "FROM POI poi " +
+            "HAVING distanceMeters <= ?;";
     final String sqlCreatePoi = "insert into POI (id, locationName, status, type, alert, " +
             "createdDate, createdBy, updatedDate, updatedBy, userId, positionPoint, positionPolygon, positionLine) " +
             "values (?,?,?,?,?,?,?,?,?,?, ST_GeomFromText(?, 4326), ST_GeomFromText(?, 4326), ST_GeomFromText(?, 4326) )";
@@ -41,6 +53,16 @@ public class PoiDao {
         JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
         Object[] args = new Object[]{poiId};
         List<POI> poiList = jdbcTemplateObject.query(sqlFetchPoiById, new POIMapper(), args);
+
+        return poiList;
+    }
+
+    public List<POI> searchNearby(Location userLocation, int distanceMeters) {
+        logger.info("## searchNearby in Dao");
+        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
+        String positionPoint = " POINT(" + userLocation.getLatitude() + " " + userLocation.getLongitude() + ")";
+        Object[] args = new Object[]{positionPoint, distanceMeters};
+        List<POI> poiList = jdbcTemplateObject.query(sqlSearchNearby, new POIMapper(), args);
 
         return poiList;
     }
@@ -83,7 +105,7 @@ public class PoiDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         //Prepare input data for the SQL
-        String idLocal = DbUtil.getId();
+        String idLocal = dbUtil.getId();
         //String locationDetails = JsonUtil.getJsonFromObject(poi.getLocationDetails());
         String alerts = JsonUtil.getJsonFromObject(poi.getAlert());
 

@@ -122,6 +122,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/ACK'
 
+  /poi/_searchNearby/{latitude}/{longitude}/{distanceMeters}:
+    get:
+      tags:
+        - POI
+      summary: Find POIs near a user location
+      description: Returns a multiple POIs
+      operationId: searchNearby
+      parameters:
+        - name: latitude
+          in: path
+          description: Latitude of the user location
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: longitude
+          in: path
+          description: longitude of the user location
+          required: true
+          schema:
+            type: number
+            format: float
+        - name: distanceMeters
+          in: path
+          description: Distance near the user to be searched
+          required: true
+          schema:
+            type: integer
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/POI'
+        '400':
+          description: Invalid search value
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
   /poi/{poiId}:
     get:
       tags:
@@ -387,6 +431,49 @@ paths:
               schema:
                 $ref: '#/components/schemas/ACK'
 
+  /trip/_progress/_update:
+    put:
+      tags:
+        - Trip
+      summary: Update details of an existing trip progress using its id. Matched POI is the only field which can be updated. Usually this update request is not required on client side, but is sent by internal trip monitoring service
+      description: Update an existing trip progress by Id
+      operationId: updateTripProgress
+      requestBody:
+        description: Update an existent trip progress in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TripProgress'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+
+        '400':
+          description: Invalid Trip progess ID is supplied
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+
+        '404':
+          description: Trip progress not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+
+        '405':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ACK'
+
   /trip/_create:
     post:
       tags:
@@ -583,6 +670,11 @@ components:
           type: string
           description: DIGIT Id of the user performing this action
           example: rajan123
+        distanceMeters:
+          type: integer
+          description: This value is present only in API response for search nearby usecase
+          example: 200000
+
 
     Location:
       type: object
@@ -718,6 +810,11 @@ components:
           type: string
           description: DIGIT Id of the user performing this action
           example: rajan123
+        locationAlerts:
+          type: array
+          items:
+            type: string
+            description: Alert code list that representing anomalies tagged to this trip.
 
     LocationAlert:
       type: object
@@ -747,6 +844,9 @@ components:
       type: object
       description: Trip progress is shared by the client continuously as the operator is moving
       properties:
+        id:
+          type: string
+          description: Id of the trip progress
         tripId:
           type: string
           description: Id of the trip to which this progress update belongs to
@@ -766,6 +866,9 @@ components:
                 description: Date and time in ISO_DATE_TIME format. Actual time at which the operator was present at the location
               location:
                 $ref: '#/components/schemas/Location'
+        matchedPoiId:
+          type: string
+          description: Id of the POI which matched this location. This is not set by client but is updated by an internal trip monitoring service
         userId:
           type: string
           description: DIGIT Id of the user performing this action

@@ -22,7 +22,7 @@ import javax.annotation.Generated;
  * POI
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T19:49:57.031819500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-10T23:55:11.623822700+05:30[Asia/Calcutta]")
 public class POI {
 
   private String id;
@@ -112,6 +112,8 @@ public class POI {
   private List<String> alert;
 
   private String userId;
+
+  private Integer distanceMeters;
 
   public POI id(String id) {
     this.id = id;
@@ -269,6 +271,26 @@ public class POI {
     this.userId = userId;
   }
 
+  public POI distanceMeters(Integer distanceMeters) {
+    this.distanceMeters = distanceMeters;
+    return this;
+  }
+
+  /**
+   * This value is present only in API response for search nearby usecase
+   * @return distanceMeters
+  */
+  
+  @Schema(name = "distanceMeters", example = "200000", description = "This value is present only in API response for search nearby usecase", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("distanceMeters")
+  public Integer getDistanceMeters() {
+    return distanceMeters;
+  }
+
+  public void setDistanceMeters(Integer distanceMeters) {
+    this.distanceMeters = distanceMeters;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -284,12 +306,13 @@ public class POI {
         Objects.equals(this.type, POI.type) &&
         Objects.equals(this.locationDetails, POI.locationDetails) &&
         Objects.equals(this.alert, POI.alert) &&
-        Objects.equals(this.userId, POI.userId);
+        Objects.equals(this.userId, POI.userId) &&
+        Objects.equals(this.distanceMeters, POI.distanceMeters);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, locationName, status, type, locationDetails, alert, userId);
+    return Objects.hash(id, locationName, status, type, locationDetails, alert, userId, distanceMeters);
   }
 
   @Override
@@ -303,6 +326,7 @@ public class POI {
     sb.append("    locationDetails: ").append(toIndentedString(locationDetails)).append("\n");
     sb.append("    alert: ").append(toIndentedString(alert)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
+    sb.append("    distanceMeters: ").append(toIndentedString(distanceMeters)).append("\n");
     sb.append("}");
     return sb.toString();
   }

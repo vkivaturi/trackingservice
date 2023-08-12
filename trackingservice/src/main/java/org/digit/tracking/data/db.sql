@@ -43,6 +43,7 @@ CREATE TABLE "Trip" (
   "createdBy" varchar(100) DEFAULT NULL,
   "updatedDate" varchar(100) DEFAULT NULL,
   "updatedBy" varchar(100) DEFAULT NULL,
+  "locationAlerts" json DEFAULT NULL,
   PRIMARY KEY ("id")
 );
 
@@ -53,8 +54,14 @@ CREATE TABLE "TripProgress" (
   "userId" varchar(100) DEFAULT NULL,
   "positionPoint" point DEFAULT NULL,
   "progressTime" varchar(100) DEFAULT NULL,
+  "matchedPoiId" varchar(100) DEFAULT NULL,
+  "createdBy" varchar(100) DEFAULT NULL,
+  "createdDate" varchar(100) DEFAULT NULL,
+  "updatedDate" varchar(100) DEFAULT NULL,
+  "updatedBy" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id")
 );
+
 CREATE TABLE "ServiceType" (
   "Code" varchar(100) NOT NULL,
   "Name" varchar(100) NOT NULL,

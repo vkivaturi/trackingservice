@@ -22,8 +22,10 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "TripProgress", description = "Trip progress is shared by the client continuously as the operator is moving")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-05T19:49:57.031819500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-10T23:55:11.623822700+05:30[Asia/Calcutta]")
 public class TripProgress {
+
+  private String id;
 
   private String tripId;
 
@@ -32,7 +34,29 @@ public class TripProgress {
   @Valid
   private List<@Valid TripProgressProgressDataInner> progressData;
 
+  private String matchedPoiId;
+
   private String userId;
+
+  public TripProgress id(String id) {
+    this.id = id;
+    return this;
+  }
+
+  /**
+   * Id of the trip progress
+   * @return id
+  */
+  
+  @Schema(name = "id", description = "Id of the trip progress", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("id")
+  public String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
 
   public TripProgress tripId(String tripId) {
     this.tripId = tripId;
@@ -102,6 +126,26 @@ public class TripProgress {
     this.progressData = progressData;
   }
 
+  public TripProgress matchedPoiId(String matchedPoiId) {
+    this.matchedPoiId = matchedPoiId;
+    return this;
+  }
+
+  /**
+   * Id of the POI which matched this location. This is not set by client but is updated by an internal trip monitoring service
+   * @return matchedPoiId
+  */
+  
+  @Schema(name = "matchedPoiId", description = "Id of the POI which matched this location. This is not set by client but is updated by an internal trip monitoring service", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("matchedPoiId")
+  public String getMatchedPoiId() {
+    return matchedPoiId;
+  }
+
+  public void setMatchedPoiId(String matchedPoiId) {
+    this.matchedPoiId = matchedPoiId;
+  }
+
   public TripProgress userId(String userId) {
     this.userId = userId;
     return this;
@@ -131,24 +175,28 @@ public class TripProgress {
       return false;
     }
     TripProgress tripProgress = (TripProgress) o;
-    return Objects.equals(this.tripId, tripProgress.tripId) &&
+    return Objects.equals(this.id, tripProgress.id) &&
+        Objects.equals(this.tripId, tripProgress.tripId) &&
         Objects.equals(this.progressReportedTime, tripProgress.progressReportedTime) &&
         Objects.equals(this.progressData, tripProgress.progressData) &&
+        Objects.equals(this.matchedPoiId, tripProgress.matchedPoiId) &&
         Objects.equals(this.userId, tripProgress.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(tripId, progressReportedTime, progressData, userId);
+    return Objects.hash(id, tripId, progressReportedTime, progressData, matchedPoiId, userId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class TripProgress {\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    tripId: ").append(toIndentedString(tripId)).append("\n");
     sb.append("    progressReportedTime: ").append(toIndentedString(progressReportedTime)).append("\n");
     sb.append("    progressData: ").append(toIndentedString(progressData)).append("\n");
+    sb.append("    matchedPoiId: ").append(toIndentedString(matchedPoiId)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
     return sb.toString();

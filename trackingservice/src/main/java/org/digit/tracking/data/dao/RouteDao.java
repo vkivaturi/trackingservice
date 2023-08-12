@@ -1,8 +1,8 @@
 package org.digit.tracking.data.dao;
 
 import org.digit.tracking.data.rowmapper.RouteMapper;
-import org.digit.tracking.DbUtil;
-import org.digit.tracking.JsonUtil;
+import org.digit.tracking.util.DbUtil;
+import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +18,9 @@ import java.util.List;
 @Service
 public class RouteDao {
     Logger logger = LoggerFactory.getLogger(RouteDao.class);
+
+    @Autowired
+    DbUtil dbUtil;
     final String sqlFetchRouteById = "SELECT id, startPoi, endPoi, name, status, intermediatePois, " +
             "userId FROM Route where id = ?";
     final String sqlFetchRouteByFilters = "SELECT * FROM Route";
@@ -50,7 +53,7 @@ public class RouteDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         //Prepare input data for the SQL
-        String idLocal = DbUtil.getId();
+        String idLocal = dbUtil.getId();
         String intermediatePois = JsonUtil.getJsonFromObject(route.getIntermediatePois());
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();

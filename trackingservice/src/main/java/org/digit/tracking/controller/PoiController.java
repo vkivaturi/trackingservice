@@ -3,16 +3,19 @@ package org.digit.tracking.controller;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import org.digit.tracking.service.POIService;
-import org.digit.tracking.Constants;
-import org.digit.tracking.JsonUtil;
-import org.digit.tracking.TrackingApiUtil;
+import org.digit.tracking.util.Constants;
+import org.digit.tracking.util.JsonUtil;
+import org.digit.tracking.util.TrackingApiUtil;
+import org.openapitools.api.ApiUtil;
 import org.openapitools.api.PoiApi;
 import org.openapitools.model.ACK;
+import org.openapitools.model.Location;
 import org.openapitools.model.POI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +26,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +98,21 @@ public class PoiController implements PoiApi {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public ResponseEntity<List<POI>> searchNearby(
+            @Parameter(name = "latitude", description = "Latitude of the user location", required = true, in = ParameterIn.PATH) @PathVariable("latitude") Float latitude,
+            @Parameter(name = "longitude", description = "longitude of the user location", required = true, in = ParameterIn.PATH) @PathVariable("longitude") Float longitude,
+            @Parameter(name = "distanceMeters", description = "Distance near the user to be searched", required = true, in = ParameterIn.PATH) @PathVariable("distanceMeters") Integer distanceMeters
+    ) {
+        logger.info("## searchNearby is invoked");
+        Location location = new Location();
+        location.setLongitude(longitude);
+        location.setLatitude(latitude);
+        List<POI> pois = poiService.searchNearby(location, distanceMeters);
+        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(pois));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     @Override
     public ResponseEntity<Void> updatePOI(
