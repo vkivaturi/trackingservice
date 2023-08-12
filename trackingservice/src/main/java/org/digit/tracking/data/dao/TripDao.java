@@ -22,11 +22,19 @@ public class TripDao {
     @Autowired
     DbUtil dbUtil;
 
-    final String sqlFetchTripById = "SELECT id, operator, serviceCode, status, routeId, userId," +
-            " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime" +
+    final String sqlFetchTripById = "SELECT id, operator, serviceCode, status, routeId, userId, " +
+            " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, locationAlerts " +
             " FROM Trip where id = ?";
-    final String sqlFetchTripByFilters = "SELECT * FROM Trip";
-    final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
+    final String sqlFetchTripByFilters = "SELECT id, operator, serviceCode, status, routeId, userId," +
+            " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, locationAlerts" +
+            " FROM Trip " +
+            "where " +
+            "JSON_EXTRACT(operator, '$.id') = COALESCE(?, JSON_EXTRACT(operator, '$.id')) and " +
+            //"tripName = COALESCE(?, tripName) and " +
+            //"status = COALESCE(?, status) and " +
+            "userId = COALESCE(?, userId)";
+    final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, " +
+            "plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
             "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
     final String sqlCreateTripProgressPoint = "insert into TripProgress (id, tripId, progressReportedTime, progressTime, positionPoint, userId) " +
             "values (?,?,?,?,ST_GeomFromText(?, 4326),?)";
@@ -51,10 +59,11 @@ public class TripDao {
         List<Trip> tripList = jdbcTemplateObject.query(sqlFetchTripById, new TripMapper(), args);
         return tripList;
     }
-    public List<Trip> fetchTripbyFilters() {
+    public List<Trip> fetchTripbyFilters(String operatorId, String tripName, String status, String userId ) {
         logger.info("## fetchTripbyFilters");
         JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
-        List<Trip> tripList = jdbcTemplateObject.query(sqlFetchTripByFilters, new TripMapper());
+        Object[] args = new Object[]{ operatorId, userId};
+        List<Trip> tripList = jdbcTemplateObject.query(sqlFetchTripByFilters, new TripMapper(), args);
         return tripList;
     }
     //Create Trip and save it in database
@@ -71,8 +80,8 @@ public class TripDao {
         String updatedBy = trip.getUserId();
 
         Object[] args = new Object[]{idLocal, JsonUtil.getJsonFromObject(trip.getOperator()), trip.getServiceCode(), trip.getStatus().toString(),
-                trip.getRouteId(), trip.getPlannedStartTime(), trip.getPlannedEndTime(), trip.getActualStartTime(),
-                trip.getActualEndTime(), trip.getUserId(), currentDateString,
+                trip.getRouteId(), createdBy, trip.getPlannedStartTime(), trip.getPlannedEndTime(), trip.getActualStartTime(),
+                trip.getActualEndTime(), currentDateString,
                 createdBy, currentDateString, updatedBy};
 
         int result = jdbcTemplate.update(sqlCreateTrip, args);
@@ -110,6 +119,7 @@ public class TripDao {
         }
     }
 
+    //Trip progress related data updates
     public String createTripProgress(Location location, String reportedTime, String progressTime, String tripId, String userId) {
         logger.info("## createTripProgress in table");
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);

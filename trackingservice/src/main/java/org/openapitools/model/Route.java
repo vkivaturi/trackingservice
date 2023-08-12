@@ -21,7 +21,7 @@ import javax.annotation.Generated;
  * Route
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-10T23:55:11.623822700+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-12T18:08:31.280010900+05:30[Asia/Calcutta]")
 public class Route {
 
   private String id;

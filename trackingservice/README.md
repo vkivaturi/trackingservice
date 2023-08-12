@@ -29,4 +29,11 @@ mvn clean package -Dmaven.test.skip=true
 
 docker build --build-arg JAR_FILE=openapi-spring-1.0.11.jar -t trackingservice .
 
-docker run --env-file env.txt  -p 8080:8080 trackingservice
+docker run -d --env-file env.txt -p 8080:8080 trackingservice
+
+docker run -d -p 2181:2181 ubuntu/zookeeper:edge
+docker run -d --name kafka-container -e TZ=UTC -p 9092:9092 -e ZOOKEEPER_HOST=host.docker.internal ubuntu/kafka:3.1-22.04_beta
+
+https://www.digitalocean.com/community/tutorials/how-to-install-apache-kafka-on-ubuntu-20-04
+
+

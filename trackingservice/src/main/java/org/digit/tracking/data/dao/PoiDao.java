@@ -35,7 +35,10 @@ public class PoiDao {
             "HAVING distanceMeters <= ?;";
     final String sqlCreatePoi = "insert into POI (id, locationName, status, type, alert, " +
             "createdDate, createdBy, updatedDate, updatedBy, userId, positionPoint, positionPolygon, positionLine) " +
-            "values (?,?,?,?,?,?,?,?,?,?, ST_GeomFromText(?, 4326), ST_GeomFromText(?, 4326), ST_GeomFromText(?, 4326) )";
+            "values (?,?,?,?,?,?,?,?,?,?, " +
+            "ST_GeomFromText(?, 4326, 'axis-order=lat-long'), " +
+            "ST_GeomFromText(?, 4326, 'axis-order=lat-long'), " +
+            "ST_GeomFromText(?, 4326, 'axis-order=lat-long') )";
     final String sqlUpdatePoi = "update POI set locationName = COALESCE(?, locationName), status = COALESCE(?, status), " +
             "updatedDate = ? , updatedBy = ?" +
             "where id = ?";

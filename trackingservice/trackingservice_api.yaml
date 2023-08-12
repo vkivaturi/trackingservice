@@ -528,6 +528,20 @@ paths:
           explode: true
           schema:
             type: string
+        - name: userId
+          in: query
+          description: user id who created the trip
+          required: false
+          explode: true
+          schema:
+            type: string
+        - name: operatorId
+          in: query
+          description: Operator id to whom the trip is assigned
+          required: false
+          explode: true
+          schema:
+            type: string
 
       responses:
         '200':

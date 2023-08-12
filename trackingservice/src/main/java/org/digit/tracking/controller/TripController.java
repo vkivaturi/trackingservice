@@ -147,11 +147,12 @@ public class TripController implements TripApi {
     @Override
     public ResponseEntity<List<Trip>> findTrip(
             @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
-            @Parameter(name = "tripName", description = "Trip name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripName", required = false) String tripName
+            @Parameter(name = "tripName", description = "Trip name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripName", required = false) String tripName,
+            @Parameter(name = "userId", description = "user id who created the trip", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
+            @Parameter(name = "operatorId", description = "Operator id to whom the trip is assigned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "operatorId", required = false) String operatorId
     ) {
         logger.info("## findTrip is invoked");
-        //TODO - Replace null with Trip object
-        List<Trip> trips = tripService.getTripsBySearch(null);
+        List<Trip> trips = tripService.getTripsBySearch(operatorId, tripName, status, userId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(trips));
         return new ResponseEntity<>(HttpStatus.OK);
     }

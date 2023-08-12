@@ -121,9 +121,8 @@ public class DbUtil {
             token = tokenizer.nextToken();
 
             location = new Location();
-            //Note the change in order of lat-long
-            location.setLatitude(Float.valueOf(token.trim().split(" ")[1]));
-            location.setLongitude(Float.valueOf(token.trim().split(" ")[0]));
+            location.setLatitude(Float.valueOf(token.trim().split(" ")[0]));
+            location.setLongitude(Float.valueOf(token.trim().split(" ")[1]));
             locationList.add(location);
         }
         return locationList;

@@ -14,8 +14,8 @@ public class TripService {
     @Autowired
     TripDao tripDao;
 
-    public List<Trip> getTripsBySearch(Trip trip) {
-        return null;
+    public List<Trip> getTripsBySearch(String operatorId, String tripName, String status, String userId) {
+        return tripDao.fetchTripbyFilters(operatorId, tripName, status, userId);
     }
 
     public List<Trip> getTripById(String id) {

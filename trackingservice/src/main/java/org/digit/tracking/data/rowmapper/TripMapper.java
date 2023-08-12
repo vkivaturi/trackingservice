@@ -22,7 +22,6 @@ public class TripMapper implements RowMapper<Trip> {
         trip.setPlannedStartTime(rs.getString("plannedStartTime"));
         trip.setPlannedEndTime(rs.getString("plannedEndTime"));
         trip.setUserId(rs.getString("userId"));
-        //route.setAudit(DbUtil.getAuditDetails(rs));
         return trip;
     }
 }
