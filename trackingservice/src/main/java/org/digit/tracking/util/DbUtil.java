@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import com.google.common.base.Strings;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,25 +37,30 @@ public class DbUtil {
 
     //Common method to convert JSON in database to an object list
     public List dbJsonToList(ResultSet rs, String dbColumn, Class<?> T) throws SQLException {
+        logger.info("## dbJsonToList " + dbColumn);
         //Fetch database field into a string json
         String jsonString = rs.getString(dbColumn);
+        logger.info("## jsonString " + jsonString);
         //Convert json string to array of string
         ObjectMapper mapper = new ObjectMapper();
 
         //Initialize a generic List object
         List dbJsonList = null;
-
-        try {
-            //Identify the class to which the output List should be converted to
-            if (T == String.class) {
-                dbJsonList = new ArrayList<String>();
-                dbJsonList = Arrays.asList(mapper.readValue(jsonString, String[].class));
-            } else if (T == Location.class) {
-                dbJsonList = new ArrayList<Location>();
-                dbJsonList = Arrays.asList(mapper.readValue(jsonString, Location[].class));
+        //Perform null check prior to json processing
+        if (!Strings.isNullOrEmpty(jsonString) && !jsonString.equals("null")){
+            try {
+                //Identify the class to which the output List should be converted to
+                if (T == String.class) {
+                    dbJsonList = new ArrayList<String>();
+                    System.out.println(jsonString);
+                    dbJsonList = Arrays.asList(mapper.readValue(jsonString, String[].class));
+                } else if (T == Location.class) {
+                    dbJsonList = new ArrayList<Location>();
+                    dbJsonList = Arrays.asList(mapper.readValue(jsonString, Location[].class));
+                }
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
             }
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
         }
         return dbJsonList;
     }

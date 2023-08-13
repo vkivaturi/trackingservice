@@ -27,16 +27,21 @@ public class PoiDao {
             "ST_AStext(positionLine) as positionLine FROM POI where id = ?";
     final String sqlFetchPoiByFilters = "SELECT * FROM POI";
 
-    final String sqlSearchNearby = "SELECT id, locationName, status, type, alert, userId, " +
-            "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
+    final String sqlSearchNearbyOfLocation = "SELECT id, locationName, status, type, alert, userId, " +
+            "ST_AStext(positionPoint) as positionPoint, " +
+            "ST_AStext(positionPolygon) as positionPolygon, " +
             "ST_AStext(positionLine) as positionLine, " +
-            "ST_Distance_Sphere(positionPoint, ST_GeomFromText( ?, 4326 )) AS distanceMeters " +
+            "CASE " +
+            "WHEN type = 'point' THEN ST_Distance(positionPoint, ST_GeomFromText( ?, 4326 )) " +
+            "WHEN type = 'line' THEN ST_Distance(positionLine, ST_GeomFromText( ?, 4326 )) " +
+            "WHEN type = 'polygon' THEN ST_Distance(positionPolygon, ST_GeomFromText( ?, 4326 )) " +
+            "END AS distanceMeters " +
             "FROM POI poi " +
             "HAVING distanceMeters <= ?;";
     final String sqlCreatePoi = "insert into POI (id, locationName, status, type, alert, " +
             "createdDate, createdBy, updatedDate, updatedBy, userId, positionPoint, positionPolygon, positionLine) " +
             "values (?,?,?,?,?,?,?,?,?,?, " +
-            "ST_GeomFromText(?, 4326, 'axis-order=lat-long'), " +
+            "ST_PointFromText(?, 4326, 'axis-order=lat-long'), " +
             "ST_GeomFromText(?, 4326, 'axis-order=lat-long'), " +
             "ST_GeomFromText(?, 4326, 'axis-order=lat-long') )";
     final String sqlUpdatePoi = "update POI set locationName = COALESCE(?, locationName), status = COALESCE(?, status), " +
@@ -64,8 +69,9 @@ public class PoiDao {
         logger.info("## searchNearby in Dao");
         JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
         String positionPoint = " POINT(" + userLocation.getLatitude() + " " + userLocation.getLongitude() + ")";
-        Object[] args = new Object[]{positionPoint, distanceMeters};
-        List<POI> poiList = jdbcTemplateObject.query(sqlSearchNearby, new POIMapper(), args);
+        //TODO - Try to avoid repetition of same argument
+        Object[] args = new Object[]{positionPoint, positionPoint, positionPoint, distanceMeters};
+        List<POI> poiList = jdbcTemplateObject.query(sqlSearchNearbyOfLocation, new POIMapper(), args);
 
         return poiList;
     }
