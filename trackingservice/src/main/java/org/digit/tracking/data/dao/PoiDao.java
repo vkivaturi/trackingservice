@@ -37,7 +37,8 @@ public class PoiDao {
             "WHEN type = 'polygon' THEN ST_Distance(positionPolygon, ST_GeomFromText( ?, 4326 )) " +
             "END AS distanceMeters " +
             "FROM POI poi " +
-            "HAVING distanceMeters <= ?;";
+            "HAVING distanceMeters <= ? " +
+            "order by distanceMeters asc;";
     final String sqlCreatePoi = "insert into POI (id, locationName, status, type, alert, " +
             "createdDate, createdBy, updatedDate, updatedBy, userId, positionPoint, positionPolygon, positionLine) " +
             "values (?,?,?,?,?,?,?,?,?,?, " +
