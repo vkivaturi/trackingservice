@@ -1,6 +1,7 @@
 package org.digit.tracking.service;
 
 import org.digit.tracking.data.dao.TripDao;
+import org.digit.tracking.monitoring.RuleEngine;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
 import org.openapitools.model.TripProgressProgressDataInner;
@@ -9,10 +10,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.digit.tracking.util.Constants.RULE_LOAD_METHOD;
+
 @Service
 public class TripService {
     @Autowired
     TripDao tripDao;
+
+    @Autowired
+    RuleEngine ruleEngine;
 
     public List<Trip> getTripsBySearch(String operatorId, String tripName, String status, String userId) {
         return tripDao.fetchTripbyFilters(operatorId, tripName, status, userId);
@@ -48,6 +54,9 @@ public class TripService {
     }
 
     public List<TripProgress> getTripProgressById(String progressId, String tripId) {
+        //TODO - Test code... to be removed
+        ruleEngine.executeAllRules(progressId);
+
         //Trip progress id alone is passed in this case
         return tripDao.getTripProgress(progressId, tripId);
     }

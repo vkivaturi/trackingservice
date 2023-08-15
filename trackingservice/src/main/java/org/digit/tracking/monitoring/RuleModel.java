@@ -1,6 +1,8 @@
 package org.digit.tracking.monitoring;
 
 public class RuleModel {
+
+    private String progressId;
     private String matchedPoi;
     private int distanceFromPoiMeters;
     private boolean matchedPoiInTrip;
@@ -46,4 +48,12 @@ public class RuleModel {
     public void setMatchedPoiIsTripEnd(boolean matchedPoiIsTripEnd) {
         this.matchedPoiIsTripEnd = matchedPoiIsTripEnd;
     }
+
+    public String getProgressId() {
+        return progressId;
+    }
+    public void setProgressId(String progressId) {
+        this.progressId = progressId;
+    }
+
 }

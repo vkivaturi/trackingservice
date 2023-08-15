@@ -6,18 +6,14 @@ import org.digit.tracking.service.TripService;
 import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
-import org.openapitools.api.ApiUtil;
 import org.openapitools.api.TripApi;
 import org.openapitools.model.ACK;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
-
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,12 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import javax.annotation.Generated;
 import javax.validation.Valid;
-
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.Generated;
-import javax.validation.constraints.NotNull;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
 @Controller
@@ -108,6 +102,12 @@ public class TripController implements TripApi {
             @Parameter(name = "tripId", description = "Trip id of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId
     ) {
         logger.info("## getTripProgressById is invoked");
+
+        //rules.loadModel("691ad062-a70c-4018-ad59-d92465b4aeaf");
+
+//        RuleEngine re = new RuleEngine();
+//        ruleEngine.executeSingleRuleMethod(RULE_LOAD_METHOD, "691ad062-a70c-4018-ad59-d92465b4aeaf");
+        //
         List<TripProgress> tripProgressList = tripService.getTripProgressById(progressId, tripId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(tripProgressList));
         return new ResponseEntity<>(HttpStatus.OK);
