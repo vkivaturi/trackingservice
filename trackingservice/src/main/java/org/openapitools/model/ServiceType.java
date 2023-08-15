@@ -19,7 +19,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "ServiceType", description = "Citizen service provided by the government agency")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-12T18:08:31.280010900+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-15T11:40:27.258711100+05:30[Asia/Calcutta]")
 public class ServiceType {
 
   private String code;

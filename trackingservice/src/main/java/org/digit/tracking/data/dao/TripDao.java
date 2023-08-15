@@ -1,10 +1,12 @@
 package org.digit.tracking.data.dao;
 
 import org.digit.tracking.data.rowmapper.TripMapper;
+import org.digit.tracking.data.rowmapper.TripProgressMapper;
 import org.digit.tracking.util.DbUtil;
 import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Location;
 import org.openapitools.model.Trip;
+import org.openapitools.model.TripProgress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,9 @@ public class TripDao {
 
     final String sqlUpdateTripProgress = "update TripProgress set matchedPoiId = ?, updatedDate = ? , updatedBy = ? where id = ?";
 
+    final String sqlGetTripProgressById = "SELECT id, tripId, progressReportedTime, userId, ST_AStext(positionPoint) as positionPoint, progressTime, " +
+            " matchedPoiId " +
+            " FROM TripProgress where id = COALESCE(?, id) and tripId = COALESCE(?, tripId)";
     private DataSource dataSource;
 
     //Datasource bean is injected
@@ -157,6 +162,14 @@ public class TripDao {
             logger.error("Trip progress update failed with id " + tripPogressId);
             return null;
         }
+    }
+    //Get trip progress data based on progress id or trip id
+    public List<TripProgress> getTripProgress(String tripProgressId, String tripId) {
+        logger.info("## getTripProgressById");
+        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
+        Object[] args = new Object[]{tripProgressId, tripId};
+        List<TripProgress> tripProgressList = jdbcTemplateObject.query(sqlGetTripProgressById, new TripProgressMapper(), args);
+        return tripProgressList;
     }
 
 }

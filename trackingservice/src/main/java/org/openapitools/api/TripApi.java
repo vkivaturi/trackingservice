@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-12T18:08:31.280010900+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-15T11:40:27.258711100+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -176,6 +176,48 @@ public interface TripApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /trip/_progress/_search : Search for trip progress based on its id
+     * Search for trip progress based on its id
+     *
+     * @param progressId ID of trip progress to search (optional)
+     * @param tripId Trip id of trip progress to search (optional)
+     * @return successful operation (status code 200)
+     */
+    @Operation(
+        operationId = "getTripProgressById",
+        summary = "Search for trip progress based on its id",
+        description = "Search for trip progress based on its id",
+        tags = { "Trip" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {
+                @Content(mediaType = "application/json", schema = @Schema(implementation = TripProgress.class))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.GET,
+        value = "/trip/_progress/_search",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<TripProgress> getTripProgressById(
+        @Parameter(name = "progressId", description = "ID of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "progressId", required = false) String progressId,
+        @Parameter(name = "tripId", description = "Trip id of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"progressReportedTime\" : \"2023-07-30T10:24:10.547Z\", \"progressData\" : [ { \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"progressTime\" : \"2023-07-30T10:24:10.547Z\" }, { \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"progressTime\" : \"2023-07-30T10:24:10.547Z\" } ], \"matchedPoiId\" : \"matchedPoiId\", \"tripId\" : \"tripId\", \"id\" : \"id\", \"userId\" : \"rajan123\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

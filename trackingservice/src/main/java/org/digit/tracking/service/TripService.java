@@ -47,5 +47,10 @@ public class TripService {
         return tripDao.updateTripProgress(tripProgressId, userId, matchedPoiId);
     }
 
+    public List<TripProgress> getTripProgressById(String progressId, String tripId) {
+        //Trip progress id alone is passed in this case
+        return tripDao.getTripProgress(progressId, tripId);
+    }
+
 }
 

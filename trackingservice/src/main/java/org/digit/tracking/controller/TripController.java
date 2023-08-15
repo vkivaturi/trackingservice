@@ -6,6 +6,7 @@ import org.digit.tracking.service.TripService;
 import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
+import org.openapitools.api.ApiUtil;
 import org.openapitools.api.TripApi;
 import org.openapitools.model.ACK;
 import org.openapitools.model.Trip;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +31,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Generated;
+import javax.validation.constraints.NotNull;
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
 @Controller
@@ -98,6 +101,18 @@ public class TripController implements TripApi {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Override
+    public ResponseEntity<TripProgress> getTripProgressById(
+            @Parameter(name = "progressId", description = "ID of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "progressId", required = false) String progressId,
+            @Parameter(name = "tripId", description = "Trip id of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId
+    ) {
+        logger.info("## getTripProgressById is invoked");
+        List<TripProgress> tripProgressList = tripService.getTripProgressById(progressId, tripId);
+        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(tripProgressList));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     public ResponseEntity<ACK> updateTripProgress(
             @Parameter(name = "TripProgress", description = "Update an existent trip progress in the system", required = true) @Valid @RequestBody TripProgress tripProgress
