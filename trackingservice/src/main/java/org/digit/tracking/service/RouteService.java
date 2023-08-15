@@ -12,7 +12,7 @@ public class RouteService {
 
     @Autowired
     RouteDao routeDao;
-    public List<Route> getRoutesById(String routeId) {
+    public Route getRoutesById(String routeId) {
         return routeDao.fetchRoutebyId(routeId);
     }
 

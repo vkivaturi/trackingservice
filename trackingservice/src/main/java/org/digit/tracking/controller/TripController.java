@@ -176,8 +176,8 @@ public class TripController implements TripApi {
             @Parameter(name = "tripId", description = "ID of Trip to return", required = true, in = ParameterIn.PATH) @PathVariable("tripId") String tripId
     ) {
         logger.info("## getTripById is invoked");
-        List<Trip> trips = tripService.getTripById(tripId);
-        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(trips));
+        Trip trip = tripService.getTripById(tripId);
+        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(trip));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

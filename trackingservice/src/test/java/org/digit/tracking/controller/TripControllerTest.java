@@ -40,7 +40,7 @@ public class TripControllerTest {
         entityList.add(entity);
 
         //Mock the service call
-        when(service.getTripById("TestId")).thenReturn(entityList);
+        when(service.getTripById("TestId")).thenReturn(entity);
         //Perform assertion
         this.mockMvc.perform(get("/api/v3/trip/TestId")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("TestUser")));

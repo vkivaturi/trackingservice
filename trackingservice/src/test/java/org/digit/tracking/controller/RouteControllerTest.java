@@ -42,7 +42,7 @@ public class RouteControllerTest {
         entityList.add(entity);
 
         //Mock the service call
-        when(service.getRoutesById("TestId")).thenReturn(entityList);
+        when(service.getRoutesById("TestId")).thenReturn(entity);
         //Perform assertion
         this.mockMvc.perform(get("/api/v3/route/TestId")).andDo(print()).andExpect(status().isOk())
                 .andExpect(content().string(containsString("TestUser")));

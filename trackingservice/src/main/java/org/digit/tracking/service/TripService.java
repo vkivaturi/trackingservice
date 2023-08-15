@@ -24,7 +24,7 @@ public class TripService {
         return tripDao.fetchTripbyFilters(operatorId, tripName, status, userId);
     }
 
-    public List<Trip> getTripById(String id) {
+    public Trip getTripById(String id) {
         return tripDao.fetchTripbyId(id);
     }
 

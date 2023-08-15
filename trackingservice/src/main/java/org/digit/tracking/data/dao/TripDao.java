@@ -57,12 +57,13 @@ public class TripDao {
         this.dataSource = dataSource;
     }
 
-    public List<Trip> fetchTripbyId(String tripId) {
+    public Trip fetchTripbyId(String tripId) {
         logger.info("## fetchTripbyId");
         JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
         Object[] args = new Object[]{tripId};
         List<Trip> tripList = jdbcTemplateObject.query(sqlFetchTripById, new TripMapper(), args);
-        return tripList;
+        return (tripList.isEmpty())? null : tripList.get(0);
+
     }
     public List<Trip> fetchTripbyFilters(String operatorId, String tripName, String status, String userId ) {
         logger.info("## fetchTripbyFilters");

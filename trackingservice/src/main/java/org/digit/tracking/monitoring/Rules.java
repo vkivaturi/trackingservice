@@ -1,10 +1,9 @@
 package org.digit.tracking.monitoring;
 
 import org.digit.tracking.data.dao.PoiDao;
+import org.digit.tracking.data.dao.RouteDao;
 import org.digit.tracking.data.dao.TripDao;
-import org.openapitools.model.Location;
-import org.openapitools.model.POI;
-import org.openapitools.model.TripProgress;
+import org.openapitools.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,9 @@ public class Rules {
     @Autowired
     PoiDao poiDao;
 
+    @Autowired
+    RouteDao routeDao;
+
     //Stage 1 - Fetch data from relevant sources and populate the RuleMode. This model is then used by rest of rule action methods
     public RuleModel loadModel(String progressId, RuleModel ruleModel) {
         logger.info("## loadModel method");
@@ -41,6 +43,7 @@ public class Rules {
         //Since this is a single ping from user, there is only one record in tripProgressList.
         //Since this is a spatial POINT, there is only one element in getProgressData.
         Location userLocation = tripProgressList.get(0).getProgressData().get(0).getLocation();
+        String tripId = tripProgressList.get(0).getTripId();
 
         List<POI> matchingPoiList = new ArrayList<>();
         //matchingPoiList = poiService.searchNearby(userLocation, POI_MATCH_THRESHOLD_METERS);
@@ -51,11 +54,21 @@ public class Rules {
             return null;
         }
 
-        //Step 3 - Load rule model entity for further usage in rule execution
+        //Step 3 - Fetch corresponding trip data
+        Trip trip = tripDao.fetchTripbyId(tripId);
+
+        //Step 4 - Fetch route info since start poi and end poi are required
+        Route route = routeDao.fetchRoutebyId(trip.getRouteId());
+
+        //Step Final - Load rule model entity for further usage in rule execution
         //Fetch the first record in matched POI list since that is the closest one to user location
         ruleModel.setMatchedPoi(matchingPoiList.get(0).getId());
         ruleModel.setDistanceFromPoiMeters(matchingPoiList.get(0).getDistanceMeters());
         ruleModel.setProgressId(progressId);
+        ruleModel.setTripId(tripId);
+        ruleModel.setLocationAlerts(trip.getLocationAlerts());
+        ruleModel.setRouteEndPoi(route.getEndPoi());
+
         logger.info("## Matched POI, Distance from POI : " + ruleModel.getMatchedPoi() + " " + ruleModel.getDistanceFromPoiMeters());
 
         return ruleModel;
@@ -74,11 +87,25 @@ public class Rules {
     //Rule - If the moving asset is spotted at a POI with alert mapped, update trip progress and send notification
     public void ruleUpdateTripProgressAndNotifyAlert(RuleModel ruleModel) {
         logger.info("## ruleUpdateTripProgressAndNotifyAlert method");
+        if (ruleModel.getLocationAlerts() != null ){
+            //Create a trip entity with alerts info and update the db
+            Trip trip = new Trip();
+            trip.setId(ruleModel.getTripId());
+            trip.setLocationAlerts(ruleModel.getLocationAlerts());
+            tripDao.updateTrip(trip);
+        }
     }
 
     //Rule - If the moving asset is spotted at a POI which is the trip's end POI, update the trip status and send notification
     public void ruleUpdateTripAndNotifyTripEnd(RuleModel ruleModel) {
         logger.info("## ruleUpdateTripAndNotifyTripEnd method");
+        if (ruleModel.getMatchedPoi() != null && ruleModel.getMatchedPoi().equals(ruleModel.getRouteEndPoi())){
+            //POI at the progress location is matching with the route end POI. Update the trip status
+            Trip trip = new Trip();
+            trip.setId(ruleModel.getTripId());
+            trip.setStatus(Trip.StatusEnum.COMPLETED);
+            tripDao.updateTrip(trip);
+        }
     }
 
 }

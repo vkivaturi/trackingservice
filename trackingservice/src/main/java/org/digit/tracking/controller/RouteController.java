@@ -96,8 +96,8 @@ public class RouteController implements RouteApi {
             @Parameter(name = "routeId", description = "ID of Route to return", required = true, in = ParameterIn.PATH) @PathVariable("routeId") String routeId
     ) {
         logger.info("## getRouteById is invoked");
-        List<Route> routes = routeService.getRoutesById(routeId);
-        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(routes));
+        Route route = routeService.getRoutesById(routeId);
+        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(route));
         return new ResponseEntity<>(HttpStatus.OK);
 
     }

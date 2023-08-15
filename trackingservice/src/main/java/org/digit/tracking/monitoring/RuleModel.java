@@ -1,14 +1,17 @@
 package org.digit.tracking.monitoring;
 
-public class RuleModel {
+import java.util.List;
 
-    private String progressId;
+public class RuleModel {
     private String matchedPoi;
     private int distanceFromPoiMeters;
     private boolean matchedPoiInTrip;
     private boolean matchedPoiIsTripStart;
     private boolean matchedPoiIsTripEnd;
-
+    private String progressId;
+    private String tripId;
+    private List<String> locationAlerts;
+    private String routeEndPoi;
     public String getMatchedPoi() {
         return matchedPoi;
     }
@@ -54,6 +57,25 @@ public class RuleModel {
     }
     public void setProgressId(String progressId) {
         this.progressId = progressId;
+    }
+
+    public String getTripId() {
+        return tripId;
+    }
+    public void setTripId(String tripId) {
+        this.tripId = tripId;
+    }
+    public List<String> getLocationAlerts() {
+        return locationAlerts;
+    }
+    public void setLocationAlerts(List<String> locationAlerts) {
+        this.locationAlerts = locationAlerts;
+    }
+    public String getRouteEndPoi() {
+        return routeEndPoi;
+    }
+    public void setRouteEndPoi(String routeEndPoi) {
+        this.routeEndPoi = routeEndPoi;
     }
 
 }

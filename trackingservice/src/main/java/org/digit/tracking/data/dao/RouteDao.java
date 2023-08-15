@@ -34,12 +34,12 @@ public class RouteDao {
         this.dataSource = dataSource;
     }
 
-    public List<Route> fetchRoutebyId(String routeId) {
+    public Route fetchRoutebyId(String routeId) {
         logger.info("## fetchRoutebyId");
         JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
         Object[] args = new Object[]{routeId};
         List<Route> routeList = jdbcTemplateObject.query(sqlFetchRouteById, new RouteMapper(), args);
-        return routeList;
+        return (routeList.isEmpty())? null : routeList.get(0);
     }
     public List<Route> fetchRoutebyFilters() {
         logger.info("## fetchRoutebyFilters");
