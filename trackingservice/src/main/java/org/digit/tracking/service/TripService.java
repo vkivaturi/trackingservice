@@ -54,11 +54,14 @@ public class TripService {
     }
 
     public List<TripProgress> getTripProgressById(String progressId, String tripId) {
+
+        List<TripProgress> tripProgressList = tripDao.getTripProgress(progressId, tripId);
+
         //TODO - Test code... to be removed
         ruleEngine.executeAllRules(progressId);
 
         //Trip progress id alone is passed in this case
-        return tripDao.getTripProgress(progressId, tripId);
+        return tripProgressList;
     }
 
 }

@@ -3,6 +3,7 @@ package org.digit.tracking.monitoring;
 import org.apache.tomcat.util.digester.Rule;
 import org.openapitools.model.TripProgress;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
@@ -31,6 +32,7 @@ public class RuleEngine {
     }
 
     //Dynamically execute all rule methods
+    @Async
     public void executeAllRules(String progressId){
         //Initialise Rule Model for this execution of all rules
         RuleModel ruleModel = new RuleModel();

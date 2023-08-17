@@ -115,8 +115,6 @@ public class DbUtil {
         String token;
         Location location;
 
-        logger.info("## convertSpatialToLocation " + spatialData);
-
         //Step 1 - Remove the characters not needed
         String spatialDataLocal = spatialData.replaceAll("POINT", "").replaceAll("POLYGON", "").
                 replaceAll("LINESTRING", "").replaceAll("\\(", "").replaceAll("\\)", "");
