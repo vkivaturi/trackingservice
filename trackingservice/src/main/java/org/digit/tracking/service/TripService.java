@@ -42,8 +42,10 @@ public class TripService {
         //progressTime is the time when the actual geo position was recorded
         //progressReportedTime is when the device reported this data to the tracking service (especially useful in case of bulk updates)
         for (TripProgressProgressDataInner tripProgressProgressDataInner : tripProgress.getProgressData()) {
-            tripDao.createTripProgress(tripProgressProgressDataInner.getLocation(), tripProgress.getProgressReportedTime(),
+            String progressId = tripDao.createTripProgress(tripProgressProgressDataInner.getLocation(), tripProgress.getProgressReportedTime(),
                     tripProgressProgressDataInner.getProgressTime(), tripProgress.getTripId(), tripProgress.getUserId());
+            //TODO - Remove this call once monitoring service is live
+            ruleEngine.executeAllRules(progressId);
         }
         //return tripDao.createTripProgress(tripProgress);
         return tripProgress.getTripId();
@@ -56,9 +58,6 @@ public class TripService {
     public List<TripProgress> getTripProgressById(String progressId, String tripId) {
 
         List<TripProgress> tripProgressList = tripDao.getTripProgress(progressId, tripId);
-
-        //TODO - Test code... to be removed
-        ruleEngine.executeAllRules(progressId);
 
         //Trip progress id alone is passed in this case
         return tripProgressList;
