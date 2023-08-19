@@ -34,7 +34,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-18T22:36:46.160488500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-19T16:54:42.207568700+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -49,7 +49,6 @@ public interface TripApi {
      *
      * @param trip Create a new Trip in the system (required)
      * @return Successful operation (status code 200)
-     *         or Validation exception (status code 405)
      */
     @Operation(
         operationId = "createTrip",
@@ -58,9 +57,6 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
@@ -93,11 +89,12 @@ public interface TripApi {
      * Search Trip based on multiple filters
      *
      * @param status Status values that need to be considered for filter (optional, default to active)
-     * @param tripName Trip name that needs to be considered for filter (optional)
+     * @param name Trip name that needs to be considered for filter (optional)
      * @param userId user id who created the trip (optional)
      * @param operatorId Operator id to whom the trip is assigned (optional)
+     * @param pageSize  (optional)
+     * @param pageNumber  (optional)
      * @return successful operation (status code 200)
-     *         or Invalid search value (status code 400)
      */
     @Operation(
         operationId = "findTrip",
@@ -107,9 +104,6 @@ public interface TripApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Trip.class)))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid search value", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
     )
@@ -120,14 +114,16 @@ public interface TripApi {
     )
     default ResponseEntity<List<Trip>> findTrip(
         @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
-        @Parameter(name = "tripName", description = "Trip name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripName", required = false) String tripName,
+        @Parameter(name = "name", description = "Trip name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "name", required = false) String name,
         @Parameter(name = "userId", description = "user id who created the trip", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
-        @Parameter(name = "operatorId", description = "Operator id to whom the trip is assigned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "operatorId", required = false) String operatorId
+        @Parameter(name = "operatorId", description = "Operator id to whom the trip is assigned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "operatorId", required = false) String operatorId,
+        @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+        @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tripName\" : \"tripName\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }, { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tripName\" : \"tripName\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" } ]";
+                    String exampleString = "[ { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }, { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -144,8 +140,6 @@ public interface TripApi {
      *
      * @param tripId ID of Trip to return (required)
      * @return successful operation (status code 200)
-     *         or Invalid ID supplied (status code 400)
-     *         or Trip not found (status code 404)
      */
     @Operation(
         operationId = "getTripById",
@@ -155,12 +149,6 @@ public interface TripApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Trip.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid ID supplied", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Trip not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
     )
@@ -175,7 +163,7 @@ public interface TripApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tripName\" : \"tripName\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
+                    String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -192,6 +180,8 @@ public interface TripApi {
      *
      * @param progressId ID of trip progress to search (optional)
      * @param tripId Trip id of trip progress to search (optional)
+     * @param pageSize  (optional)
+     * @param pageNumber  (optional)
      * @return successful operation (status code 200)
      */
     @Operation(
@@ -212,7 +202,9 @@ public interface TripApi {
     )
     default ResponseEntity<TripProgress> getTripProgressById(
         @Parameter(name = "progressId", description = "ID of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "progressId", required = false) String progressId,
-        @Parameter(name = "tripId", description = "Trip id of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId
+        @Parameter(name = "tripId", description = "Trip id of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId,
+        @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+        @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -234,9 +226,6 @@ public interface TripApi {
      *
      * @param tripProgress Update an existent trip in the system (required)
      * @return Successful operation (status code 200)
-     *         or Invalid Trip ID is supplied (status code 400)
-     *         or Trip not found (status code 404)
-     *         or Validation exception (status code 405)
      */
     @Operation(
         operationId = "progressTrip",
@@ -245,15 +234,6 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid Trip ID is supplied", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Trip not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
@@ -287,9 +267,6 @@ public interface TripApi {
      *
      * @param trip Update an existent trip in the system (required)
      * @return Successful operation (status code 200)
-     *         or Invalid Trip ID is supplied (status code 400)
-     *         or Trip not found (status code 404)
-     *         or Validation exception (status code 405)
      */
     @Operation(
         operationId = "updateTrip",
@@ -298,15 +275,6 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid Trip ID is supplied", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Trip not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
@@ -340,9 +308,6 @@ public interface TripApi {
      *
      * @param tripProgress Update an existent trip progress in the system (required)
      * @return Successful operation (status code 200)
-     *         or Invalid Trip progess ID is supplied (status code 400)
-     *         or Trip progress not found (status code 404)
-     *         or Validation exception (status code 405)
      */
     @Operation(
         operationId = "updateTripProgress",
@@ -351,15 +316,6 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid Trip progess ID is supplied", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Trip progress not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }

@@ -81,13 +81,14 @@ public class RouteController implements RouteApi {
 
     @Override
     public ResponseEntity<List<Route>> findRoute(
-            @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
-            @Parameter(name = "routeName", description = "route name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "routeName", required = false) String routeName
+            @Parameter(name = "userId", description = "User id that created the route to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
+            @Parameter(name = "routeName", description = "route name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "routeName", required = false) String routeName,
+            @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+            @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
-        logger.info("## findRoute is invoked");
-        //TODO - Replace null with POI object
-//        List<Route> routes = routeService.getRoutesBySearch(null);
-//        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(routes));
+        logger.info("## findRoute is invoked for : userId - " + userId + ", route name - " + routeName);
+        List<Route> routes = routeService.getRoutesBySearch(routeName, userId);
+        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(routes));
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
@@ -99,8 +100,5 @@ public class RouteController implements RouteApi {
         Route route = routeService.getRoutesById(routeId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(route));
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
-
-
 }

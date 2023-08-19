@@ -1,19 +1,24 @@
 package org.digit.tracking.data.dao;
 
+import org.digit.tracking.data.rowmapper.POIMapper;
 import org.digit.tracking.data.rowmapper.RouteMapper;
 import org.digit.tracking.util.DbUtil;
 import org.digit.tracking.util.JsonUtil;
+import org.openapitools.model.POI;
 import org.openapitools.model.Route;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RouteDao {
@@ -23,7 +28,13 @@ public class RouteDao {
     DbUtil dbUtil;
     final String sqlFetchRouteById = "SELECT id, startPoi, endPoi, name, status, intermediatePois, " +
             "userId FROM Route where id = ?";
-    final String sqlFetchRouteByFilters = "SELECT * FROM Route";
+    final String sqlFetchRouteByFilters = "SELECT id, startPoi, endPoi, name, status, intermediatePois, userId " +
+            "FROM Route " +
+            "where " +
+            "userId = COALESCE(:userId, userId) " +
+            "and name like COALESCE(:name, name) " +
+            ";";
+
     final String sqlCreateRoute = "insert into Route (id, startPoi, endPoi, name, status, intermediatePois, " +
             "userId, createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?)";
     private DataSource dataSource;
@@ -41,10 +52,20 @@ public class RouteDao {
         List<Route> routeList = jdbcTemplateObject.query(sqlFetchRouteById, new RouteMapper(), args);
         return (routeList.isEmpty())? null : routeList.get(0);
     }
-    public List<Route> fetchRoutebyFilters() {
+
+    //Search based on user id or route name or a combination of both
+    public List<Route> fetchRoutebyFilters(String name, String userId) {
         logger.info("## fetchRoutebyFilters");
-        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
-        List<Route> routeList = jdbcTemplateObject.query(sqlFetchRouteByFilters, new RouteMapper());
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("userId", userId);
+        //Partial search is supported for route name
+        if (name != null) {
+            params.put("name", "%"+name+"%");
+        }else{
+            params.put("name", null);
+        }
+        List<Route> routeList = namedParameterJdbcTemplate.query(sqlFetchRouteByFilters, params, new RouteMapper());
         return routeList;
     }
     //Create Route and save it in database

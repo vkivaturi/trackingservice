@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-18T22:36:46.160488500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-19T16:54:42.207568700+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "POI", description = "Points of interest (POI) are a combination of location and additional details about that specific location. A POI can be a single LatLong or a polygon (combination of multiple LatLongs)")
 public interface PoiApi {
@@ -48,7 +48,6 @@ public interface PoiApi {
      *
      * @param POI Create a new POI in the system (required)
      * @return Successful operation (status code 200)
-     *         or Validation exception (status code 405)
      */
     @Operation(
         operationId = "createPOI",
@@ -57,9 +56,6 @@ public interface PoiApi {
         tags = { "POI" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
@@ -93,8 +89,9 @@ public interface PoiApi {
      *
      * @param userId userId to be considered for filter (optional)
      * @param locationName Location name that needs to be considered for filter (optional)
+     * @param pageSize  (optional)
+     * @param pageNumber  (optional)
      * @return successful operation (status code 200)
-     *         or Invalid search value (status code 400)
      */
     @Operation(
         operationId = "findPOI",
@@ -104,9 +101,6 @@ public interface PoiApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = POI.class)))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid search value", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
     )
@@ -117,7 +111,9 @@ public interface PoiApi {
     )
     default ResponseEntity<List<POI>> findPOI(
         @Parameter(name = "userId", description = "userId to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
-        @Parameter(name = "locationName", description = "Location name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "locationName", required = false) String locationName
+        @Parameter(name = "locationName", description = "Location name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "locationName", required = false) String locationName,
+        @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+        @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -139,8 +135,6 @@ public interface PoiApi {
      *
      * @param poiId ID of POI to return (required)
      * @return successful operation (status code 200)
-     *         or Invalid ID supplied (status code 400)
-     *         or POI not found (status code 404)
      */
     @Operation(
         operationId = "getPoiById",
@@ -150,12 +144,6 @@ public interface PoiApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = POI.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid ID supplied", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "POI not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
     )
@@ -189,7 +177,6 @@ public interface PoiApi {
      * @param longitude longitude of the user location (required)
      * @param distanceMeters Distance near the user to be searched (required)
      * @return successful operation (status code 200)
-     *         or Invalid search value (status code 400)
      */
     @Operation(
         operationId = "searchNearby",
@@ -199,9 +186,6 @@ public interface PoiApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = POI.class)))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid search value", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
     )
@@ -235,9 +219,6 @@ public interface PoiApi {
      *
      * @param POI Update an existent POI in the system (required)
      * @return Successful operation (status code 200)
-     *         or Invalid POI ID is supplied (status code 400)
-     *         or POI not found (status code 404)
-     *         or Validation exception (status code 405)
      */
     @Operation(
         operationId = "updatePOI",
@@ -245,10 +226,7 @@ public interface PoiApi {
         description = "Update an existing POI by Id",
         tags = { "POI" },
         responses = {
-            @ApiResponse(responseCode = "200", description = "Successful operation"),
-            @ApiResponse(responseCode = "400", description = "Invalid POI ID is supplied"),
-            @ApiResponse(responseCode = "404", description = "POI not found"),
-            @ApiResponse(responseCode = "405", description = "Validation exception")
+            @ApiResponse(responseCode = "200", description = "Successful operation")
         }
     )
     @RequestMapping(

@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-18T22:36:46.160488500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-19T16:54:42.207568700+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Route", description = "Route is a sequence of POIs. Route indicate the path the operator should take while delivering a service.")
 public interface RouteApi {
@@ -48,7 +48,6 @@ public interface RouteApi {
      *
      * @param route Create a new Route in the system (required)
      * @return Successful operation (status code 200)
-     *         or Validation exception (status code 405)
      */
     @Operation(
         operationId = "createRoute",
@@ -57,9 +56,6 @@ public interface RouteApi {
         tags = { "Route" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
@@ -91,10 +87,11 @@ public interface RouteApi {
      * GET /route/_search : Find Route based on supported parameters
      * Search Route based on multiple filters
      *
-     * @param status Status values that need to be considered for filter (optional, default to active)
+     * @param userId User id that created the route to be considered for filter (optional)
      * @param routeName route name that needs to be considered for filter (optional)
+     * @param pageSize  (optional)
+     * @param pageNumber  (optional)
      * @return successful operation (status code 200)
-     *         or Invalid search value (status code 400)
      */
     @Operation(
         operationId = "findRoute",
@@ -104,9 +101,6 @@ public interface RouteApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Route.class)))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid search value", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
     )
@@ -116,8 +110,10 @@ public interface RouteApi {
         produces = { "application/json" }
     )
     default ResponseEntity<List<Route>> findRoute(
-        @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
-        @Parameter(name = "routeName", description = "route name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "routeName", required = false) String routeName
+        @Parameter(name = "userId", description = "User id that created the route to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
+        @Parameter(name = "routeName", description = "route name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "routeName", required = false) String routeName,
+        @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
+        @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -139,8 +135,6 @@ public interface RouteApi {
      *
      * @param routeId ID of Route to return (required)
      * @return successful operation (status code 200)
-     *         or Invalid ID supplied (status code 400)
-     *         or Route not found (status code 404)
      */
     @Operation(
         operationId = "getRouteById",
@@ -150,12 +144,6 @@ public interface RouteApi {
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = Route.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid ID supplied", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Route not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }
     )
@@ -187,9 +175,6 @@ public interface RouteApi {
      *
      * @param route Update an existent route in the system (required)
      * @return Successful operation (status code 200)
-     *         or Invalid Route ID is supplied (status code 400)
-     *         or Route not found (status code 404)
-     *         or Validation exception (status code 405)
      */
     @Operation(
         operationId = "updateRoute",
@@ -198,15 +183,6 @@ public interface RouteApi {
         tags = { "Route" },
         responses = {
             @ApiResponse(responseCode = "200", description = "Successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "400", description = "Invalid Route ID is supplied", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "404", description = "Route not found", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
-            }),
-            @ApiResponse(responseCode = "405", description = "Validation exception", content = {
                 @Content(mediaType = "application/json", schema = @Schema(implementation = ACK.class))
             })
         }

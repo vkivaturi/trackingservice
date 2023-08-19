@@ -22,6 +22,8 @@ CREATE TABLE "POI" (
   KEY "POI_userId_IDX" ("userId")
 );
 
+-- trackingdb.Route definition
+
 CREATE TABLE "Route" (
   "id" varchar(100) NOT NULL,
   "startPoi" varchar(100) DEFAULT NULL,
@@ -34,7 +36,9 @@ CREATE TABLE "Route" (
   "updatedDate" varchar(100) DEFAULT NULL,
   "updatedBy" varchar(100) DEFAULT NULL,
   "userId" varchar(100) DEFAULT NULL,
-  PRIMARY KEY ("id")
+  PRIMARY KEY ("id"),
+  KEY "Route_name_IDX" ("name"),
+  KEY "Route_userId_IDX" ("userId")
 );
 
 CREATE TABLE "Trip" (

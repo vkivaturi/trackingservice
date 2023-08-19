@@ -22,14 +22,14 @@ import javax.annotation.Generated;
  * Trip
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-18T22:36:46.160488500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-19T16:54:42.207568700+05:30[Asia/Calcutta]")
 public class Trip {
 
   private String id;
 
   private String routeId;
 
-  private String tripName;
+  private String name;
 
   private String serviceCode;
 
@@ -129,24 +129,24 @@ public class Trip {
     this.routeId = routeId;
   }
 
-  public Trip tripName(String tripName) {
-    this.tripName = tripName;
+  public Trip name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
    * User defined name for the trip
-   * @return tripName
+   * @return name
   */
   
-  @Schema(name = "tripName", description = "User defined name for the trip", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("tripName")
-  public String getTripName() {
-    return tripName;
+  @Schema(name = "name", description = "User defined name for the trip", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("name")
+  public String getName() {
+    return name;
   }
 
-  public void setTripName(String tripName) {
-    this.tripName = tripName;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public Trip serviceCode(String serviceCode) {
@@ -348,7 +348,7 @@ public class Trip {
     Trip trip = (Trip) o;
     return Objects.equals(this.id, trip.id) &&
         Objects.equals(this.routeId, trip.routeId) &&
-        Objects.equals(this.tripName, trip.tripName) &&
+        Objects.equals(this.name, trip.name) &&
         Objects.equals(this.serviceCode, trip.serviceCode) &&
         Objects.equals(this.status, trip.status) &&
         Objects.equals(this.operator, trip.operator) &&
@@ -362,7 +362,7 @@ public class Trip {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, routeId, tripName, serviceCode, status, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId, locationAlerts);
+    return Objects.hash(id, routeId, name, serviceCode, status, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId, locationAlerts);
   }
 
   @Override
@@ -371,7 +371,7 @@ public class Trip {
     sb.append("class Trip {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    routeId: ").append(toIndentedString(routeId)).append("\n");
-    sb.append("    tripName: ").append(toIndentedString(tripName)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    serviceCode: ").append(toIndentedString(serviceCode)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    operator: ").append(toIndentedString(operator)).append("\n");
