@@ -9,12 +9,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PoiDao {
@@ -24,8 +27,14 @@ public class PoiDao {
     DbUtil dbUtil;
     final String sqlFetchPoiById = "SELECT id, locationName, status, type, alert, userId, " +
             "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
-            "ST_AStext(positionLine) as positionLine FROM POI where id = ?";
-    final String sqlFetchPoiByFilters = "SELECT * FROM POI";
+            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI where id = ?";
+    final String sqlFetchPoiByFilters = "SELECT id, locationName, status, type, alert, userId, " +
+            "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
+            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI " +
+            "where " +
+            "userId = COALESCE(:userId, userId) and " +
+            "locationName like COALESCE(:locationName, locationName) " +
+            ";";
 
     final String sqlSearchNearbyOfLocation = "SELECT id, locationName, status, type, alert, userId, " +
             "ST_AStext(positionPoint) as positionPoint, " +
@@ -70,17 +79,21 @@ public class PoiDao {
         logger.info("## searchNearby in Dao");
         JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
         String positionPoint = " POINT(" + userLocation.getLatitude() + " " + userLocation.getLongitude() + ")";
-        //TODO - Try to avoid repetition of same argument
+        //TODO - Try to avoid repetition of same argument. Use named parameters
         Object[] args = new Object[]{positionPoint, positionPoint, positionPoint, distanceMeters};
         List<POI> poiList = jdbcTemplateObject.query(sqlSearchNearbyOfLocation, new POIMapper(), args);
 
         return poiList;
     }
 
-    public List<POI> fetchPOIbyFilters() {
+    public List<POI> fetchPOIbyFilters(String locationName, String userId) {
         logger.info("## fetchPOIbyFilters");
-        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
-        List<POI> poiList = jdbcTemplateObject.query(sqlFetchPoiByFilters, new POIMapper());
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("userId", userId);
+        params.put("locationName", "%"+locationName+"%");
+        //Object[] args = new Object[]{userId, locationName};
+        List<POI> poiList = namedParameterJdbcTemplate.query(sqlFetchPoiByFilters, params, new POIMapper());
 
         return poiList;
     }

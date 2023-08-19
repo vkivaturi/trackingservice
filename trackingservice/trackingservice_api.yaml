@@ -87,17 +87,13 @@ paths:
       description: Search POIs based on multiple filters
       operationId: findPOI
       parameters:
-        - name: status
+        - name: userId
           in: query
-          description: Status values that need to be considered for filter
+          description: userId to be considered for filter
           required: false
           explode: true
           schema:
             type: string
-            default: active
-            enum:
-              - active
-              - inactive
         - name: locationName
           in: query
           description: Location name that needs to be considered for filter
@@ -818,6 +814,9 @@ components:
         routeId:
           type: string
           description: Id of the assigned route
+        tripName:
+          type: string
+          description: User defined name for the trip
         serviceCode:
           type: string
           description: Code of the service which will be rendered through this trip

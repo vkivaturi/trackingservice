@@ -53,12 +53,12 @@ public class PoiController implements PoiApi {
 
     @Override
     public ResponseEntity<List<POI>> findPOI(
-            @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
+            @Parameter(name = "userId", description = "userId to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
             @Parameter(name = "locationName", description = "Location name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "locationName", required = false) String locationName
     ) {
         logger.info("## findPOI is invoked");
         //TODO - Replace null with POI object
-        List<POI> pois = poiService.getPOIsBySearch(null);
+        List<POI> pois = poiService.getPOIsBySearch(locationName, userId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(pois));
         return new ResponseEntity<>(HttpStatus.OK);
     }

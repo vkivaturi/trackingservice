@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-15T11:40:27.258711100+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-18T22:36:46.160488500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "POI", description = "Points of interest (POI) are a combination of location and additional details about that specific location. A POI can be a single LatLong or a polygon (combination of multiple LatLongs)")
 public interface PoiApi {
@@ -91,7 +91,7 @@ public interface PoiApi {
      * GET /poi/_search : Finds POIs based on a specific parameters
      * Search POIs based on multiple filters
      *
-     * @param status Status values that need to be considered for filter (optional, default to active)
+     * @param userId userId to be considered for filter (optional)
      * @param locationName Location name that needs to be considered for filter (optional)
      * @return successful operation (status code 200)
      *         or Invalid search value (status code 400)
@@ -116,7 +116,7 @@ public interface PoiApi {
         produces = { "application/json" }
     )
     default ResponseEntity<List<POI>> findPOI(
-        @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
+        @Parameter(name = "userId", description = "userId to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
         @Parameter(name = "locationName", description = "Location name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "locationName", required = false) String locationName
     ) {
         getRequest().ifPresent(request -> {

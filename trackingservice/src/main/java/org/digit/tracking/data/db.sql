@@ -1,16 +1,25 @@
-CREATE TABLE POI (
-	id varchar(100) NOT NULL,
-	locationName varchar(100) NOT NULL,
-	status varchar(100) NULL,
-	`type` varchar(100) NULL,
-	locationDetails json NULL,
-	alert json NULL,
-	createdDate varchar(100) NULL,
-	createdBy varchar(100) NULL,
-	updatedDate varchar(100) NULL,
-	updatedBy varchar(100) NULL,
-	userId varchar(100) DEFAULT NULL,
-	CONSTRAINT POI_PK PRIMARY KEY (id)
+-- trackingdb.POI definition
+
+CREATE TABLE "POI" (
+  "id" varchar(100) NOT NULL,
+  "locationName" varchar(100) NOT NULL,
+  "status" varchar(100) DEFAULT NULL,
+  "type" varchar(100) DEFAULT NULL,
+  "alert" json DEFAULT NULL,
+  "createdDate" varchar(100) DEFAULT NULL,
+  "createdBy" varchar(100) DEFAULT NULL,
+  "updatedDate" varchar(100) DEFAULT NULL,
+  "updatedBy" varchar(100) DEFAULT NULL,
+  "userId" varchar(100) DEFAULT NULL,
+  "positionPoint" point NOT NULL /*!80003 SRID 4326 */,
+  "positionPolygon" polygon NOT NULL /*!80003 SRID 4326 */,
+  "positionLine" linestring NOT NULL /*!80003 SRID 4326 */,
+  PRIMARY KEY ("id"),
+  SPATIAL KEY "positionPoint" ("positionPoint"),
+  SPATIAL KEY "positionPolygon" ("positionPolygon"),
+  SPATIAL KEY "positionLine" ("positionLine"),
+  KEY "POI_locationName_IDX" ("locationName"),
+  KEY "POI_userId_IDX" ("userId")
 );
 
 CREATE TABLE "Route" (
