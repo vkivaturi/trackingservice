@@ -60,6 +60,8 @@ CREATE TABLE "Trip" (
   PRIMARY KEY ("id")
 );
 
+-- trackingdb.TripProgress definition
+
 CREATE TABLE "TripProgress" (
   "id" varchar(100) NOT NULL,
   "tripId" varchar(100) DEFAULT NULL,
@@ -72,13 +74,16 @@ CREATE TABLE "TripProgress" (
   "createdDate" varchar(100) DEFAULT NULL,
   "updatedDate" varchar(100) DEFAULT NULL,
   "updatedBy" varchar(100) DEFAULT NULL,
+  "locationAlertCode" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id")
 );
+
+-- trackingdb.ServiceType definition
 
 CREATE TABLE "ServiceType" (
   "Code" varchar(100) NOT NULL,
   "Name" varchar(100) NOT NULL,
-  "ULBid" varchar(100) DEFAULT NULL,
+  "tenantId" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("Code")
 );
 
@@ -87,4 +92,38 @@ CREATE TABLE "LocationAlert" (
   "title" varchar(100) NOT NULL,
   PRIMARY KEY ("code")
 );
+
+-- trackingdb.Rule definition
+
+CREATE TABLE "Rule" (
+  "ruleCode" varchar(100) NOT NULL,
+  "description" varchar(1000) DEFAULT NULL,
+  "implCode" varchar(100) DEFAULT NULL,
+  PRIMARY KEY ("ruleCode"),
+  KEY "Rule_ruleCode_IDX" ("ruleCode")
+);
+
+-- trackingdb.RuleMapping definition
+
+CREATE TABLE "RuleMapping" (
+  "id" bigint NOT NULL AUTO_INCREMENT,
+  "ruleCode" varchar(100) NOT NULL,
+  "tenantId" varchar(100) DEFAULT NULL,
+  "serviceCode" varchar(100) DEFAULT NULL,
+  PRIMARY KEY ("id"),
+  KEY "RuleMapping_ruleCode_IDX" ("ruleCode"),
+  KEY "RuleMapping_tenantId_IDX" ("tenantId"),
+  KEY "RuleMapping_serviceCode_IDX" ("serviceCode")
+);
+
+-- trackingdb.RuleTrip definition
+
+CREATE TABLE "RuleTrip" (
+  "tripId" varchar(100) NOT NULL,
+  "ruleCode" varchar(100) NOT NULL,
+  "implCode" varchar(100) NOT NULL,
+  PRIMARY KEY ("tripId","ruleCode"),
+  KEY "RuleTrip_implCode_IDX" ("implCode")
+);
+
 

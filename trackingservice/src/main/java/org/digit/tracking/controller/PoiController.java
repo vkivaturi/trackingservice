@@ -18,10 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.Generated;
@@ -33,6 +30,7 @@ import java.util.Optional;
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-07-29T19:38:13.286370500+05:30[Asia/Calcutta]")
 @Controller
 @RequestMapping("${openapi.trackingService.base-path:/api/v3}")
+@CrossOrigin(maxAge = 3600)
 public class PoiController implements PoiApi {
     Logger logger = LoggerFactory.getLogger(PoiController.class);
 
