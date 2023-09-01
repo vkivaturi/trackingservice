@@ -6,8 +6,7 @@ import org.openapitools.model.POI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -15,8 +14,8 @@ public class POIService {
 
     @Autowired
     PoiDao poiDao;
-    public List<POI> getPOIsBySearch(String locationName, String userId) {
-        return poiDao.fetchPOIbyFilters(locationName, userId);
+    public List<POI> getPOIsBySearch(String locationName, String userId, Boolean isAlertLocation) {
+        return poiDao.fetchPOIbyFilters(locationName, userId, isAlertLocation);
     }
 
     public List<POI> searchNearby(Location userLocation, int distanceMeters) {

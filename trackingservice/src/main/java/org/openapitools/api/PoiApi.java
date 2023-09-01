@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-08-19T16:54:42.207568700+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-01T22:42:27.557196600+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "POI", description = "Points of interest (POI) are a combination of location and additional details about that specific location. A POI can be a single LatLong or a polygon (combination of multiple LatLongs)")
 public interface PoiApi {
@@ -89,6 +89,7 @@ public interface PoiApi {
      *
      * @param userId userId to be considered for filter (optional)
      * @param locationName Location name that needs to be considered for filter (optional)
+     * @param isAlertLocation set true if only alert locations are needed. Omit this parameter to fetch all locations (optional)
      * @param pageSize  (optional)
      * @param pageNumber  (optional)
      * @return successful operation (status code 200)
@@ -112,6 +113,7 @@ public interface PoiApi {
     default ResponseEntity<List<POI>> findPOI(
         @Parameter(name = "userId", description = "userId to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
         @Parameter(name = "locationName", description = "Location name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "locationName", required = false) String locationName,
+        @Parameter(name = "isAlertLocation", description = "set true if only alert locations are needed. Omit this parameter to fetch all locations", in = ParameterIn.QUERY) @Valid @RequestParam(value = "isAlertLocation", required = false) String isAlertLocation,
         @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
         @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {

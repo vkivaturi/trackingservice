@@ -33,7 +33,8 @@ public class PoiDao {
             "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI " +
             "where " +
             "userId = COALESCE(:userId, userId) and " +
-            "locationName like COALESCE(:locationName, locationName) " +
+            "locationName like COALESCE(:locationName, locationName) and " +
+            "(:isAlertLocation is null) or (NOT(:isAlertLocation) and alert like 'null') or (:isAlertLocation and NOT(alert like 'null')) " +
             ";";
 
     final String sqlSearchNearbyOfLocation = "SELECT id, locationName, status, type, alert, userId, " +
@@ -86,13 +87,20 @@ public class PoiDao {
         return poiList;
     }
 
-    public List<POI> fetchPOIbyFilters(String locationName, String userId) {
+    public List<POI> fetchPOIbyFilters(String locationName, String userId, Boolean isAlertLocation) {
         logger.info("## fetchPOIbyFilters");
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("userId", userId);
-        params.put("locationName", "%"+locationName+"%");
-        //Object[] args = new Object[]{userId, locationName};
+        //Partial search is supported for location name
+        if (locationName != null) {
+            params.put("locationName", "%"+locationName+"%");
+        }else{
+            params.put("locationName", null);
+        }
+
+        //params.put("locationName", "%"+locationName+"%");
+        params.put("isAlertLocation", isAlertLocation);
         List<POI> poiList = namedParameterJdbcTemplate.query(sqlFetchPoiByFilters, params, new POIMapper());
 
         return poiList;

@@ -89,6 +89,13 @@ paths:
           explode: true
           schema:
             type: string
+        - name: isAlertLocation
+          in: query
+          description: set true if only alert locations are needed. Omit this parameter to fetch all locations
+          required: false
+          explode: true
+          schema:
+            type: string
         - name: pageSize
           in: query
           required: false
