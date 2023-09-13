@@ -6,14 +6,17 @@ import org.digit.tracking.service.TripService;
 import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
+import org.openapitools.api.ApiUtil;
 import org.openapitools.api.TripApi;
 import org.openapitools.model.ACK;
+import org.openapitools.model.LocationAlert;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 
@@ -182,4 +186,22 @@ public class TripController implements TripApi {
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(trip));
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<List<LocationAlert>> getTripAlerts(
+            @NotNull @Parameter(name = "tripId", description = "Trip id of trip progress to search", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = true) String tripId
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"code\" : \"Alert-001\", \"title\" : \"Illegal dumpyard\" }, { \"code\" : \"Alert-005\", \"title\" : \"Trip completed without reaching destination\" } ]";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }

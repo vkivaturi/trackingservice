@@ -2,7 +2,6 @@ package org.digit.tracking.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.openapitools.model.Audit;
 import org.openapitools.model.Location;
 import org.openapitools.model.Operator;
 import org.slf4j.Logger;
@@ -26,14 +25,14 @@ public class DbUtil {
         return uuid.toString();
     }
 
-    public Audit getAuditDetails(ResultSet rs) throws SQLException {
-        Audit audit = new Audit();
-        audit.setCreatedBy(rs.getString("createdBy"));
-        audit.setCreatedDate(rs.getString("createdDate"));
-        audit.setUpdatedBy(rs.getString("updatedBy"));
-        audit.setUpdatedDate(rs.getString("updatedDate"));
-        return audit;
-    }
+//    public Audit getAuditDetails(ResultSet rs) throws SQLException {
+//        Audit audit = new Audit();
+//        audit.setCreatedBy(rs.getString("createdBy"));
+//        audit.setCreatedDate(rs.getString("createdDate"));
+//        audit.setUpdatedBy(rs.getString("updatedBy"));
+//        audit.setUpdatedDate(rs.getString("updatedDate"));
+//        return audit;
+//    }
 
     //Common method to convert JSON in database to an object list
     public List dbJsonToList(ResultSet rs, String dbColumn, Class<?> T) throws SQLException {

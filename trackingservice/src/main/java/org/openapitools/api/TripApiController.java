@@ -1,6 +1,7 @@
 package org.openapitools.api;
 
 import org.openapitools.model.ACK;
+import org.openapitools.model.LocationAlert;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
 
@@ -28,7 +29,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-01T22:42:27.557196600+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-13T19:54:46.208297200+05:30[Asia/Calcutta]")
 @Controller
 @RequestMapping("${openapi.trackingService.base-path:/api/v3}")
 public class TripApiController implements TripApi {
