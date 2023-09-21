@@ -8,10 +8,7 @@ import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.TrackingApiUtil;
 import org.openapitools.api.ApiUtil;
 import org.openapitools.api.TripApi;
-import org.openapitools.model.ACK;
-import org.openapitools.model.LocationAlert;
-import org.openapitools.model.Trip;
-import org.openapitools.model.TripProgress;
+import org.openapitools.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +22,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import javax.annotation.Generated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -188,20 +187,53 @@ public class TripController implements TripApi {
     }
 
     @Override
-    public ResponseEntity<List<LocationAlert>> getTripAlerts(
-            @NotNull @Parameter(name = "tripId", description = "Trip id of trip progress to search", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = true) String tripId
+    public ResponseEntity<List<AlertInfoResponse>> getTripAlerts(
+            @Parameter(name = "applicationNo", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "applicationNo", required = false) String applicationNo,
+            @Parameter(name = "tripId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId,
+            @Parameter(name = "tenantId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = false) String tenantId
     ) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"code\" : \"Alert-001\", \"title\" : \"Illegal dumpyard\" }, { \"code\" : \"Alert-005\", \"title\" : \"Trip completed without reaching destination\" } ]";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
+        List<AlertInfoResponse> alertInfoResponses = new ArrayList();
+        AlertInfoResponse alertInfoResponse = new AlertInfoResponse();
+
+        List<AlertInfoResponseTripsInner> alertInfoResponseTripsInners = new ArrayList();
+        AlertInfoResponseTripsInner alertInfoResponseTripsInner = new AlertInfoResponseTripsInner();
+
+        //Test data 1
+        alertInfoResponse.setApplicationNo("107-FSM-2023-08-16-000318");
+        alertInfoResponse.setTenantId("pb.amritsar");
+
+        alertInfoResponseTripsInner.setTripId("dbc84ed4-ec7a-4a7e-b1ac-decc4f49391a");
+        alertInfoResponseTripsInner.setAlerts(Arrays.asList("Stoppage","Unverified Closure"));
+        alertInfoResponseTripsInners.add(alertInfoResponseTripsInner);
+
+        alertInfoResponse.setTrips(alertInfoResponseTripsInners);
+
+        alertInfoResponses.add(alertInfoResponse);
+
+        //Test data 2
+        alertInfoResponse = new AlertInfoResponse();
+        alertInfoResponseTripsInners = new ArrayList();
+        alertInfoResponseTripsInner = new AlertInfoResponseTripsInner();
+
+        alertInfoResponse.setApplicationNo("107-FSM-2023-09-13-000319");
+        alertInfoResponse.setTenantId("pb.amritsar");
+
+        alertInfoResponseTripsInner.setTripId("e493e4d0-c419-4d55-9332-7c5f70f72092");
+        alertInfoResponseTripsInner.setAlerts(Arrays.asList("Illegal dumpyard"));
+        alertInfoResponseTripsInners.add(alertInfoResponseTripsInner);
+
+        alertInfoResponseTripsInner = new AlertInfoResponseTripsInner();
+        alertInfoResponseTripsInner.setTripId("e343e4d0-c419-4d55-9332-7c5f70f71123");
+        alertInfoResponseTripsInner.setAlerts(Arrays.asList("Stoppage"));
+        alertInfoResponseTripsInners.add(alertInfoResponseTripsInner);
+
+        alertInfoResponse.setTrips(alertInfoResponseTripsInners);
+
+        alertInfoResponses.add(alertInfoResponse);
+        //
+
+        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(alertInfoResponses));
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 }

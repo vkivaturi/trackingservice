@@ -6,7 +6,7 @@
 package org.openapitools.api;
 
 import org.openapitools.model.ACK;
-import org.openapitools.model.LocationAlert;
+import org.openapitools.model.AlertInfoResponse;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-13T19:54:46.208297200+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-21T23:21:27.235117500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -139,7 +139,9 @@ public interface TripApi {
      * GET /trip/_alerts : Search for trip progress based on alerts
      * Search for trip progress based on alerts
      *
-     * @param tripId Trip id of trip progress to search (required)
+     * @param applicationNo  (optional)
+     * @param tripId  (optional)
+     * @param tenantId  (optional)
      * @return successful operation (status code 200)
      */
     @Operation(
@@ -149,7 +151,7 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = LocationAlert.class)))
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = AlertInfoResponse.class)))
             })
         }
     )
@@ -158,13 +160,15 @@ public interface TripApi {
         value = "/trip/_alerts",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<LocationAlert>> getTripAlerts(
-        @NotNull @Parameter(name = "tripId", description = "Trip id of trip progress to search", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = true) String tripId
+    default ResponseEntity<List<AlertInfoResponse>> getTripAlerts(
+        @Parameter(name = "applicationNo", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "applicationNo", required = false) String applicationNo,
+        @Parameter(name = "tripId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId,
+        @Parameter(name = "tenantId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = false) String tenantId
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"code\" : \"code\", \"title\" : \"title\" }, { \"code\" : \"code\", \"title\" : \"title\" } ]";
+                    String exampleString = "[ { \"applicationNo\" : \"applicationNo\", \"trips\" : [ { \"alerts\" : [ \"alerts\", \"alerts\" ], \"tripId\" : \"tripId\" }, { \"alerts\" : [ \"alerts\", \"alerts\" ], \"tripId\" : \"tripId\" } ], \"tenantId\" : \"tenantId\" }, { \"applicationNo\" : \"applicationNo\", \"trips\" : [ { \"alerts\" : [ \"alerts\", \"alerts\" ], \"tripId\" : \"tripId\" }, { \"alerts\" : [ \"alerts\", \"alerts\" ], \"tripId\" : \"tripId\" } ], \"tenantId\" : \"tenantId\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

@@ -401,10 +401,19 @@ paths:
       description: Search for trip progress based on alerts
       operationId: getTripAlerts
       parameters:
+        - name: applicationNo
+          in: query
+          required: false
+          schema:
+            type: string
         - name: tripId
           in: query
-          description: Trip id of trip progress to search
-          required: true
+          required: false
+          schema:
+            type: string
+        - name: tenantId
+          in: query
+          required: false
           schema:
             type: string
       responses:
@@ -415,7 +424,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/LocationAlert'
+                  $ref: '#/components/schemas/AlertInfoResponse'
 
   /trip/_create:
     post:
@@ -728,6 +737,25 @@ components:
           items:
             type: string
             description: Alert code list that representing anomalies tagged to this trip.
+
+    AlertInfoResponse:
+      type: object
+      properties:
+        applicationNo:
+          type: string
+        tenantId:
+          type: string
+        trips:
+          type: array
+          items:
+            type: object
+            properties:
+              tripId:
+                type: string
+              alerts:
+                type: array
+                items:
+                  type: string
 
     LocationAlert:
       type: object

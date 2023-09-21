@@ -24,6 +24,7 @@ openapi-generator-cli generate -i trackingservice_api.yaml -g spring
 
 
 64.227.176.181
+167.71.225.156
 
 mvn clean package -Dmaven.test.skip=true
 
