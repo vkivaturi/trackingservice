@@ -22,10 +22,12 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "TripProgress", description = "Trip progress is shared by the client continuously as the operator is moving")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-21T23:21:27.235117500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-24T22:54:39.333730900+05:30[Asia/Calcutta]")
 public class TripProgress {
 
   private String id;
+
+  private String tenantId;
 
   private String tripId;
 
@@ -56,6 +58,26 @@ public class TripProgress {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public TripProgress tenantId(String tenantId) {
+    this.tenantId = tenantId;
+    return this;
+  }
+
+  /**
+   * Get tenantId
+   * @return tenantId
+  */
+  
+  @Schema(name = "tenantId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("tenantId")
+  public String getTenantId() {
+    return tenantId;
+  }
+
+  public void setTenantId(String tenantId) {
+    this.tenantId = tenantId;
   }
 
   public TripProgress tripId(String tripId) {
@@ -176,6 +198,7 @@ public class TripProgress {
     }
     TripProgress tripProgress = (TripProgress) o;
     return Objects.equals(this.id, tripProgress.id) &&
+        Objects.equals(this.tenantId, tripProgress.tenantId) &&
         Objects.equals(this.tripId, tripProgress.tripId) &&
         Objects.equals(this.progressReportedTime, tripProgress.progressReportedTime) &&
         Objects.equals(this.progressData, tripProgress.progressData) &&
@@ -185,7 +208,7 @@ public class TripProgress {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, tripId, progressReportedTime, progressData, matchedPoiId, userId);
+    return Objects.hash(id, tenantId, tripId, progressReportedTime, progressData, matchedPoiId, userId);
   }
 
   @Override
@@ -193,6 +216,7 @@ public class TripProgress {
     StringBuilder sb = new StringBuilder();
     sb.append("class TripProgress {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
     sb.append("    tripId: ").append(toIndentedString(tripId)).append("\n");
     sb.append("    progressReportedTime: ").append(toIndentedString(progressReportedTime)).append("\n");
     sb.append("    progressData: ").append(toIndentedString(progressData)).append("\n");

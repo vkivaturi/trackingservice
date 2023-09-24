@@ -294,6 +294,11 @@ paths:
       summary: Update details of an existing trip using its id. Updatable fields include its service code, planned schedule, route id and operator id
       description: Update an existing trip by Id
       operationId: updateTrip
+      parameters:
+        - name: X-authToken
+          in: header
+          schema:
+            type: string
       requestBody:
         description: Update an existent trip in the system
         content:
@@ -316,6 +321,11 @@ paths:
       summary: Provide geo location update of the operator who is on move.
       description: Update an existing trip by Id
       operationId: progressTrip
+      parameters:
+        - name: X-authToken
+          in: header
+          schema:
+            type: string
       requestBody:
         description: Update an existent trip in the system
         content:
@@ -456,6 +466,10 @@ paths:
       description: Search Trip based on multiple filters
       operationId: findTrip
       parameters:
+        - name: X-authToken
+          in: header
+          schema:
+            type: string
         - name: status
           in: query
           description: Status values that need to be considered for filter
@@ -484,6 +498,13 @@ paths:
         - name: operatorId
           in: query
           description: Operator id to whom the trip is assigned
+          required: false
+          explode: true
+          schema:
+            type: string
+        - name: tenantId
+          in: query
+          description: Tenant id
           required: false
           explode: true
           schema:
@@ -692,6 +713,8 @@ components:
         id:
           type: string
           description: Id of the trip
+        tenantId:
+          type: string
         routeId:
           type: string
           description: Id of the assigned route
@@ -788,6 +811,8 @@ components:
         id:
           type: string
           description: Id of the trip progress
+        tenantId:
+          type: string
         tripId:
           type: string
           description: Id of the trip to which this progress update belongs to

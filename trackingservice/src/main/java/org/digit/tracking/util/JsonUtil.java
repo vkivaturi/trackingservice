@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.digit.tracking.data.model.FsmApplication;
+import org.digit.tracking.data.model.FsmVehicleTrip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,14 +29,7 @@ public class JsonUtil {
 
     //FSM entity data is required for vehicle tracking of FSM use cases. Application number and pickup coordinates are the most important ones
     public static List<FsmApplication> getFSMObjectFromJson(String jsonString){
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode jsonObj;
-        try {
-            jsonObj = mapper.readTree(jsonString);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-        Map<String, Object> result = mapper.convertValue(jsonObj, new TypeReference<Map<String, Object>>(){});
+        Map<String, Object> result = getStringObjectMap(jsonString);
 
         //Fetch data in this json path - /fsm/address/geoLocation
         List<Object> listOfApplications = (List<Object>) result.get("fsm");
@@ -48,6 +41,37 @@ public class JsonUtil {
             fsmApplicationList.add(fsmApplication);
         }
         return fsmApplicationList;
+    }
+
+    public static List<FsmVehicleTrip> getFSMVehicleTripObjectFromJson(String jsonString) {
+        Map<String, Object> result = getStringObjectMap(jsonString);
+
+        //Fetch data in this json path - /vehicleTrip
+        List<Object> listOfTrips = (List<Object>) result.get("vehicleTrip");
+
+        List<FsmVehicleTrip> fsmVehicleTripList = new ArrayList<>();
+
+        for (Object vehicleTrip : listOfTrips) {
+            FsmVehicleTrip fsmVehicleTrip = new FsmVehicleTrip();
+            Map<String, Object> mapOfVehicleTrip = (Map<String, Object>) vehicleTrip;
+
+            fsmVehicleTrip.setTripApplicationNo(String.valueOf(mapOfVehicleTrip.get("applicationNo")));
+            fsmVehicleTrip.setTripApplicationStatus(String.valueOf(mapOfVehicleTrip.get("applicationStatus")));
+            //Add to applications list
+            fsmVehicleTripList.add(fsmVehicleTrip);
+        }
+        return fsmVehicleTripList;
+    }
+    private static Map<String, Object> getStringObjectMap(String jsonString) {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode jsonObj;
+        try {
+            jsonObj = mapper.readTree(jsonString);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+        Map<String, Object> result = mapper.convertValue(jsonObj, new TypeReference<Map<String, Object>>(){});
+        return result;
     }
 
     private static FsmApplication getFsmApplication(Map<String, Object> listOfApplication) {

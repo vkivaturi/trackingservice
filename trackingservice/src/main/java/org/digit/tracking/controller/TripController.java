@@ -75,7 +75,8 @@ public class TripController implements TripApi {
 
     @Override
     public ResponseEntity<ACK> progressTrip(
-            @Parameter(name = "TripProgress", description = "Update an existent trip in the system", required = true) @Valid @RequestBody TripProgress tripProgress
+            @Parameter(name = "TripProgress", description = "Update an existent trip in the system", required = true) @Valid @RequestBody TripProgress tripProgress,
+            @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
     ) {
         logger.info("## progressTrip is invoked");
         String tripProgressId = tripService.createdTripProgress(tripProgress);
@@ -141,8 +142,9 @@ public class TripController implements TripApi {
 
         @Override
     public ResponseEntity<ACK> updateTrip(
-            @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip
-    ) {
+            @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip,
+            @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
+        ) {
         logger.info("## updateTrip is invoked");
 
         String tripId = tripService.updateTrip(trip);
@@ -164,15 +166,18 @@ public class TripController implements TripApi {
 
     @Override
     public ResponseEntity<List<Trip>> findTrip(
+            @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken,
             @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
             @Parameter(name = "name", description = "Trip name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "name", required = false) String name,
             @Parameter(name = "userId", description = "user id who created the trip", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
             @Parameter(name = "operatorId", description = "Operator id to whom the trip is assigned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "operatorId", required = false) String operatorId,
+            @Parameter(name = "tenantId", description = "Tenant id", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = false) String tenantId,
             @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
             @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
         logger.info("## findTrip is invoked");
-        List<Trip> trips = tripService.getTripsBySearch(operatorId, name, status, userId);
+        //List<Trip> trips = tripService.getTripsBySearch(operatorId, name, status, userId);
+        List<Trip> trips = tripService.getFsmTripsForDriver(operatorId, xAuthToken,tenantId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(trips));
         return new ResponseEntity<>(HttpStatus.OK);
     }

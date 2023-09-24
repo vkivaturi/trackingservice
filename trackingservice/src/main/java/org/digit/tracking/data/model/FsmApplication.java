@@ -1,5 +1,7 @@
 package org.digit.tracking.data.model;
 
+import java.util.List;
+
 //Entity with fields retrieved from FSM system's citizen application
 public class FsmApplication {
     private String tenantId;
@@ -8,6 +10,7 @@ public class FsmApplication {
     private String pickupLocationLatitude;
     private String pickupLocationLongitude;
     private String driverId;
+    private List<FsmVehicleTrip> fsmVehicleTripList;
 
     public String getTenantId() {
         return tenantId;
@@ -55,5 +58,13 @@ public class FsmApplication {
 
     public void setDriverId(String driverId) {
         this.driverId = driverId;
+    }
+
+    public List<FsmVehicleTrip> getFsmVehicleTripList() {
+        return fsmVehicleTripList;
+    }
+
+    public void setFsmVehicleTripList(List<FsmVehicleTrip> fsmVehicleTripList) {
+        this.fsmVehicleTripList = fsmVehicleTripList;
     }
 }

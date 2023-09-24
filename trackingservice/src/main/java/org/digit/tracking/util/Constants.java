@@ -7,5 +7,7 @@ public class Constants {
     final public static String RULE_METHOD_PREFIX = "rule";
     final public static int POI_MATCH_THRESHOLD_METERS = 200;
     final public static String MONITORING_USER_ID = "MonitoringService";
+    final public static String FMS_APPLICATION_URL = "https://unified-dev.digit.org/fsm/v1/";
+    final public static String FMS_VEHICLE_TRIP_URL = "https://unified-dev.digit.org/vehicle/trip/v1/";
 
 }

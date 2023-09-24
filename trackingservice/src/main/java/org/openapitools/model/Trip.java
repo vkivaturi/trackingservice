@@ -22,10 +22,12 @@ import javax.annotation.Generated;
  * Trip
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-21T23:21:27.235117500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-24T22:54:39.333730900+05:30[Asia/Calcutta]")
 public class Trip {
 
   private String id;
+
+  private String tenantId;
 
   private String routeId;
 
@@ -107,6 +109,26 @@ public class Trip {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public Trip tenantId(String tenantId) {
+    this.tenantId = tenantId;
+    return this;
+  }
+
+  /**
+   * Get tenantId
+   * @return tenantId
+  */
+  
+  @Schema(name = "tenantId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("tenantId")
+  public String getTenantId() {
+    return tenantId;
+  }
+
+  public void setTenantId(String tenantId) {
+    this.tenantId = tenantId;
   }
 
   public Trip routeId(String routeId) {
@@ -347,6 +369,7 @@ public class Trip {
     }
     Trip trip = (Trip) o;
     return Objects.equals(this.id, trip.id) &&
+        Objects.equals(this.tenantId, trip.tenantId) &&
         Objects.equals(this.routeId, trip.routeId) &&
         Objects.equals(this.name, trip.name) &&
         Objects.equals(this.serviceCode, trip.serviceCode) &&
@@ -362,7 +385,7 @@ public class Trip {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, routeId, name, serviceCode, status, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId, locationAlerts);
+    return Objects.hash(id, tenantId, routeId, name, serviceCode, status, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId, locationAlerts);
   }
 
   @Override
@@ -370,6 +393,7 @@ public class Trip {
     StringBuilder sb = new StringBuilder();
     sb.append("class Trip {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
     sb.append("    routeId: ").append(toIndentedString(routeId)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    serviceCode: ").append(toIndentedString(serviceCode)).append("\n");

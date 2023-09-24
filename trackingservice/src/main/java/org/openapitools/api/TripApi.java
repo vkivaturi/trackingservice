@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-21T23:21:27.235117500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-24T22:54:39.333730900+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -89,10 +89,12 @@ public interface TripApi {
      * GET /trip/_search : Find trip using supported parameters
      * Search Trip based on multiple filters
      *
+     * @param xAuthToken  (optional)
      * @param status Status values that need to be considered for filter (optional, default to active)
      * @param name Trip name that needs to be considered for filter (optional)
      * @param userId user id who created the trip (optional)
      * @param operatorId Operator id to whom the trip is assigned (optional)
+     * @param tenantId Tenant id (optional)
      * @param pageSize  (optional)
      * @param pageNumber  (optional)
      * @return successful operation (status code 200)
@@ -114,17 +116,19 @@ public interface TripApi {
         produces = { "application/json" }
     )
     default ResponseEntity<List<Trip>> findTrip(
+        @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken,
         @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
         @Parameter(name = "name", description = "Trip name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "name", required = false) String name,
         @Parameter(name = "userId", description = "user id who created the trip", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
         @Parameter(name = "operatorId", description = "Operator id to whom the trip is assigned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "operatorId", required = false) String operatorId,
+        @Parameter(name = "tenantId", description = "Tenant id", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = false) String tenantId,
         @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
         @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }, { \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" } ]";
+                    String exampleString = "[ { \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"status\" : \"created\" }, { \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"status\" : \"created\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -208,7 +212,7 @@ public interface TripApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"routeId\" : \"routeId\", \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"status\" : \"created\" }";
+                    String exampleString = "{ \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"status\" : \"created\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -254,7 +258,7 @@ public interface TripApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"progressReportedTime\" : \"2023-07-30T10:24:10.547Z\", \"progressData\" : [ { \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"progressTime\" : \"2023-07-30T10:24:10.547Z\" }, { \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"progressTime\" : \"2023-07-30T10:24:10.547Z\" } ], \"matchedPoiId\" : \"matchedPoiId\", \"tripId\" : \"tripId\", \"id\" : \"id\", \"userId\" : \"rajan123\" }";
+                    String exampleString = "{ \"tenantId\" : \"tenantId\", \"progressReportedTime\" : \"2023-07-30T10:24:10.547Z\", \"progressData\" : [ { \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"progressTime\" : \"2023-07-30T10:24:10.547Z\" }, { \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"progressTime\" : \"2023-07-30T10:24:10.547Z\" } ], \"matchedPoiId\" : \"matchedPoiId\", \"tripId\" : \"tripId\", \"id\" : \"id\", \"userId\" : \"rajan123\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -270,6 +274,7 @@ public interface TripApi {
      * Update an existing trip by Id
      *
      * @param tripProgress Update an existent trip in the system (required)
+     * @param xAuthToken  (optional)
      * @return Successful operation (status code 200)
      */
     @Operation(
@@ -290,7 +295,8 @@ public interface TripApi {
         consumes = { "application/json" }
     )
     default ResponseEntity<ACK> progressTrip(
-        @Parameter(name = "TripProgress", description = "Update an existent trip in the system", required = true) @Valid @RequestBody TripProgress tripProgress
+        @Parameter(name = "TripProgress", description = "Update an existent trip in the system", required = true) @Valid @RequestBody TripProgress tripProgress,
+        @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
@@ -311,6 +317,7 @@ public interface TripApi {
      * Update an existing trip by Id
      *
      * @param trip Update an existent trip in the system (required)
+     * @param xAuthToken  (optional)
      * @return Successful operation (status code 200)
      */
     @Operation(
@@ -331,7 +338,8 @@ public interface TripApi {
         consumes = { "application/json" }
     )
     default ResponseEntity<ACK> updateTrip(
-        @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip
+        @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip,
+        @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
