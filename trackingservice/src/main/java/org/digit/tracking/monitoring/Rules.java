@@ -14,6 +14,9 @@ import java.util.List;
 
 import static org.digit.tracking.util.Constants.MONITORING_USER_ID;
 import static org.digit.tracking.util.Constants.POI_MATCH_THRESHOLD_METERS;
+
+//Rules class hold the methods that are required to load event specific information from database.
+//Rules class also has the actual methods required to execute various rules
 @Service
 public class Rules {
     Logger logger = LoggerFactory.getLogger(Rules.class);
@@ -66,7 +69,7 @@ public class Rules {
         ruleModel.setDistanceFromPoiMeters(matchingPoiList.get(0).getDistanceMeters());
         ruleModel.setProgressId(progressId);
         ruleModel.setTripId(tripId);
-        ruleModel.setLocationAlerts(trip.getLocationAlerts());
+        ruleModel.setAlerts(trip.getAlerts());
         ruleModel.setRouteEndPoi(route.getEndPoi());
 
         logger.info("## Matched POI, Distance from POI : " + ruleModel.getMatchedPoi() + " " + ruleModel.getDistanceFromPoiMeters());
@@ -87,11 +90,11 @@ public class Rules {
     //Rule - If the moving asset is spotted at a POI with alert mapped, update trip progress and send notification
     public void ruleUpdateTripProgressAndNotifyAlert(RuleModel ruleModel) {
         logger.info("## ruleUpdateTripProgressAndNotifyAlert method");
-        if (ruleModel.getLocationAlerts() != null ){
+        if (ruleModel.getAlerts() != null ){
             //Create a trip entity with alerts info and update the db
             Trip trip = new Trip();
             trip.setId(ruleModel.getTripId());
-            trip.setLocationAlerts(ruleModel.getLocationAlerts());
+            trip.setAlerts(ruleModel.getAlerts());
             tripDao.updateTrip(trip);
         }
     }

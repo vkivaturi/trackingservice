@@ -12,6 +12,8 @@ import java.lang.reflect.Method;
 import static org.digit.tracking.util.Constants.RULE_LOAD_METHOD;
 import static org.digit.tracking.util.Constants.RULE_METHOD_PREFIX;
 
+//Rule engine was supposed to be a separate service. Due to bandwidth constraints, this logic is included in the tracking service itself
+//This service contains method to execute rule methods dynamically
 @Service
 public class RuleEngine {
     //Rules rules = new Rules();

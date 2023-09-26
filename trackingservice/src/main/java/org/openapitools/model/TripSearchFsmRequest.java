@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.openapitools.model.RequestInfoWrapper;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -15,54 +17,33 @@ import java.util.*;
 import javax.annotation.Generated;
 
 /**
- * Location
+ * TripSearchFsmRequest
  */
 
+@JsonTypeName("tripSearchFsm_request")
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-26T09:46:59.545102800+05:30[Asia/Calcutta]")
-public class Location {
+public class TripSearchFsmRequest {
 
-  private Float latitude;
+  private RequestInfoWrapper requestInfoWrapper;
 
-  private Float longitude;
-
-  public Location latitude(Float latitude) {
-    this.latitude = latitude;
+  public TripSearchFsmRequest requestInfoWrapper(RequestInfoWrapper requestInfoWrapper) {
+    this.requestInfoWrapper = requestInfoWrapper;
     return this;
   }
 
   /**
-   * Get latitude
-   * @return latitude
+   * Get requestInfoWrapper
+   * @return requestInfoWrapper
   */
-  
-  @Schema(name = "latitude", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("latitude")
-  public Float getLatitude() {
-    return latitude;
+  @Valid 
+  @Schema(name = "requestInfoWrapper", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("requestInfoWrapper")
+  public RequestInfoWrapper getRequestInfoWrapper() {
+    return requestInfoWrapper;
   }
 
-  public void setLatitude(Float latitude) {
-    this.latitude = latitude;
-  }
-
-  public Location longitude(Float longitude) {
-    this.longitude = longitude;
-    return this;
-  }
-
-  /**
-   * Get longitude
-   * @return longitude
-  */
-  
-  @Schema(name = "longitude", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("longitude")
-  public Float getLongitude() {
-    return longitude;
-  }
-
-  public void setLongitude(Float longitude) {
-    this.longitude = longitude;
+  public void setRequestInfoWrapper(RequestInfoWrapper requestInfoWrapper) {
+    this.requestInfoWrapper = requestInfoWrapper;
   }
 
   @Override
@@ -73,22 +54,20 @@ public class Location {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Location location = (Location) o;
-    return Objects.equals(this.latitude, location.latitude) &&
-        Objects.equals(this.longitude, location.longitude);
+    TripSearchFsmRequest tripSearchFsmRequest = (TripSearchFsmRequest) o;
+    return Objects.equals(this.requestInfoWrapper, tripSearchFsmRequest.requestInfoWrapper);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(latitude, longitude);
+    return Objects.hash(requestInfoWrapper);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Location {\n");
-    sb.append("    latitude: ").append(toIndentedString(latitude)).append("\n");
-    sb.append("    longitude: ").append(toIndentedString(longitude)).append("\n");
+    sb.append("class TripSearchFsmRequest {\n");
+    sb.append("    requestInfoWrapper: ").append(toIndentedString(requestInfoWrapper)).append("\n");
     sb.append("}");
     return sb.toString();
   }

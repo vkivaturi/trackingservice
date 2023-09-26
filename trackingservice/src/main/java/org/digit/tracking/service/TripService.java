@@ -28,9 +28,9 @@ public class TripService {
     @Autowired
     RuleEngine ruleEngine;
 
-    public List<Trip> getTripsBySearch(String operatorId, String tripName, String status, String userId) {
-        return tripDao.fetchTripbyFilters(operatorId, tripName, status, userId);
-    }
+//    public List<Trip> getTripsByFsmSearch(String operatorId, String tripName, String status, String userId) {
+//        return tripDao.fetchTripbyFilters(operatorId, tripName, status, userId);
+//    }
 
     //Fetch trips from FSM application
     public List<Trip> getFsmTripsForDriver(String driverId, String authToken, String tenantId) {
@@ -39,7 +39,7 @@ public class TripService {
 
         //Step 2 - Fetch list of trip mapped to each application
         //TODO Switch to passing multiple application nos to target API
-        for(FsmApplication fsmApplication : fsmApplicationList) {
+        for (FsmApplication fsmApplication : fsmApplicationList) {
             //Fetch the trip list for the application and add list back to the main applications list
             fsmApplication.setFsmVehicleTripList(
                     tripSao.fetchFsmTripsForApplication(
@@ -49,8 +49,8 @@ public class TripService {
         //TODO - Can use a common Trip entity in future
         //Step 3 - Map to vehicle tracking Trip entity
         List<Trip> tripList = new ArrayList<>();
-        for(FsmApplication fsmApplication : fsmApplicationList) {
-            for(FsmVehicleTrip fsmVehicleTrip : fsmApplication.getFsmVehicleTripList()){
+        for (FsmApplication fsmApplication : fsmApplicationList) {
+            for (FsmVehicleTrip fsmVehicleTrip : fsmApplication.getFsmVehicleTripList()) {
                 Trip trip = new Trip();
                 trip.setId(fsmVehicleTrip.getTripApplicationNo());
                 //Add each trip to the main list
@@ -58,6 +58,10 @@ public class TripService {
             }
         }
         return tripList;
+    }
+
+    public List<Trip> getTripsByLocalSearch(String status, String userId, String operatorId, String tenantId, String businessService, String refernceNos) {
+        return tripDao.fetchTripbyFilters(status, userId, operatorId, tenantId, businessService, refernceNos);
     }
 
     public Trip getTripById(String id) {

@@ -1,7 +1,7 @@
 package org.digit.tracking.monitoring;
 
 import java.util.List;
-
+//RuleModel holds the data related to an event. Rules are then executed using this data
 public class RuleModel {
     private String matchedPoi;
     private int distanceFromPoiMeters;
@@ -10,7 +10,7 @@ public class RuleModel {
     private boolean matchedPoiIsTripEnd;
     private String progressId;
     private String tripId;
-    private List<String> locationAlerts;
+    private String alerts;
     private String routeEndPoi;
     public String getMatchedPoi() {
         return matchedPoi;
@@ -65,11 +65,11 @@ public class RuleModel {
     public void setTripId(String tripId) {
         this.tripId = tripId;
     }
-    public List<String> getLocationAlerts() {
-        return locationAlerts;
+    public String getAlerts() {
+        return alerts;
     }
-    public void setLocationAlerts(List<String> locationAlerts) {
-        this.locationAlerts = locationAlerts;
+    public void setAlerts(String alerts) {
+        this.alerts = alerts;
     }
     public String getRouteEndPoi() {
         return routeEndPoi;

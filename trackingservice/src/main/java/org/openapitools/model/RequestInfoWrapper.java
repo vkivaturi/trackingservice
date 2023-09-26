@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import org.openapitools.model.RequestInfo;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -15,54 +16,32 @@ import java.util.*;
 import javax.annotation.Generated;
 
 /**
- * Location
+ * RequestInfoWrapper
  */
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-26T09:46:59.545102800+05:30[Asia/Calcutta]")
-public class Location {
+public class RequestInfoWrapper {
 
-  private Float latitude;
+  private RequestInfo requestInfo;
 
-  private Float longitude;
-
-  public Location latitude(Float latitude) {
-    this.latitude = latitude;
+  public RequestInfoWrapper requestInfo(RequestInfo requestInfo) {
+    this.requestInfo = requestInfo;
     return this;
   }
 
   /**
-   * Get latitude
-   * @return latitude
+   * Get requestInfo
+   * @return requestInfo
   */
-  
-  @Schema(name = "latitude", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("latitude")
-  public Float getLatitude() {
-    return latitude;
+  @Valid 
+  @Schema(name = "RequestInfo", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("RequestInfo")
+  public RequestInfo getRequestInfo() {
+    return requestInfo;
   }
 
-  public void setLatitude(Float latitude) {
-    this.latitude = latitude;
-  }
-
-  public Location longitude(Float longitude) {
-    this.longitude = longitude;
-    return this;
-  }
-
-  /**
-   * Get longitude
-   * @return longitude
-  */
-  
-  @Schema(name = "longitude", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("longitude")
-  public Float getLongitude() {
-    return longitude;
-  }
-
-  public void setLongitude(Float longitude) {
-    this.longitude = longitude;
+  public void setRequestInfo(RequestInfo requestInfo) {
+    this.requestInfo = requestInfo;
   }
 
   @Override
@@ -73,22 +52,20 @@ public class Location {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Location location = (Location) o;
-    return Objects.equals(this.latitude, location.latitude) &&
-        Objects.equals(this.longitude, location.longitude);
+    RequestInfoWrapper requestInfoWrapper = (RequestInfoWrapper) o;
+    return Objects.equals(this.requestInfo, requestInfoWrapper.requestInfo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(latitude, longitude);
+    return Objects.hash(requestInfo);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Location {\n");
-    sb.append("    latitude: ").append(toIndentedString(latitude)).append("\n");
-    sb.append("    longitude: ").append(toIndentedString(longitude)).append("\n");
+    sb.append("class RequestInfoWrapper {\n");
+    sb.append("    requestInfo: ").append(toIndentedString(requestInfo)).append("\n");
     sb.append("}");
     return sb.toString();
   }

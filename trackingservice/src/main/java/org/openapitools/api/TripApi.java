@@ -9,6 +9,7 @@ import org.openapitools.model.ACK;
 import org.openapitools.model.AlertInfoResponse;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
+import org.openapitools.model.TripSearchFsmRequest;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,7 +36,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-24T22:54:39.333730900+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-26T09:46:59.545102800+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -90,13 +91,12 @@ public interface TripApi {
      * Search Trip based on multiple filters
      *
      * @param xAuthToken  (optional)
-     * @param status Status values that need to be considered for filter (optional, default to active)
+     * @param status Status values that need to be considered for filter (optional)
      * @param name Trip name that needs to be considered for filter (optional)
      * @param userId user id who created the trip (optional)
      * @param operatorId Operator id to whom the trip is assigned (optional)
      * @param tenantId Tenant id (optional)
-     * @param pageSize  (optional)
-     * @param pageNumber  (optional)
+     * @param referenceNos  (optional)
      * @return successful operation (status code 200)
      */
     @Operation(
@@ -117,18 +117,17 @@ public interface TripApi {
     )
     default ResponseEntity<List<Trip>> findTrip(
         @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken,
-        @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
+        @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false) String status,
         @Parameter(name = "name", description = "Trip name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "name", required = false) String name,
         @Parameter(name = "userId", description = "user id who created the trip", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
         @Parameter(name = "operatorId", description = "Operator id to whom the trip is assigned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "operatorId", required = false) String operatorId,
         @Parameter(name = "tenantId", description = "Tenant id", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = false) String tenantId,
-        @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-        @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
+        @Parameter(name = "referenceNos", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "referenceNos", required = false) String referenceNos
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"status\" : \"created\" }, { \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"status\" : \"created\" } ]";
+                    String exampleString = "[ { \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"referenceNo\" : \"referenceNo\", \"serviceCode\" : \"serviceCode\", \"tripEndType\" : \"tripEndType\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"alerts\" : \"alerts\", \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"status\" : \"created\" }, { \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"referenceNo\" : \"referenceNo\", \"serviceCode\" : \"serviceCode\", \"tripEndType\" : \"tripEndType\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"alerts\" : \"alerts\", \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"status\" : \"created\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -212,7 +211,7 @@ public interface TripApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"serviceCode\" : \"serviceCode\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"locationAlerts\" : [ \"locationAlerts\", \"locationAlerts\" ], \"status\" : \"created\" }";
+                    String exampleString = "{ \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"referenceNo\" : \"referenceNo\", \"serviceCode\" : \"serviceCode\", \"tripEndType\" : \"tripEndType\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"alerts\" : \"alerts\", \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"status\" : \"created\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -302,6 +301,56 @@ public interface TripApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"id\" : \"116bd8d3-e5a9-4e1c-86dc-b2a9c17e3fb1\", \"responseMessage\" : \"Update is succesful\", \"responseCode\" : \"CODE-123\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /trip/_searchfsm
+     *
+     * @param tenantId Tenant id (required)
+     * @param status Status values that need to be considered for filter (optional)
+     * @param userId user id who created the trip (optional)
+     * @param operatorId Operator id to whom the trip is assigned (optional)
+     * @param referenceNos  (optional)
+     * @param businessService  (optional)
+     * @param tripSearchFsmRequest  (optional)
+     * @return successful operation (status code 200)
+     */
+    @Operation(
+        operationId = "tripSearchFsm",
+        tags = { "Trip" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "successful operation", content = {
+                @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Trip.class)))
+            })
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.POST,
+        value = "/trip/_searchfsm",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<List<Trip>> tripSearchFsm(
+        @NotNull @Parameter(name = "tenantId", description = "Tenant id", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = true) String tenantId,
+        @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false) String status,
+        @Parameter(name = "userId", description = "user id who created the trip", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
+        @Parameter(name = "operatorId", description = "Operator id to whom the trip is assigned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "operatorId", required = false) String operatorId,
+        @Parameter(name = "referenceNos", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "referenceNos", required = false) String referenceNos,
+        @Parameter(name = "businessService", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "businessService", required = false) String businessService,
+        @Parameter(name = "TripSearchFsmRequest", description = "") @Valid @RequestBody(required = false) TripSearchFsmRequest tripSearchFsmRequest
+    ) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "[ { \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"referenceNo\" : \"referenceNo\", \"serviceCode\" : \"serviceCode\", \"tripEndType\" : \"tripEndType\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"alerts\" : \"alerts\", \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"status\" : \"created\" }, { \"actualStartTime\" : \"2023-07-30T10:24:10.547Z\", \"referenceNo\" : \"referenceNo\", \"serviceCode\" : \"serviceCode\", \"tripEndType\" : \"tripEndType\", \"userId\" : \"rajan123\", \"operator\" : { \"name\" : \"name\", \"contactNumber\" : \"contactNumber\", \"vehicleNumber\" : \"vehicleNumber\", \"id\" : \"id\", \"email\" : \"email\" }, \"alerts\" : \"alerts\", \"routeId\" : \"routeId\", \"plannedStartTime\" : \"2023-07-30T10:24:10.547Z\", \"plannedEndTime\" : \"2023-07-30T10:24:10.547Z\", \"tenantId\" : \"tenantId\", \"name\" : \"name\", \"actualEndTime\" : \"2023-07-30T10:24:10.547Z\", \"id\" : \"id\", \"status\" : \"created\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

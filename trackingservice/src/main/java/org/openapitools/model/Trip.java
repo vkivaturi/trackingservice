@@ -5,8 +5,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import java.util.ArrayList;
-import java.util.List;
 import org.openapitools.model.Operator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -22,12 +20,14 @@ import javax.annotation.Generated;
  * Trip
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-24T22:54:39.333730900+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-26T09:46:59.545102800+05:30[Asia/Calcutta]")
 public class Trip {
 
   private String id;
 
   private String tenantId;
+
+  private String referenceNo;
 
   private String routeId;
 
@@ -39,13 +39,13 @@ public class Trip {
    * Trip status as progress is made
    */
   public enum StatusEnum {
-    CREATED("created"),
+    NOTSTARTED("NotStarted"),
     
-    IN_PROGRESS("in_progress"),
+    ONGOING("Ongoing"),
     
-    COMPLETED("completed"),
+    COMPLETED("Completed"),
     
-    CANCELLED("cancelled");
+    CANCELLED("Cancelled");
 
     private String value;
 
@@ -76,6 +76,8 @@ public class Trip {
 
   private StatusEnum status;
 
+  private String tripEndType;
+
   private Operator operator;
 
   private String plannedStartTime;
@@ -88,8 +90,7 @@ public class Trip {
 
   private String userId;
 
-  @Valid
-  private List<String> locationAlerts;
+  private String alerts;
 
   public Trip id(String id) {
     this.id = id;
@@ -129,6 +130,26 @@ public class Trip {
 
   public void setTenantId(String tenantId) {
     this.tenantId = tenantId;
+  }
+
+  public Trip referenceNo(String referenceNo) {
+    this.referenceNo = referenceNo;
+    return this;
+  }
+
+  /**
+   * Application number to which this trip belongs to
+   * @return referenceNo
+  */
+  
+  @Schema(name = "referenceNo", description = "Application number to which this trip belongs to", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("referenceNo")
+  public String getReferenceNo() {
+    return referenceNo;
+  }
+
+  public void setReferenceNo(String referenceNo) {
+    this.referenceNo = referenceNo;
   }
 
   public Trip routeId(String routeId) {
@@ -209,6 +230,26 @@ public class Trip {
 
   public void setStatus(StatusEnum status) {
     this.status = status;
+  }
+
+  public Trip tripEndType(String tripEndType) {
+    this.tripEndType = tripEndType;
+    return this;
+  }
+
+  /**
+   * End type code for the trip (system, FSTPO, driver etc )
+   * @return tripEndType
+  */
+  
+  @Schema(name = "tripEndType", description = "End type code for the trip (system, FSTPO, driver etc )", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("tripEndType")
+  public String getTripEndType() {
+    return tripEndType;
+  }
+
+  public void setTripEndType(String tripEndType) {
+    this.tripEndType = tripEndType;
   }
 
   public Trip operator(Operator operator) {
@@ -331,32 +372,24 @@ public class Trip {
     this.userId = userId;
   }
 
-  public Trip locationAlerts(List<String> locationAlerts) {
-    this.locationAlerts = locationAlerts;
-    return this;
-  }
-
-  public Trip addLocationAlertsItem(String locationAlertsItem) {
-    if (this.locationAlerts == null) {
-      this.locationAlerts = new ArrayList<>();
-    }
-    this.locationAlerts.add(locationAlertsItem);
+  public Trip alerts(String alerts) {
+    this.alerts = alerts;
     return this;
   }
 
   /**
-   * Get locationAlerts
-   * @return locationAlerts
+   * Alert code list that representing anomalies tagged to this trip.
+   * @return alerts
   */
   
-  @Schema(name = "locationAlerts", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("locationAlerts")
-  public List<String> getLocationAlerts() {
-    return locationAlerts;
+  @Schema(name = "alerts", description = "Alert code list that representing anomalies tagged to this trip.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("alerts")
+  public String getAlerts() {
+    return alerts;
   }
 
-  public void setLocationAlerts(List<String> locationAlerts) {
-    this.locationAlerts = locationAlerts;
+  public void setAlerts(String alerts) {
+    this.alerts = alerts;
   }
 
   @Override
@@ -370,22 +403,24 @@ public class Trip {
     Trip trip = (Trip) o;
     return Objects.equals(this.id, trip.id) &&
         Objects.equals(this.tenantId, trip.tenantId) &&
+        Objects.equals(this.referenceNo, trip.referenceNo) &&
         Objects.equals(this.routeId, trip.routeId) &&
         Objects.equals(this.name, trip.name) &&
         Objects.equals(this.serviceCode, trip.serviceCode) &&
         Objects.equals(this.status, trip.status) &&
+        Objects.equals(this.tripEndType, trip.tripEndType) &&
         Objects.equals(this.operator, trip.operator) &&
         Objects.equals(this.plannedStartTime, trip.plannedStartTime) &&
         Objects.equals(this.plannedEndTime, trip.plannedEndTime) &&
         Objects.equals(this.actualStartTime, trip.actualStartTime) &&
         Objects.equals(this.actualEndTime, trip.actualEndTime) &&
         Objects.equals(this.userId, trip.userId) &&
-        Objects.equals(this.locationAlerts, trip.locationAlerts);
+        Objects.equals(this.alerts, trip.alerts);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, tenantId, routeId, name, serviceCode, status, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId, locationAlerts);
+    return Objects.hash(id, tenantId, referenceNo, routeId, name, serviceCode, status, tripEndType, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId, alerts);
   }
 
   @Override
@@ -394,17 +429,19 @@ public class Trip {
     sb.append("class Trip {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
+    sb.append("    referenceNo: ").append(toIndentedString(referenceNo)).append("\n");
     sb.append("    routeId: ").append(toIndentedString(routeId)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    serviceCode: ").append(toIndentedString(serviceCode)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    tripEndType: ").append(toIndentedString(tripEndType)).append("\n");
     sb.append("    operator: ").append(toIndentedString(operator)).append("\n");
     sb.append("    plannedStartTime: ").append(toIndentedString(plannedStartTime)).append("\n");
     sb.append("    plannedEndTime: ").append(toIndentedString(plannedEndTime)).append("\n");
     sb.append("    actualStartTime: ").append(toIndentedString(actualStartTime)).append("\n");
     sb.append("    actualEndTime: ").append(toIndentedString(actualEndTime)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
-    sb.append("    locationAlerts: ").append(toIndentedString(locationAlerts)).append("\n");
+    sb.append("    alerts: ").append(toIndentedString(alerts)).append("\n");
     sb.append("}");
     return sb.toString();
   }

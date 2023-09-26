@@ -65,7 +65,7 @@ public class TripController implements TripApi {
             ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
             TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.OK);
-        }else {
+        } else {
             ack.setResponseCode("CODE-002");
             ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
             TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
@@ -90,7 +90,7 @@ public class TripController implements TripApi {
             ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
             TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.OK);
-        }else {
+        } else {
             ack.setResponseCode("CODE-002");
             ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
             TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
@@ -132,7 +132,7 @@ public class TripController implements TripApi {
             ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
             TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.OK);
-        }else {
+        } else {
             ack.setResponseCode("CODE-002");
             ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
             TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
@@ -140,11 +140,11 @@ public class TripController implements TripApi {
         }
     }
 
-        @Override
+    @Override
     public ResponseEntity<ACK> updateTrip(
             @Parameter(name = "Trip", description = "Update an existent trip in the system", required = true) @Valid @RequestBody Trip trip,
             @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
-        ) {
+    ) {
         logger.info("## updateTrip is invoked");
 
         String tripId = tripService.updateTrip(trip);
@@ -156,7 +156,7 @@ public class TripController implements TripApi {
             ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
             TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
             return new ResponseEntity<>(HttpStatus.OK);
-        }else {
+        } else {
             ack.setResponseCode("CODE-002");
             ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
             TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
@@ -167,20 +167,20 @@ public class TripController implements TripApi {
     @Override
     public ResponseEntity<List<Trip>> findTrip(
             @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken,
-            @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false, defaultValue = "active") String status,
+            @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false) String status,
             @Parameter(name = "name", description = "Trip name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "name", required = false) String name,
             @Parameter(name = "userId", description = "user id who created the trip", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
             @Parameter(name = "operatorId", description = "Operator id to whom the trip is assigned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "operatorId", required = false) String operatorId,
             @Parameter(name = "tenantId", description = "Tenant id", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = false) String tenantId,
-            @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
+            @Parameter(name = "referenceNos", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "referenceNos", required = false) String referenceNos
     ) {
         logger.info("## findTrip is invoked");
         //List<Trip> trips = tripService.getTripsBySearch(operatorId, name, status, userId);
-        List<Trip> trips = tripService.getFsmTripsForDriver(operatorId, xAuthToken,tenantId);
+        List<Trip> trips = tripService.getFsmTripsForDriver(operatorId, xAuthToken, tenantId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(trips));
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     @Override
     public ResponseEntity<Trip> getTripById(
             @Parameter(name = "tripId", description = "ID of Trip to return", required = true, in = ParameterIn.PATH) @PathVariable("tripId") String tripId
@@ -208,7 +208,7 @@ public class TripController implements TripApi {
         alertInfoResponse.setTenantId("pb.amritsar");
 
         alertInfoResponseTripsInner.setTripId("dbc84ed4-ec7a-4a7e-b1ac-decc4f49391a");
-        alertInfoResponseTripsInner.setAlerts(Arrays.asList("Stoppage","Unverified Closure"));
+        alertInfoResponseTripsInner.setAlerts(Arrays.asList("Stoppage", "Unverified Closure"));
         alertInfoResponseTripsInners.add(alertInfoResponseTripsInner);
 
         alertInfoResponse.setTrips(alertInfoResponseTripsInners);
@@ -241,4 +241,20 @@ public class TripController implements TripApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    //Process requests from FSM and respond with Trip data from local database
+    @Override
+    public ResponseEntity<List<Trip>> tripSearchFsm(
+            @NotNull @Parameter(name = "tenantId", description = "Tenant id", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = true) String tenantId,
+            @Parameter(name = "status", description = "Status values that need to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "status", required = false) String status,
+            @Parameter(name = "userId", description = "user id who created the trip", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
+            @Parameter(name = "operatorId", description = "Operator id to whom the trip is assigned", in = ParameterIn.QUERY) @Valid @RequestParam(value = "operatorId", required = false) String operatorId,
+            @Parameter(name = "referenceNos", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "referenceNos", required = false) String referenceNos,
+            @Parameter(name = "businessService", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "businessService", required = false) String businessService,
+            @Parameter(name = "TripSearchFsmRequest", description = "") @Valid @RequestBody(required = false) TripSearchFsmRequest tripSearchFsmRequest
+    ) {
+        logger.info("## tripSearchFsm is invoked");
+        List<Trip> trips = tripService.getTripsByLocalSearch(status, userId, operatorId, tenantId, businessService, referenceNos);
+        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(trips));
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

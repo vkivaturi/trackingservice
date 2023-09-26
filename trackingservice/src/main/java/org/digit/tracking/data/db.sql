@@ -41,6 +41,8 @@ CREATE TABLE "Route" (
   KEY "Route_userId_IDX" ("userId")
 );
 
+-- trackingdb.Trip definition
+
 CREATE TABLE "Trip" (
   "id" varchar(100) NOT NULL,
   "operator" json DEFAULT NULL,
@@ -56,7 +58,10 @@ CREATE TABLE "Trip" (
   "createdBy" varchar(100) DEFAULT NULL,
   "updatedDate" varchar(100) DEFAULT NULL,
   "updatedBy" varchar(100) DEFAULT NULL,
-  "locationAlerts" json DEFAULT NULL,
+  "tenantId" varchar(100) DEFAULT NULL,
+  "tripEndType" varchar(100) DEFAULT NULL,
+  "referenceNo" varchar(100) DEFAULT NULL,
+  "alerts" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id")
 );
 
@@ -93,37 +98,13 @@ CREATE TABLE "LocationAlert" (
   PRIMARY KEY ("code")
 );
 
--- trackingdb.Rule definition
+-- trackingdb.TripAlert definition
 
-CREATE TABLE "Rule" (
-  "ruleCode" varchar(100) NOT NULL,
-  "description" varchar(1000) DEFAULT NULL,
-  "implCode" varchar(100) DEFAULT NULL,
-  PRIMARY KEY ("ruleCode"),
-  KEY "Rule_ruleCode_IDX" ("ruleCode")
+CREATE TABLE "TripAlert" (
+  "id" varchar(100) NOT NULL,
+  "tripId" varchar(100) DEFAULT NULL,
+  "tripProgressId" varchar(100) DEFAULT NULL,
+  "alert" varchar(100) DEFAULT NULL,
+  "alertDateTime" varchar(100) DEFAULT NULL,
+  PRIMARY KEY ("id")
 );
-
--- trackingdb.RuleMapping definition
-
-CREATE TABLE "RuleMapping" (
-  "id" bigint NOT NULL AUTO_INCREMENT,
-  "ruleCode" varchar(100) NOT NULL,
-  "tenantId" varchar(100) DEFAULT NULL,
-  "serviceCode" varchar(100) DEFAULT NULL,
-  PRIMARY KEY ("id"),
-  KEY "RuleMapping_ruleCode_IDX" ("ruleCode"),
-  KEY "RuleMapping_tenantId_IDX" ("tenantId"),
-  KEY "RuleMapping_serviceCode_IDX" ("serviceCode")
-);
-
--- trackingdb.RuleTrip definition
-
-CREATE TABLE "RuleTrip" (
-  "tripId" varchar(100) NOT NULL,
-  "ruleCode" varchar(100) NOT NULL,
-  "implCode" varchar(100) NOT NULL,
-  PRIMARY KEY ("tripId","ruleCode"),
-  KEY "RuleTrip_implCode_IDX" ("implCode")
-);
-
-

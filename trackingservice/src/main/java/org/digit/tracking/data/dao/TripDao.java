@@ -11,12 +11,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TripDao {
@@ -27,14 +30,16 @@ public class TripDao {
     final String sqlFetchTripById = "SELECT id, operator, serviceCode, status, routeId, userId, " +
             " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, locationAlerts " +
             " FROM Trip where id = ?";
-    final String sqlFetchTripByFilters = "SELECT id, operator, serviceCode, status, routeId, userId," +
-            " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, locationAlerts" +
-            " FROM Trip " +
+    //Join multiple tables to fetch trip related information
+    final String sqlFetchTripByFilters = "SELECT tr.id, tr.operator, tr.serviceCode, tr.status, tr.routeId, tr.userId," +
+            " tr.plannedStartTime, tr.plannedEndTime, tr.actualStartTime, tr.actualEndTime, tr.tenantId, " +
+            " tr.tripEndType, tr.referenceNo, tr.alerts" +
+            " FROM Trip tr " +
             "where " +
-            "JSON_EXTRACT(operator, '$.id') = COALESCE(?, JSON_EXTRACT(operator, '$.id')) and " +
-            //"tripName = COALESCE(?, tripName) and " +
-            //"status = COALESCE(?, status) and " +
-            "userId = COALESCE(?, userId)";
+            "tr.tenantId = COALESCE(:tenantId, tr.tenantId) and " +
+            "tr.serviceCode = COALESCE(:serviceCode, tr.serviceCode) and " +
+            "tr.referenceNo = COALESCE(:referenceNos, tr.referenceNo)  "
+            ;
     final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, " +
             "plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
             "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
@@ -65,11 +70,19 @@ public class TripDao {
         return (tripList.isEmpty())? null : tripList.get(0);
 
     }
-    public List<Trip> fetchTripbyFilters(String operatorId, String tripName, String status, String userId ) {
+    public List<Trip> fetchTripbyFilters(String status, String userId, String operatorId, String tenantId, String businessService, String referenceNos ) {
         logger.info("## fetchTripbyFilters");
-        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
-        Object[] args = new Object[]{ operatorId, userId};
-        List<Trip> tripList = jdbcTemplateObject.query(sqlFetchTripByFilters, new TripMapper(), args);
+        //JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
+
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("tenantId", tenantId);
+        params.put("serviceCode", businessService);
+        params.put("referenceNos", referenceNos);
+
+        //Object[] args = new Object[]{ status, userId, operatorId, tenantId, businessService, refernceNos};
+        //List<Trip> tripList = jdbcTemplateObject.query(sqlFetchTripByFilters, new TripMapper(), args);
+        List<Trip> tripList = namedParameterJdbcTemplate.query(sqlFetchTripByFilters, params, new TripMapper());
         return tripList;
     }
     //Create Trip and save it in database
@@ -108,7 +121,7 @@ public class TripDao {
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
 
         String statusLocal = (trip.getStatus() != null) ? trip.getStatus().toString() : null;
-        String alerts = (trip.getLocationAlerts() != null) ? JsonUtil.getJsonFromObject(trip.getLocationAlerts()) : null;
+        String alerts = (trip.getAlerts() != null) ? trip.getAlerts() : null;
         //Audit information
         String updatedBy = trip.getUserId();
 
