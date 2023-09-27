@@ -19,14 +19,14 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "ServiceType", description = "Citizen service provided by the government agency")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-26T09:46:59.545102800+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-27T12:21:55.533675300+05:30[Asia/Calcutta]")
 public class ServiceType {
 
   private String code;
 
   private String name;
 
-  private String ulbId;
+  private String tenantId;
 
   public ServiceType code(String code) {
     this.code = code;
@@ -68,24 +68,24 @@ public class ServiceType {
     this.name = name;
   }
 
-  public ServiceType ulbId(String ulbId) {
-    this.ulbId = ulbId;
+  public ServiceType tenantId(String tenantId) {
+    this.tenantId = tenantId;
     return this;
   }
 
   /**
    * Identifier of the ULB where this service is offered
-   * @return ulbId
+   * @return tenantId
   */
   
-  @Schema(name = "ulbId", description = "Identifier of the ULB where this service is offered", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("ulbId")
-  public String getUlbId() {
-    return ulbId;
+  @Schema(name = "tenantId", description = "Identifier of the ULB where this service is offered", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("tenantId")
+  public String getTenantId() {
+    return tenantId;
   }
 
-  public void setUlbId(String ulbId) {
-    this.ulbId = ulbId;
+  public void setTenantId(String tenantId) {
+    this.tenantId = tenantId;
   }
 
   @Override
@@ -99,12 +99,12 @@ public class ServiceType {
     ServiceType serviceType = (ServiceType) o;
     return Objects.equals(this.code, serviceType.code) &&
         Objects.equals(this.name, serviceType.name) &&
-        Objects.equals(this.ulbId, serviceType.ulbId);
+        Objects.equals(this.tenantId, serviceType.tenantId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, name, ulbId);
+    return Objects.hash(code, name, tenantId);
   }
 
   @Override
@@ -113,7 +113,7 @@ public class ServiceType {
     sb.append("class ServiceType {\n");
     sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    ulbId: ").append(toIndentedString(ulbId)).append("\n");
+    sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

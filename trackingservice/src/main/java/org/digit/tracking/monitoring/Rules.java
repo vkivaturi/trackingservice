@@ -3,6 +3,7 @@ package org.digit.tracking.monitoring;
 import org.digit.tracking.data.dao.PoiDao;
 import org.digit.tracking.data.dao.RouteDao;
 import org.digit.tracking.data.dao.TripDao;
+import org.digit.tracking.data.dao.TripProgressDao;
 import org.openapitools.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ public class Rules {
     //RuleModel ruleModel = new RuleModel();
 
     @Autowired
+    TripProgressDao tripProgressDao;
+    @Autowired
     TripDao tripDao;
 
     @Autowired
@@ -36,17 +39,17 @@ public class Rules {
         logger.info("## loadModel method");
 
         //Step 1 - Fetch trip progress details based on progress id. Since a progress id is input, max 1 record is fetched
-        List<TripProgress> tripProgressList = tripDao.getTripProgress(progressId, null);
+        List<TripProgressResponse> tripProgressResponseList = tripProgressDao.getTripProgress(progressId, null);
 
-        if (tripProgressList == null || tripProgressList.size() != 1){
+        if (tripProgressResponseList == null || tripProgressResponseList.size() != 1){
             logger.info("## No match found for progress id in db : " + progressId);
             return null;
         }
         //Step 2 - Search nearby POIs for the location belonging to the progress id
         //Since this is a single ping from user, there is only one record in tripProgressList.
         //Since this is a spatial POINT, there is only one element in getProgressData.
-        Location userLocation = tripProgressList.get(0).getProgressData().get(0).getLocation();
-        String tripId = tripProgressList.get(0).getTripId();
+        Location userLocation = tripProgressResponseList.get(0).getLocation();
+        String tripId = tripProgressResponseList.get(0).getTripId();
 
         List<POI> matchingPoiList = new ArrayList<>();
         //matchingPoiList = poiService.searchNearby(userLocation, POI_MATCH_THRESHOLD_METERS);
@@ -83,7 +86,7 @@ public class Rules {
     public void ruleUpdateMatchedPoi(RuleModel ruleModel) {
         logger.info("## ruleUpdatedMatchedPoi method");
         if (ruleModel.getMatchedPoi() != null){
-            tripDao.updateTripProgress(ruleModel.getProgressId(), MONITORING_USER_ID, ruleModel.getMatchedPoi());
+            tripProgressDao.updateTripProgress(ruleModel.getProgressId(), MONITORING_USER_ID, ruleModel.getMatchedPoi());
         }
     }
 

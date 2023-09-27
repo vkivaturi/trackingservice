@@ -35,7 +35,7 @@ public class ConfigControllerTest {
         //Set test data
         List<ServiceType> serviceTypeList= new ArrayList();
         ServiceType serviceType = new ServiceType();
-        serviceType.setUlbId("Testulb");
+        serviceType.setTenantId("Testulb");
         serviceType.setName("Service Name");
         serviceType.setCode("SERV-001");
         serviceTypeList.add(serviceType);

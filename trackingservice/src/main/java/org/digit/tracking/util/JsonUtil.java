@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.digit.tracking.data.model.FsmApplication;
 import org.digit.tracking.data.model.FsmVehicleTrip;
+import org.openapitools.model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +42,26 @@ public class JsonUtil {
             fsmApplicationList.add(fsmApplication);
         }
         return fsmApplicationList;
+    }
+
+    //Identify location of FSTP
+    public static Location getLocationObjectFromJson(String jsonString){
+        Map<String, Object> result = getStringObjectMap(jsonString);
+
+        //TODO - Parsing JSON this way is not clean. Replace with better code.
+        //Fetch data in this json path - /fsm/address/geoLocation
+        Map<String,Object> mdm = (Map<String,Object>) result.get("MdmsRes");
+        Map<String,Object> fsm = (Map<String,Object>) mdm.get("FSM");
+        List<Object> plantList = (List<Object>) fsm.get("FSTPPlantInfo");
+
+        //TODO - since FSM application currently does not provide destination, pick the first record. This will work for Odisha but will not be correct in future
+        Map<String, String> plantMap = (Map<String, String>) plantList.get(0);
+
+        Location location = new Location();
+        location.setLatitude(Float.valueOf(plantMap.get("latitude")));
+        location.setLongitude(Float.valueOf(plantMap.get("longitude")));
+
+        return location;
     }
 
     public static List<FsmVehicleTrip> getFSMVehicleTripObjectFromJson(String jsonString) {

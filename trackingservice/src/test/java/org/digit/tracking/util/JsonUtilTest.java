@@ -3,6 +3,7 @@ package org.digit.tracking.util;
 import org.digit.tracking.data.model.FsmApplication;
 import org.digit.tracking.data.model.FsmVehicleTrip;
 import org.junit.Test;
+import org.openapitools.model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,4 +40,11 @@ public class JsonUtilTest {
         }
     }
 
+    @Test
+    public void testgetLocationObjectFromJson() {
+        String input = "{\"ResponseInfo\":null,\"MdmsRes\":{\"FSM\":{\"FSTPPlantInfo\":[{\"PlantCode\":\"AMR001\",\"PlantName\":\"Amritsar FSTP\",\"active\":true,\"PlantType\":\"FSTP\",\"PlantLocation\":\"Amritsar\",\"latitude\":\"31.668470380301944\",\"longitude\":\"74.92091678992527\",\"PlusCode\":\"JQ2R+7G Khapar Kheri, Punjab\",\"PlantOperationalTimings\":\"10.00am-08.00pm\",\"PlantOperationalCapacityKLD\":\"50\",\"ULBS\":\"pb.jalandhar,pb.amritsar,pb.nayagaon\"},{\"PlantCode\":\"MOH002\",\"PlantName\":\"Mohali SeTPP\",\"active\":true,\"PlantType\":\"SeTP\",\"PlantLocation\":\"Mohali\",\"latitude\":\"30.676577729147507\",\"longitude\":\"76.73730230801068\",\"PlusCode\":\"MPFQ+V2 Sahibzada Ajit Singh Nagar, Punjab\",\"PlantOperationalTimings\":\"10.00am-06.00pm\",\"PlantOperationalCapacityKLD\":\"100\",\"ULBS\":\"pb.mohali,pb.phagwara,pb.nawanshahr,pb.derabassi\"}]}}}";
+        Location location = JsonUtil.getLocationObjectFromJson(input);
+        assertEquals(location.getLatitude(), 31.668470380301944f);
+        assertEquals(location.getLongitude(), 74.92091678992527f);
+    }
 }

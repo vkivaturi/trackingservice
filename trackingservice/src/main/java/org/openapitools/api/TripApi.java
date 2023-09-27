@@ -9,6 +9,7 @@ import org.openapitools.model.ACK;
 import org.openapitools.model.AlertInfoResponse;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
+import org.openapitools.model.TripProgressResponse;
 import org.openapitools.model.TripSearchFsmRequest;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-26T09:46:59.545102800+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-27T12:21:55.533675300+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -142,9 +143,11 @@ public interface TripApi {
      * GET /trip/_alerts : Search for trip progress based on alerts
      * Search for trip progress based on alerts
      *
-     * @param applicationNo  (optional)
-     * @param tripId  (optional)
-     * @param tenantId  (optional)
+     * @param tenantId  (required)
+     * @param applicationNos  (optional)
+     * @param tripIds  (optional)
+     * @param startDate Alert filter start date (YYYY-MM-DD) (optional)
+     * @param endDate Alert filter end date (YYYY-MM-DD) (optional)
      * @return successful operation (status code 200)
      */
     @Operation(
@@ -164,14 +167,16 @@ public interface TripApi {
         produces = { "application/json" }
     )
     default ResponseEntity<List<AlertInfoResponse>> getTripAlerts(
-        @Parameter(name = "applicationNo", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "applicationNo", required = false) String applicationNo,
-        @Parameter(name = "tripId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId,
-        @Parameter(name = "tenantId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = false) String tenantId
+        @NotNull @Parameter(name = "tenantId", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = true) String tenantId,
+        @Parameter(name = "applicationNos", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "applicationNos", required = false) String applicationNos,
+        @Parameter(name = "tripIds", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripIds", required = false) String tripIds,
+        @Parameter(name = "startDate", description = "Alert filter start date (YYYY-MM-DD)", in = ParameterIn.QUERY) @Valid @RequestParam(value = "startDate", required = false) String startDate,
+        @Parameter(name = "endDate", description = "Alert filter end date (YYYY-MM-DD)", in = ParameterIn.QUERY) @Valid @RequestParam(value = "endDate", required = false) String endDate
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"applicationNo\" : \"applicationNo\", \"trips\" : [ { \"alerts\" : [ \"alerts\", \"alerts\" ], \"tripId\" : \"tripId\" }, { \"alerts\" : [ \"alerts\", \"alerts\" ], \"tripId\" : \"tripId\" } ], \"tenantId\" : \"tenantId\" }, { \"applicationNo\" : \"applicationNo\", \"trips\" : [ { \"alerts\" : [ \"alerts\", \"alerts\" ], \"tripId\" : \"tripId\" }, { \"alerts\" : [ \"alerts\", \"alerts\" ], \"tripId\" : \"tripId\" } ], \"tenantId\" : \"tenantId\" } ]";
+                    String exampleString = "[ { \"alert\" : \"alert\", \"applicationNo\" : \"applicationNo\", \"tenantId\" : \"tenantId\", \"alertDateTime\" : \"alertDateTime\", \"tripId\" : \"tripId\", \"alertId\" : \"alertId\" }, { \"alert\" : \"alert\", \"applicationNo\" : \"applicationNo\", \"tenantId\" : \"tenantId\", \"alertDateTime\" : \"alertDateTime\", \"tripId\" : \"tripId\", \"alertId\" : \"alertId\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -226,10 +231,8 @@ public interface TripApi {
      * GET /trip/_progress/_search : Search for trip progress based on its id
      * Search for trip progress based on its id
      *
+     * @param tripId Trip id of trip progress to search (required)
      * @param progressId ID of trip progress to search (optional)
-     * @param tripId Trip id of trip progress to search (optional)
-     * @param pageSize  (optional)
-     * @param pageNumber  (optional)
      * @return successful operation (status code 200)
      */
     @Operation(
@@ -239,7 +242,7 @@ public interface TripApi {
         tags = { "Trip" },
         responses = {
             @ApiResponse(responseCode = "200", description = "successful operation", content = {
-                @Content(mediaType = "application/json", schema = @Schema(implementation = TripProgress.class))
+                @Content(mediaType = "application/json", schema = @Schema(implementation = TripProgressResponse.class))
             })
         }
     )
@@ -248,16 +251,14 @@ public interface TripApi {
         value = "/trip/_progress/_search",
         produces = { "application/json" }
     )
-    default ResponseEntity<TripProgress> getTripProgressById(
-        @Parameter(name = "progressId", description = "ID of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "progressId", required = false) String progressId,
-        @Parameter(name = "tripId", description = "Trip id of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId,
-        @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-        @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
+    default ResponseEntity<TripProgressResponse> getTripProgressById(
+        @NotNull @Parameter(name = "tripId", description = "Trip id of trip progress to search", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = true) String tripId,
+        @Parameter(name = "progressId", description = "ID of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "progressId", required = false) String progressId
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"tenantId\" : \"tenantId\", \"progressReportedTime\" : \"2023-07-30T10:24:10.547Z\", \"progressData\" : [ { \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"progressTime\" : \"2023-07-30T10:24:10.547Z\" }, { \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"progressTime\" : \"2023-07-30T10:24:10.547Z\" } ], \"matchedPoiId\" : \"matchedPoiId\", \"tripId\" : \"tripId\", \"id\" : \"id\", \"userId\" : \"rajan123\" }";
+                    String exampleString = "{ \"progressReportedTime\" : \"2023-07-30T10:24:10.547Z\", \"tripId\" : \"tripId\", \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"id\" : \"id\", \"progressTime\" : \"2023-07-30T10:24:10.547Z\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

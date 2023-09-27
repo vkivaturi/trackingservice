@@ -25,15 +25,6 @@ public class DbUtil {
         return uuid.toString();
     }
 
-//    public Audit getAuditDetails(ResultSet rs) throws SQLException {
-//        Audit audit = new Audit();
-//        audit.setCreatedBy(rs.getString("createdBy"));
-//        audit.setCreatedDate(rs.getString("createdDate"));
-//        audit.setUpdatedBy(rs.getString("updatedBy"));
-//        audit.setUpdatedDate(rs.getString("updatedDate"));
-//        return audit;
-//    }
-
     //Common method to convert JSON in database to an object list
     public List dbJsonToList(ResultSet rs, String dbColumn, Class<?> T) throws SQLException {
         logger.info("## dbJsonToList " + dbColumn);
@@ -130,4 +121,20 @@ public class DbUtil {
         }
         return locationList;
     }
+
+    //This is for cases where we are just dealing with a single spatial point and array is unnecessary
+    public Location convertSpatialSinglePointToLocation(String spatialData) {
+        //Initialise
+        Location location = new Location();
+
+        //Step 1 - Remove the characters not needed
+        String spatialDataLocal = spatialData.replaceAll("POINT", "").replaceAll("POLYGON", "").
+                replaceAll("LINESTRING", "").replaceAll("\\(", "").replaceAll("\\)", "");
+
+        location.setLatitude(Float.valueOf(spatialDataLocal.trim().split(" ")[0]));
+        location.setLongitude(Float.valueOf(spatialDataLocal.trim().split(" ")[1]));
+
+        return location;
+    }
+
 }

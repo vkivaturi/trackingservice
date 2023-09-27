@@ -1,6 +1,7 @@
 package org.digit.tracking.service;
 
 import org.digit.tracking.data.dao.TripDao;
+import org.digit.tracking.data.dao.TripProgressDao;
 import org.digit.tracking.data.model.FsmApplication;
 import org.digit.tracking.data.model.FsmVehicleTrip;
 import org.digit.tracking.data.sao.TripSao;
@@ -9,6 +10,7 @@ import org.digit.tracking.util.Constants;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
 import org.openapitools.model.TripProgressProgressDataInner;
+import org.openapitools.model.TripProgressResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,21 +25,20 @@ public class TripService {
     TripDao tripDao;
 
     @Autowired
+    TripProgressDao tripProgressDao;
+
+    @Autowired
     TripSao tripSao;
 
     @Autowired
     RuleEngine ruleEngine;
-
-//    public List<Trip> getTripsByFsmSearch(String operatorId, String tripName, String status, String userId) {
-//        return tripDao.fetchTripbyFilters(operatorId, tripName, status, userId);
-//    }
 
     //Fetch trips from FSM application
     public List<Trip> getFsmTripsForDriver(String driverId, String authToken, String tenantId) {
         //Step 1 - Fetch list of applications based on driver id
         List<FsmApplication> fsmApplicationList = tripSao.searchFsmApplicationsForDriver(driverId, tenantId, authToken, Constants.FMS_APPLICATION_URL);
 
-        //Step 2 - Fetch list of trip mapped to each application
+        //Step 2 - Fetch list of trips mapped to each application
         //TODO Switch to passing multiple application nos to target API
         for (FsmApplication fsmApplication : fsmApplicationList) {
             //Fetch the trip list for the application and add list back to the main applications list
@@ -46,8 +47,12 @@ public class TripService {
                             fsmApplication.getApplicationNo(), tenantId, authToken, Constants.FMS_VEHICLE_TRIP_URL));
         }
 
+        //Step 3 - Create the trip locally in vehicle tracking database. This will help when trip start/end/progress updates are received from device
+
+
+
         //TODO - Can use a common Trip entity in future
-        //Step 3 - Map to vehicle tracking Trip entity
+        //Step 4 - Map to vehicle tracking Trip entity
         List<Trip> tripList = new ArrayList<>();
         for (FsmApplication fsmApplication : fsmApplicationList) {
             for (FsmVehicleTrip fsmVehicleTrip : fsmApplication.getFsmVehicleTripList()) {
@@ -82,7 +87,7 @@ public class TripService {
         //progressTime is the time when the actual geo position was recorded
         //progressReportedTime is when the device reported this data to the tracking service (especially useful in case of bulk updates)
         for (TripProgressProgressDataInner tripProgressProgressDataInner : tripProgress.getProgressData()) {
-            String progressId = tripDao.createTripProgress(tripProgressProgressDataInner.getLocation(), tripProgress.getProgressReportedTime(),
+            String progressId = tripProgressDao.createTripProgress(tripProgressProgressDataInner.getLocation(), tripProgress.getProgressReportedTime(),
                     tripProgressProgressDataInner.getProgressTime(), tripProgress.getTripId(), tripProgress.getUserId());
             //TODO - Remove this call once monitoring service is live
             ruleEngine.executeAllRules(progressId);
@@ -92,16 +97,15 @@ public class TripService {
     }
 
     public String updateTripProgress(String tripProgressId, String userId, String matchedPoiId) {
-        return tripDao.updateTripProgress(tripProgressId, userId, matchedPoiId);
+        return tripProgressDao.updateTripProgress(tripProgressId, userId, matchedPoiId);
     }
 
-    public List<TripProgress> getTripProgressById(String progressId, String tripId) {
+    public List<TripProgressResponse> getTripProgressById(String progressId, String tripId) {
 
-        List<TripProgress> tripProgressList = tripDao.getTripProgress(progressId, tripId);
+        List<TripProgressResponse> tripProgressResponseList = tripProgressDao.getTripProgress(progressId, tripId);
 
         //Trip progress id alone is passed in this case
-        return tripProgressList;
+        return tripProgressResponseList;
     }
-
 }
 

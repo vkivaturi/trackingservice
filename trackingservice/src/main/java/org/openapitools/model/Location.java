@@ -18,7 +18,7 @@ import javax.annotation.Generated;
  * Location
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-26T09:46:59.545102800+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-27T12:21:55.533675300+05:30[Asia/Calcutta]")
 public class Location {
 
   private Float latitude;

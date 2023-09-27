@@ -2,6 +2,7 @@ package org.digit.tracking.controller;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import org.digit.tracking.service.TripAlertService;
 import org.digit.tracking.service.TripService;
 import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.JsonUtil;
@@ -36,6 +37,9 @@ public class TripController implements TripApi {
 
     @Autowired
     TripService tripService;
+
+    @Autowired
+    TripAlertService tripAlertService;
 
     private final NativeWebRequest request;
 
@@ -98,22 +102,15 @@ public class TripController implements TripApi {
         }
     }
 
+    //Fetch list of progress updates (geo locations as the vehicle / asset is moving. Helps in building a route of the path taken
     @Override
-    public ResponseEntity<TripProgress> getTripProgressById(
-            @Parameter(name = "progressId", description = "ID of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "progressId", required = false) String progressId,
-            @Parameter(name = "tripId", description = "Trip id of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId,
-            @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
+    public ResponseEntity<TripProgressResponse> getTripProgressById(
+            @NotNull @Parameter(name = "tripId", description = "Trip id of trip progress to search", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = true) String tripId,
+            @Parameter(name = "progressId", description = "ID of trip progress to search", in = ParameterIn.QUERY) @Valid @RequestParam(value = "progressId", required = false) String progressId
     ) {
         logger.info("## getTripProgressById is invoked");
-
-        //rules.loadModel("691ad062-a70c-4018-ad59-d92465b4aeaf");
-
-//        RuleEngine re = new RuleEngine();
-//        ruleEngine.executeSingleRuleMethod(RULE_LOAD_METHOD, "691ad062-a70c-4018-ad59-d92465b4aeaf");
-        //
-        List<TripProgress> tripProgressList = tripService.getTripProgressById(progressId, tripId);
-        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(tripProgressList));
+        List<TripProgressResponse> tripProgressResponseList = tripService.getTripProgressById(progressId, tripId);
+        TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(tripProgressResponseList));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -193,50 +190,13 @@ public class TripController implements TripApi {
 
     @Override
     public ResponseEntity<List<AlertInfoResponse>> getTripAlerts(
-            @Parameter(name = "applicationNo", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "applicationNo", required = false) String applicationNo,
-            @Parameter(name = "tripId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripId", required = false) String tripId,
-            @Parameter(name = "tenantId", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = false) String tenantId
+            @NotNull @Parameter(name = "tenantId", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = true) String tenantId,
+            @Parameter(name = "applicationNos", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "applicationNos", required = false) String applicationNos,
+            @Parameter(name = "tripIds", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "tripIds", required = false) String tripIds,
+            @Parameter(name = "startDate", description = "Alert filter start date (YYYY-MM-DD)", in = ParameterIn.QUERY) @Valid @RequestParam(value = "startDate", required = false) String startDate,
+            @Parameter(name = "endDate", description = "Alert filter end date (YYYY-MM-DD)", in = ParameterIn.QUERY) @Valid @RequestParam(value = "endDate", required = false) String endDate
     ) {
-        List<AlertInfoResponse> alertInfoResponses = new ArrayList();
-        AlertInfoResponse alertInfoResponse = new AlertInfoResponse();
-
-        List<AlertInfoResponseTripsInner> alertInfoResponseTripsInners = new ArrayList();
-        AlertInfoResponseTripsInner alertInfoResponseTripsInner = new AlertInfoResponseTripsInner();
-
-        //Test data 1
-        alertInfoResponse.setApplicationNo("107-FSM-2023-08-16-000318");
-        alertInfoResponse.setTenantId("pb.amritsar");
-
-        alertInfoResponseTripsInner.setTripId("dbc84ed4-ec7a-4a7e-b1ac-decc4f49391a");
-        alertInfoResponseTripsInner.setAlerts(Arrays.asList("Stoppage", "Unverified Closure"));
-        alertInfoResponseTripsInners.add(alertInfoResponseTripsInner);
-
-        alertInfoResponse.setTrips(alertInfoResponseTripsInners);
-
-        alertInfoResponses.add(alertInfoResponse);
-
-        //Test data 2
-        alertInfoResponse = new AlertInfoResponse();
-        alertInfoResponseTripsInners = new ArrayList();
-        alertInfoResponseTripsInner = new AlertInfoResponseTripsInner();
-
-        alertInfoResponse.setApplicationNo("107-FSM-2023-09-13-000319");
-        alertInfoResponse.setTenantId("pb.amritsar");
-
-        alertInfoResponseTripsInner.setTripId("e493e4d0-c419-4d55-9332-7c5f70f72092");
-        alertInfoResponseTripsInner.setAlerts(Arrays.asList("Illegal dumpyard"));
-        alertInfoResponseTripsInners.add(alertInfoResponseTripsInner);
-
-        alertInfoResponseTripsInner = new AlertInfoResponseTripsInner();
-        alertInfoResponseTripsInner.setTripId("e343e4d0-c419-4d55-9332-7c5f70f71123");
-        alertInfoResponseTripsInner.setAlerts(Arrays.asList("Stoppage"));
-        alertInfoResponseTripsInners.add(alertInfoResponseTripsInner);
-
-        alertInfoResponse.setTrips(alertInfoResponseTripsInners);
-
-        alertInfoResponses.add(alertInfoResponse);
-        //
-
+        List<AlertInfoResponse> alertInfoResponses = tripAlertService.getAlerts(tenantId, applicationNos, tripIds, startDate, endDate);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(alertInfoResponses));
         return new ResponseEntity<>(HttpStatus.OK);
     }

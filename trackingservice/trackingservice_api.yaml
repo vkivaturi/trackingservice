@@ -380,28 +380,16 @@ paths:
         - name: tripId
           in: query
           description: Trip id of trip progress to search
-          required: false
+          required: true
           schema:
             type: string
-        - name: pageSize
-          in: query
-          required: false
-          explode: true
-          schema:
-            type: integer
-        - name: pageNumber
-          in: query
-          required: false
-          explode: true
-          schema:
-            type: integer
       responses:
         '200':
           description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TripProgress'
+                $ref: '#/components/schemas/TripProgressResponse'
 
   /trip/_alerts:
     get:
@@ -411,17 +399,29 @@ paths:
       description: Search for trip progress based on alerts
       operationId: getTripAlerts
       parameters:
-        - name: applicationNo
-          in: query
-          required: false
-          schema:
-            type: string
-        - name: tripId
-          in: query
-          required: false
-          schema:
-            type: string
         - name: tenantId
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: applicationNos
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: tripIds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: startDate
+          in: query
+          required: false
+          description: Alert filter start date (YYYY-MM-DD)
+          schema:
+            type: string
+        - name: endDate
+          description: Alert filter end date (YYYY-MM-DD)
           in: query
           required: false
           schema:
@@ -823,21 +823,18 @@ components:
     AlertInfoResponse:
       type: object
       properties:
-        applicationNo:
-          type: string
         tenantId:
           type: string
-        trips:
-          type: array
-          items:
-            type: object
-            properties:
-              tripId:
-                type: string
-              alerts:
-                type: array
-                items:
-                  type: string
+        applicationNo:
+          type: string
+        tripId:
+          type: string
+        alertId:
+          type: string
+        alert:
+          type: string
+        alertDateTime:
+          type: string
 
     LocationAlert:
       type: object
@@ -859,7 +856,7 @@ components:
         name:
           type: string
           description: Name of the service. For example - Mosquito fumigation, Fecal sludge pickup
-        ulbId:
+        tenantId:
           type: string
           description: Identifier of the ULB where this service is offered
 
@@ -870,8 +867,6 @@ components:
         id:
           type: string
           description: Id of the trip progress
-        tenantId:
-          type: string
         tripId:
           type: string
           description: Id of the trip to which this progress update belongs to
@@ -898,6 +893,28 @@ components:
           type: string
           description: DIGIT Id of the user performing this action
           example: rajan123
+
+    TripProgressResponse:
+      type: object
+      description: Trip progress response is returned by the service
+      properties:
+        id:
+          type: string
+          description: Id of the trip progress
+        tripId:
+          type: string
+          description: Id of the trip to which this progress update belongs to
+        progressReportedTime:
+          type: string
+          example: 2023-07-30T10:24:10.547Z
+          description: Date and time in ISO_DATE_TIME format. Time at which the client app is reporting this data. This can be different from the time when the geo data was recorded as the app might be offline at that time but reporting it later once the app is online.
+        progressTime:
+          type: string
+          example: 2023-07-30T10:24:10.547Z
+          description: Date and time in ISO_DATE_TIME format. Actual time at which the operator was present at the location
+        location:
+          $ref: '#/components/schemas/Location'
+
     RequestInfo:
       type: object
       properties:

@@ -34,7 +34,7 @@ public class TripControllerTest {
         List<Trip> entityList= new ArrayList();
         Trip entity = new Trip();
         entity.setUserId("TestUser");
-        entity.setStatus(Trip.StatusEnum.IN_PROGRESS);
+        entity.setStatus(Trip.StatusEnum.ONGOING);
         entity.setServiceCode("SERV-01");
         entity.setId("PoiUUID");
         entityList.add(entity);

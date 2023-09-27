@@ -4,9 +4,6 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.ArrayList;
-import java.util.List;
-import org.openapitools.model.AlertInfoResponseTripsInner;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -21,35 +18,20 @@ import javax.annotation.Generated;
  * AlertInfoResponse
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-26T09:46:59.545102800+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-27T12:21:55.533675300+05:30[Asia/Calcutta]")
 public class AlertInfoResponse {
-
-  private String applicationNo;
 
   private String tenantId;
 
-  @Valid
-  private List<@Valid AlertInfoResponseTripsInner> trips;
+  private String applicationNo;
 
-  public AlertInfoResponse applicationNo(String applicationNo) {
-    this.applicationNo = applicationNo;
-    return this;
-  }
+  private String tripId;
 
-  /**
-   * Get applicationNo
-   * @return applicationNo
-  */
-  
-  @Schema(name = "applicationNo", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("applicationNo")
-  public String getApplicationNo() {
-    return applicationNo;
-  }
+  private String alertId;
 
-  public void setApplicationNo(String applicationNo) {
-    this.applicationNo = applicationNo;
-  }
+  private String alert;
+
+  private String alertDateTime;
 
   public AlertInfoResponse tenantId(String tenantId) {
     this.tenantId = tenantId;
@@ -71,32 +53,104 @@ public class AlertInfoResponse {
     this.tenantId = tenantId;
   }
 
-  public AlertInfoResponse trips(List<@Valid AlertInfoResponseTripsInner> trips) {
-    this.trips = trips;
-    return this;
-  }
-
-  public AlertInfoResponse addTripsItem(AlertInfoResponseTripsInner tripsItem) {
-    if (this.trips == null) {
-      this.trips = new ArrayList<>();
-    }
-    this.trips.add(tripsItem);
+  public AlertInfoResponse applicationNo(String applicationNo) {
+    this.applicationNo = applicationNo;
     return this;
   }
 
   /**
-   * Get trips
-   * @return trips
+   * Get applicationNo
+   * @return applicationNo
   */
-  @Valid 
-  @Schema(name = "trips", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("trips")
-  public List<@Valid AlertInfoResponseTripsInner> getTrips() {
-    return trips;
+  
+  @Schema(name = "applicationNo", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("applicationNo")
+  public String getApplicationNo() {
+    return applicationNo;
   }
 
-  public void setTrips(List<@Valid AlertInfoResponseTripsInner> trips) {
-    this.trips = trips;
+  public void setApplicationNo(String applicationNo) {
+    this.applicationNo = applicationNo;
+  }
+
+  public AlertInfoResponse tripId(String tripId) {
+    this.tripId = tripId;
+    return this;
+  }
+
+  /**
+   * Get tripId
+   * @return tripId
+  */
+  
+  @Schema(name = "tripId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("tripId")
+  public String getTripId() {
+    return tripId;
+  }
+
+  public void setTripId(String tripId) {
+    this.tripId = tripId;
+  }
+
+  public AlertInfoResponse alertId(String alertId) {
+    this.alertId = alertId;
+    return this;
+  }
+
+  /**
+   * Get alertId
+   * @return alertId
+  */
+  
+  @Schema(name = "alertId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("alertId")
+  public String getAlertId() {
+    return alertId;
+  }
+
+  public void setAlertId(String alertId) {
+    this.alertId = alertId;
+  }
+
+  public AlertInfoResponse alert(String alert) {
+    this.alert = alert;
+    return this;
+  }
+
+  /**
+   * Get alert
+   * @return alert
+  */
+  
+  @Schema(name = "alert", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("alert")
+  public String getAlert() {
+    return alert;
+  }
+
+  public void setAlert(String alert) {
+    this.alert = alert;
+  }
+
+  public AlertInfoResponse alertDateTime(String alertDateTime) {
+    this.alertDateTime = alertDateTime;
+    return this;
+  }
+
+  /**
+   * Get alertDateTime
+   * @return alertDateTime
+  */
+  
+  @Schema(name = "alertDateTime", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("alertDateTime")
+  public String getAlertDateTime() {
+    return alertDateTime;
+  }
+
+  public void setAlertDateTime(String alertDateTime) {
+    this.alertDateTime = alertDateTime;
   }
 
   @Override
@@ -108,23 +162,29 @@ public class AlertInfoResponse {
       return false;
     }
     AlertInfoResponse alertInfoResponse = (AlertInfoResponse) o;
-    return Objects.equals(this.applicationNo, alertInfoResponse.applicationNo) &&
-        Objects.equals(this.tenantId, alertInfoResponse.tenantId) &&
-        Objects.equals(this.trips, alertInfoResponse.trips);
+    return Objects.equals(this.tenantId, alertInfoResponse.tenantId) &&
+        Objects.equals(this.applicationNo, alertInfoResponse.applicationNo) &&
+        Objects.equals(this.tripId, alertInfoResponse.tripId) &&
+        Objects.equals(this.alertId, alertInfoResponse.alertId) &&
+        Objects.equals(this.alert, alertInfoResponse.alert) &&
+        Objects.equals(this.alertDateTime, alertInfoResponse.alertDateTime);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(applicationNo, tenantId, trips);
+    return Objects.hash(tenantId, applicationNo, tripId, alertId, alert, alertDateTime);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class AlertInfoResponse {\n");
-    sb.append("    applicationNo: ").append(toIndentedString(applicationNo)).append("\n");
     sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
-    sb.append("    trips: ").append(toIndentedString(trips)).append("\n");
+    sb.append("    applicationNo: ").append(toIndentedString(applicationNo)).append("\n");
+    sb.append("    tripId: ").append(toIndentedString(tripId)).append("\n");
+    sb.append("    alertId: ").append(toIndentedString(alertId)).append("\n");
+    sb.append("    alert: ").append(toIndentedString(alert)).append("\n");
+    sb.append("    alertDateTime: ").append(toIndentedString(alertDateTime)).append("\n");
     sb.append("}");
     return sb.toString();
   }

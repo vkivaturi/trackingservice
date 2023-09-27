@@ -43,17 +43,10 @@ public class TripDao {
     final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, " +
             "plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
             "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
-    final String sqlCreateTripProgressPoint = "insert into TripProgress (id, tripId, progressReportedTime, progressTime, positionPoint, userId) " +
-            "values (?,?,?,?,ST_GeomFromText(?, 4326),?)";
     final String sqlUpdateTrip = "update Trip set routeId = COALESCE(?, routeId), status = COALESCE(?, status), locationAlerts = COALESCE(?, locationAlerts), " +
             "updatedDate = ? , updatedBy = ?" +
             "where id = ?";
 
-    final String sqlUpdateTripProgress = "update TripProgress set matchedPoiId = ?, updatedDate = ? , updatedBy = ? where id = ?";
-
-    final String sqlGetTripProgressById = "SELECT id, tripId, progressReportedTime, userId, ST_AStext(positionPoint) as positionPoint, progressTime, " +
-            " matchedPoiId " +
-            " FROM TripProgress where id = COALESCE(?, id) and tripId = COALESCE(?, tripId)";
     private DataSource dataSource;
 
     //Datasource bean is injected
@@ -80,8 +73,6 @@ public class TripDao {
         params.put("serviceCode", businessService);
         params.put("referenceNos", referenceNos);
 
-        //Object[] args = new Object[]{ status, userId, operatorId, tenantId, businessService, refernceNos};
-        //List<Trip> tripList = jdbcTemplateObject.query(sqlFetchTripByFilters, new TripMapper(), args);
         List<Trip> tripList = namedParameterJdbcTemplate.query(sqlFetchTripByFilters, params, new TripMapper());
         return tripList;
     }
@@ -137,53 +128,4 @@ public class TripDao {
             return null;
         }
     }
-
-    //Trip progress related data updates
-    public String createTripProgress(Location location, String reportedTime, String progressTime, String tripId, String userId) {
-        logger.info("## createTripProgress in table");
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-
-        String positionPoint = "POINT(" + location.getLatitude() + " " + location.getLongitude() + ")";
-        //Prepare input data for the SQL
-        String idLocal = dbUtil.getId();
-
-        Object[] args = new Object[]{idLocal, tripId, reportedTime, progressTime, positionPoint, userId};
-
-        int result = jdbcTemplate.update(sqlCreateTripProgressPoint, args);
-        if (result != 0) {
-            logger.info("Trip progress created with id " + idLocal);
-            return idLocal;
-        } else {
-            logger.error("Trip progress creation failed with id, tripId " + idLocal + " " + tripId);
-            return null;
-        }
-    }
-
-    //Update trip progress using an id and the supported list of attributes
-    public String updateTripProgress(String tripPogressId, String userId, String matchedPoiId) {
-        logger.info("## updateTripProgress inside DAO");
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        OffsetDateTime offsetDateTime = OffsetDateTime.now();
-        String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
-
-        Object[] args = new Object[]{matchedPoiId, currentDateString, userId, tripPogressId};
-
-        int result = jdbcTemplate.update(sqlUpdateTripProgress, args);
-        if (result != 0) {
-            logger.info("Trip progress updated with id " + tripPogressId);
-            return tripPogressId;
-        } else {
-            logger.error("Trip progress update failed with id " + tripPogressId);
-            return null;
-        }
-    }
-    //Get trip progress data based on progress id or trip id
-    public List<TripProgress> getTripProgress(String tripProgressId, String tripId) {
-        logger.info("## getTripProgressById");
-        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
-        Object[] args = new Object[]{tripProgressId, tripId};
-        List<TripProgress> tripProgressList = jdbcTemplateObject.query(sqlGetTripProgressById, new TripProgressMapper(), args);
-        return tripProgressList;
-    }
-
 }
