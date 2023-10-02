@@ -9,5 +9,7 @@ public class Constants {
     final public static String MONITORING_USER_ID = "MonitoringService";
     final public static String FMS_APPLICATION_URL = "https://unified-dev.digit.org/fsm/v1/";
     final public static String FMS_VEHICLE_TRIP_URL = "https://unified-dev.digit.org/vehicle/trip/v1/";
+    final public static String ILLEGAL_DUMP_YARD_STOPPAGE_CODE = "Stoppage";
+    final public static int ILLEGAL_DUMP_YARD_STOPPAGE_THRESHOLD = 5;
 
 }
