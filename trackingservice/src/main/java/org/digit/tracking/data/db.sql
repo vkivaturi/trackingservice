@@ -14,6 +14,7 @@ CREATE TABLE "POI" (
   "positionPoint" point NOT NULL /*!80003 SRID 4326 */,
   "positionPolygon" polygon NOT NULL /*!80003 SRID 4326 */,
   "positionLine" linestring NOT NULL /*!80003 SRID 4326 */,
+  "tenantId" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id"),
   SPATIAL KEY "positionPoint" ("positionPoint"),
   SPATIAL KEY "positionPolygon" ("positionPolygon"),

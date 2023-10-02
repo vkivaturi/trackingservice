@@ -27,10 +27,8 @@ public class DbUtil {
 
     //Common method to convert JSON in database to an object list
     public List dbJsonToList(ResultSet rs, String dbColumn, Class<?> T) throws SQLException {
-        logger.info("## dbJsonToList " + dbColumn);
         //Fetch database field into a string json
         String jsonString = rs.getString(dbColumn);
-        logger.info("## jsonString " + jsonString);
         //Convert json string to array of string
         ObjectMapper mapper = new ObjectMapper();
 

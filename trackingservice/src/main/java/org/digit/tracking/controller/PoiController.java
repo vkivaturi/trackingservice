@@ -65,7 +65,8 @@ public class PoiController implements PoiApi {
             flag = Boolean.valueOf(isAlertLocation);
         }
 
-        List<POI> pois = poiService.getPOIsBySearch(locationName, userId, flag);
+        //TODO - Capture tenant id in input request
+        List<POI> pois = poiService.getPOIsBySearch(locationName, userId, flag, null);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(pois));
         return new ResponseEntity<>(HttpStatus.OK);
     }

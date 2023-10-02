@@ -1,11 +1,15 @@
 package org.digit.tracking.data.sao;
 
+import org.digit.tracking.data.dao.PoiDao;
 import org.digit.tracking.data.model.FsmApplication;
 import org.digit.tracking.data.model.FsmVehicleTrip;
 import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Location;
+import org.openapitools.model.POI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -18,41 +22,19 @@ import java.util.Map;
 @Service
 public class POISao {
     Logger logger = LoggerFactory.getLogger(POISao.class);
-    RestTemplate restTemplate = new RestTemplate();
 
-    public Location getDesitationLocation(String tenantId, String authToken, String mdmsUrl) {
+    @Autowired
+    PoiDao poiDao;
+    //Destination location POI id of a trip is the FS treatment plant for the tenant id
+    public String getDesitationLocation(String tenantId, String authToken, String mdmsUrl) {
         logger.info("## getDesitationLocation" );
-        HttpEntity<Map<String, Object>> entity = getMapHttpEntity(authToken);
-        StringBuilder searchUrl = new StringBuilder().append(mdmsUrl).append("/").append("_search?tenantId=").append(tenantId);
-        logger.info("## " + searchUrl);
-
-        ResponseEntity<String> response = restTemplate.postForEntity(searchUrl.toString(), entity, String.class);
-
-        if (response.getStatusCode() == HttpStatus.OK) {
-            logger.info("## Request Successful");
-            logger.info(response.getBody());
-            return(JsonUtil.getLocationObjectFromJson(response.getBody()));
-        } else {
-            logger.error("## Request Failed");
-            logger.error(response.getStatusCode().toString());
-            logger.error(response.getBody());
-            return null;
+        String poiIdDestination = "";
+        //TODO - Since there destination to tenant mapping is evolving, we are using a fixed POI from database. This has to change to REST API call
+        List<POI> poiList = poiDao.fetchPOIbyFilters("FSTP", "VTS", false, tenantId);
+        if (poiList.size() > 0) {
+            //Fetch the first element in location since this ia POINT spatial with single part of LatLong
+            poiIdDestination = poiList.get(0).getId();
         }
+        return poiIdDestination;
     }
-    private static HttpEntity<Map<String, Object>> getMapHttpEntity(String authToken) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        Map<String, Object> mapInner = new HashMap<>();
-        mapInner.put("apiId", "Rainmaker");
-        if (authToken != null)
-            mapInner.put("authToken", authToken);
-        mapInner.put("msgId", "1694796531963|en_IN");
-
-        Map<String, Object> mapOuter = new HashMap<>();
-        mapOuter.put("RequestInfo", mapInner);
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(mapOuter, headers);
-        return entity;
-    }
-
 }

@@ -7,6 +7,7 @@ public class FsmVehicleTrip {
     private String tripApplicationStatus;
     private String tripStartTime;
     private String tripEndTime;
+    private String businessService;
 
     public String getTripApplicationNo() {
         return tripApplicationNo;
@@ -39,4 +40,11 @@ public class FsmVehicleTrip {
     public void setTripEndTime(String tripEndTime) {
         this.tripEndTime = tripEndTime;
     }
+    public String getBusinessService() {
+        return businessService;
+    }
+    public void setBusinessService(String businessService) {
+        this.businessService = businessService;
+    }
+
 }

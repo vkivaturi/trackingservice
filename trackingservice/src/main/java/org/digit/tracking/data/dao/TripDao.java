@@ -28,7 +28,7 @@ public class TripDao {
     DbUtil dbUtil;
 
     final String sqlFetchTripById = "SELECT id, operator, serviceCode, status, routeId, userId, " +
-            " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, locationAlerts " +
+            " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, alerts, tenantId, referenceNo, tripEndType " +
             " FROM Trip where id = ?";
     //Join multiple tables to fetch trip related information
     final String sqlFetchTripByFilters = "SELECT tr.id, tr.operator, tr.serviceCode, tr.status, tr.routeId, tr.userId," +
@@ -82,7 +82,12 @@ public class TripDao {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         //Prepare input data for the SQL
-        String idLocal = dbUtil.getId();
+        //If trip id is already provided, use it. Otherwise create a new trip id
+        //TODO - Handle duplicate record exception when called from some invalid situation
+        String idLocal = trip.getId();
+        if ( idLocal == null) {
+            idLocal = dbUtil.getId();
+        }
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
         //Audit information

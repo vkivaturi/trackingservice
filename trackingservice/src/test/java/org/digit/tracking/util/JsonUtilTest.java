@@ -37,6 +37,7 @@ public class JsonUtilTest {
         for (FsmVehicleTrip fsmVehicleTrip : fsmVehicleTripList){
             logger.info(fsmVehicleTrip.getTripApplicationStatus());
             logger.info(fsmVehicleTrip.getTripApplicationNo());
+            logger.info(fsmVehicleTrip.getBusinessService());
         }
     }
 

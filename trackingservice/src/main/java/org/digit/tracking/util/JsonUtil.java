@@ -78,6 +78,7 @@ public class JsonUtil {
 
             fsmVehicleTrip.setTripApplicationNo(String.valueOf(mapOfVehicleTrip.get("applicationNo")));
             fsmVehicleTrip.setTripApplicationStatus(String.valueOf(mapOfVehicleTrip.get("applicationStatus")));
+            fsmVehicleTrip.setBusinessService(String.valueOf(mapOfVehicleTrip.get("businessService")));
             //Add to applications list
             fsmVehicleTripList.add(fsmVehicleTrip);
         }

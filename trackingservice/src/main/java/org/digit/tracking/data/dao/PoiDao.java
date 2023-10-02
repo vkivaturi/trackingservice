@@ -87,7 +87,7 @@ public class PoiDao {
         return poiList;
     }
 
-    public List<POI> fetchPOIbyFilters(String locationName, String userId, Boolean isAlertLocation) {
+    public List<POI> fetchPOIbyFilters(String locationName, String userId, Boolean isAlertLocation, String tenantId) {
         logger.info("## fetchPOIbyFilters");
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         Map<String,Object> params = new HashMap<String,Object>();

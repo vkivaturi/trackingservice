@@ -28,7 +28,6 @@ public class TripSao {
         ResponseEntity<String> response = restTemplate.postForEntity(searchUrl.toString(), entity, String.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
-            logger.info("## Request Successful");
             logger.info(response.getBody());
             return(JsonUtil.getFSMObjectFromJson(response.getBody()));
         } else {
@@ -47,7 +46,6 @@ public class TripSao {
         ResponseEntity<String> response = restTemplate.postForEntity(searchUrl.toString(), entity, String.class);
 
         if (response.getStatusCode() == HttpStatus.OK) {
-            logger.info("## Request Successful");
             logger.info(response.getBody());
             return(JsonUtil.getFSMVehicleTripObjectFromJson(response.getBody()));
 

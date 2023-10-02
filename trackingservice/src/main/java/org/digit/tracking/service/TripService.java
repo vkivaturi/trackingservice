@@ -6,6 +6,7 @@ import org.digit.tracking.data.model.FsmApplication;
 import org.digit.tracking.data.model.FsmVehicleTrip;
 import org.digit.tracking.data.sao.TripSao;
 import org.digit.tracking.monitoring.RuleEngine;
+import org.digit.tracking.service.helper.TripServiceHelper;
 import org.digit.tracking.util.Constants;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
@@ -31,14 +32,17 @@ public class TripService {
     TripSao tripSao;
 
     @Autowired
+    TripServiceHelper tripServiceHelper;
+
+    @Autowired
     RuleEngine ruleEngine;
 
     //Fetch trips from FSM application
     public List<Trip> getFsmTripsForDriver(String driverId, String authToken, String tenantId) {
-        //Step 1 - Fetch list of applications based on driver id
+        //Step 1 - Fetch from FSM the list of applications based on driver id
         List<FsmApplication> fsmApplicationList = tripSao.searchFsmApplicationsForDriver(driverId, tenantId, authToken, Constants.FMS_APPLICATION_URL);
 
-        //Step 2 - Fetch list of trips mapped to each application
+        //Step 2 - Fetch from FSM list of trips mapped to each application
         //TODO Switch to passing multiple application nos to target API
         for (FsmApplication fsmApplication : fsmApplicationList) {
             //Fetch the trip list for the application and add list back to the main applications list
@@ -47,19 +51,26 @@ public class TripService {
                             fsmApplication.getApplicationNo(), tenantId, authToken, Constants.FMS_VEHICLE_TRIP_URL));
         }
 
-        //Step 3 - Create the trip locally in vehicle tracking database. This will help when trip start/end/progress updates are received from device
-
-
-
         //TODO - Can use a common Trip entity in future
         //Step 4 - Map to vehicle tracking Trip entity
         List<Trip> tripList = new ArrayList<>();
         for (FsmApplication fsmApplication : fsmApplicationList) {
             for (FsmVehicleTrip fsmVehicleTrip : fsmApplication.getFsmVehicleTripList()) {
                 Trip trip = new Trip();
-                trip.setId(fsmVehicleTrip.getTripApplicationNo());
+                String tripId = fsmVehicleTrip.getTripApplicationNo();
+                trip.setId(tripId);
+                trip.setReferenceNo(fsmApplication.getApplicationNo());
+                trip.setServiceCode(fsmVehicleTrip.getBusinessService());
+
                 //Add each trip to the main list
                 tripList.add(trip);
+
+                //Check if trip exists in VTS database. Insert it if it is not available locally
+                if (tripDao.fetchTripbyId(tripId) == null){
+                    tripServiceHelper.createTripWithFsmData(tripId, tenantId, trip.getReferenceNo(),
+                            Float.valueOf(fsmApplication.getPickupLocationLatitude()), Float.valueOf(fsmApplication.getPickupLocationLongitude()),
+                            trip.getServiceCode());
+                }
             }
         }
         return tripList;
