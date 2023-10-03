@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-27T12:21:55.533675300+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-03T18:26:55.344646900+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "POI", description = "Points of interest (POI) are a combination of location and additional details about that specific location. A POI can be a single LatLong or a polygon (combination of multiple LatLongs)")
 public interface PoiApi {
@@ -120,7 +120,7 @@ public interface PoiApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" }, { \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" } ]";
+                    String exampleString = "[ { \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : \"alert\", \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" }, { \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : \"alert\", \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -160,7 +160,7 @@ public interface PoiApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" }";
+                    String exampleString = "{ \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : \"alert\", \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -204,7 +204,7 @@ public interface PoiApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" }, { \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : [ \"alert\", \"alert\" ], \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" } ]";
+                    String exampleString = "[ { \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : \"alert\", \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" }, { \"distanceMeters\" : 200000, \"locationName\" : \"Any name assigned to the location\", \"alert\" : \"alert\", \"locationDetails\" : [ { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 } ], \"id\" : \"id\", \"type\" : \"point\", \"userId\" : \"rajan123\", \"status\" : \"active\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

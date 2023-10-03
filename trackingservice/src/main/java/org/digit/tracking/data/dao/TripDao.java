@@ -28,12 +28,12 @@ public class TripDao {
     DbUtil dbUtil;
 
     final String sqlFetchTripById = "SELECT id, operator, serviceCode, status, routeId, userId, " +
-            " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, alerts, tenantId, referenceNo, tripEndType " +
+            " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, tenantId, referenceNo, tripEndType " +
             " FROM Trip where id = ?";
     //Join multiple tables to fetch trip related information
     final String sqlFetchTripByFilters = "SELECT tr.id, tr.operator, tr.serviceCode, tr.status, tr.routeId, tr.userId," +
             " tr.plannedStartTime, tr.plannedEndTime, tr.actualStartTime, tr.actualEndTime, tr.tenantId, " +
-            " tr.tripEndType, tr.referenceNo, tr.alerts" +
+            " tr.tripEndType, tr.referenceNo" +
             " FROM Trip tr " +
             "where " +
             "tr.tenantId = COALESCE(:tenantId, tr.tenantId) and " +
@@ -117,11 +117,11 @@ public class TripDao {
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
 
         String statusLocal = (trip.getStatus() != null) ? trip.getStatus().toString() : null;
-        String alerts = (trip.getAlerts() != null) ? trip.getAlerts() : null;
+        //String alerts = (trip.getAlerts() != null) ? trip.getAlerts() : null;
         //Audit information
         String updatedBy = trip.getUserId();
 
-        Object[] args = new Object[]{trip.getRouteId(), statusLocal, alerts,
+        Object[] args = new Object[]{trip.getRouteId(), statusLocal,
                 currentDateString, updatedBy, trip.getId()};
 
         int result = jdbcTemplate.update(sqlUpdateTrip, args);

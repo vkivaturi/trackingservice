@@ -10,7 +10,7 @@ public class RuleModel {
     private boolean matchedPoiIsTripEnd;
     private String progressId;
     private String tripId;
-    private String alerts;
+    private String alert;
     private String routeEndPoi;
     public String getMatchedPoi() {
         return matchedPoi;
@@ -65,11 +65,11 @@ public class RuleModel {
     public void setTripId(String tripId) {
         this.tripId = tripId;
     }
-    public String getAlerts() {
-        return alerts;
+    public String getAlert() {
+        return alert;
     }
-    public void setAlerts(String alerts) {
-        this.alerts = alerts;
+    public void setAlert(String alert) {
+        this.alert = alert;
     }
     public String getRouteEndPoi() {
         return routeEndPoi;

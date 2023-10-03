@@ -20,7 +20,7 @@ import javax.annotation.Generated;
  * Trip
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-27T12:21:55.533675300+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-03T18:26:55.344646900+05:30[Asia/Calcutta]")
 public class Trip {
 
   private String id;
@@ -89,8 +89,6 @@ public class Trip {
   private String actualEndTime;
 
   private String userId;
-
-  private String alerts;
 
   public Trip id(String id) {
     this.id = id;
@@ -372,26 +370,6 @@ public class Trip {
     this.userId = userId;
   }
 
-  public Trip alerts(String alerts) {
-    this.alerts = alerts;
-    return this;
-  }
-
-  /**
-   * Alert code list that representing anomalies tagged to this trip.
-   * @return alerts
-  */
-  
-  @Schema(name = "alerts", description = "Alert code list that representing anomalies tagged to this trip.", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("alerts")
-  public String getAlerts() {
-    return alerts;
-  }
-
-  public void setAlerts(String alerts) {
-    this.alerts = alerts;
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -414,13 +392,12 @@ public class Trip {
         Objects.equals(this.plannedEndTime, trip.plannedEndTime) &&
         Objects.equals(this.actualStartTime, trip.actualStartTime) &&
         Objects.equals(this.actualEndTime, trip.actualEndTime) &&
-        Objects.equals(this.userId, trip.userId) &&
-        Objects.equals(this.alerts, trip.alerts);
+        Objects.equals(this.userId, trip.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, tenantId, referenceNo, routeId, name, serviceCode, status, tripEndType, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId, alerts);
+    return Objects.hash(id, tenantId, referenceNo, routeId, name, serviceCode, status, tripEndType, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId);
   }
 
   @Override
@@ -441,7 +418,6 @@ public class Trip {
     sb.append("    actualStartTime: ").append(toIndentedString(actualStartTime)).append("\n");
     sb.append("    actualEndTime: ").append(toIndentedString(actualEndTime)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
-    sb.append("    alerts: ").append(toIndentedString(alerts)).append("\n");
     sb.append("}");
     return sb.toString();
   }

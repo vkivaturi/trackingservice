@@ -675,10 +675,8 @@ components:
           items:
             $ref: '#/components/schemas/Location'
         alert:
-          type: array
-          description: List of alert codes that may be applicable to the location. This is optional
-          items:
-            type: string
+          type: string
+          description: Alert code that may be applicable to the location. This is optional
         userId:
           type: string
           description: DIGIT Id of the user performing this action
@@ -816,9 +814,6 @@ components:
           type: string
           description: DIGIT Id of the user performing this action
           example: rajan123
-        alerts:
-          type: string
-          description: Alert code list that representing anomalies tagged to this trip.
 
     AlertInfoResponse:
       type: object

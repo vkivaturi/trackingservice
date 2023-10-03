@@ -1,15 +1,15 @@
 package org.digit.tracking.monitoring;
 
-import org.digit.tracking.data.dao.PoiDao;
-import org.digit.tracking.data.dao.RouteDao;
-import org.digit.tracking.data.dao.TripDao;
-import org.digit.tracking.data.dao.TripProgressDao;
+import org.digit.tracking.data.dao.*;
+import org.digit.tracking.data.model.TripAlert;
 import org.openapitools.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +27,8 @@ public class Rules {
     TripProgressDao tripProgressDao;
     @Autowired
     TripDao tripDao;
+    @Autowired
+    TripAlertDao tripAlertDao;
 
     @Autowired
     PoiDao poiDao;
@@ -52,7 +54,6 @@ public class Rules {
         String tripId = tripProgressResponseList.get(0).getTripId();
 
         List<POI> matchingPoiList = new ArrayList<>();
-        //matchingPoiList = poiService.searchNearby(userLocation, POI_MATCH_THRESHOLD_METERS);
         matchingPoiList = poiDao.searchNearby(userLocation, POI_MATCH_THRESHOLD_METERS);
 
         if (matchingPoiList == null || matchingPoiList.isEmpty()) {
@@ -69,10 +70,10 @@ public class Rules {
         //Step Final - Load rule model entity for further usage in rule execution
         //Fetch the first record in matched POI list since that is the closest one to user location
         ruleModel.setMatchedPoi(matchingPoiList.get(0).getId());
+        ruleModel.setAlert(matchingPoiList.get(0).getAlert());
         ruleModel.setDistanceFromPoiMeters(matchingPoiList.get(0).getDistanceMeters());
         ruleModel.setProgressId(progressId);
         ruleModel.setTripId(tripId);
-        ruleModel.setAlerts(trip.getAlerts());
         ruleModel.setRouteEndPoi(route.getEndPoi());
 
         logger.info("## Matched POI, Distance from POI : " + ruleModel.getMatchedPoi() + " " + ruleModel.getDistanceFromPoiMeters());
@@ -93,12 +94,17 @@ public class Rules {
     //Rule - If the moving asset is spotted at a POI with alert mapped, update trip progress and send notification
     public void ruleUpdateTripProgressAndNotifyAlert(RuleModel ruleModel) {
         logger.info("## ruleUpdateTripProgressAndNotifyAlert method");
-        if (ruleModel.getAlerts() != null ){
-            //Create a trip entity with alerts info and update the db
-            Trip trip = new Trip();
-            trip.setId(ruleModel.getTripId());
-            trip.setAlerts(ruleModel.getAlerts());
-            tripDao.updateTrip(trip);
+        if (ruleModel.getAlert() != null ){
+            //Update trip progress record with alert string
+            TripAlert tripAlert = new TripAlert();
+            tripAlert.setTripProgressId(ruleModel.getProgressId());
+            tripAlert.setAlert(ruleModel.getAlert());
+
+            OffsetDateTime offsetDateTime = OffsetDateTime.now();
+            String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
+            tripAlert.setAlertDateTime(currentDateString);
+
+            tripAlertDao.updateTripAlert(tripAlert);
         }
     }
 

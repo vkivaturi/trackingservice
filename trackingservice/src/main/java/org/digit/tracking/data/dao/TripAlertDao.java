@@ -6,13 +6,17 @@ import org.digit.tracking.data.rowmapper.RouteMapper;
 import org.digit.tracking.data.rowmapper.TripAlertMapper;
 import org.digit.tracking.util.Constants;
 import org.openapitools.model.Route;
+import org.openapitools.model.Trip;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,4 +61,23 @@ public class TripAlertDao {
         return tripAlertList;
     }
 
+    public String updateTripAlert(TripAlert tripAlert) {
+        logger.info("## updateTripAlert inside DAO");
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("tripProgressId", tripAlert.getTripProgressId());
+        params.put("alert", tripAlert.getAlert());
+        params.put("alertDateTime", tripAlert.getAlertDateTime());
+
+        int rowsUpdated = namedParameterJdbcTemplate.update(sqlFetchTripAlertsByFilters, params);
+
+        if (rowsUpdated != 0) {
+            logger.info("Trip alert updated with id " + tripAlert.getTripProgressId());
+            return tripAlert.getTripProgressId();
+        } else {
+            logger.error("Trip update failed with id " + tripAlert.getTripProgressId());
+            return null;
+        }
+    }
 }

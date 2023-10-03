@@ -22,7 +22,7 @@ import javax.annotation.Generated;
  * POI
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-27T12:21:55.533675300+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-03T18:26:55.344646900+05:30[Asia/Calcutta]")
 public class POI {
 
   private String id;
@@ -108,8 +108,7 @@ public class POI {
   @Valid
   private List<@Valid Location> locationDetails;
 
-  @Valid
-  private List<String> alert;
+  private String alert;
 
   private String userId;
 
@@ -223,31 +222,23 @@ public class POI {
     this.locationDetails = locationDetails;
   }
 
-  public POI alert(List<String> alert) {
+  public POI alert(String alert) {
     this.alert = alert;
     return this;
   }
 
-  public POI addAlertItem(String alertItem) {
-    if (this.alert == null) {
-      this.alert = new ArrayList<>();
-    }
-    this.alert.add(alertItem);
-    return this;
-  }
-
   /**
-   * List of alert codes that may be applicable to the location. This is optional
+   * Alert code that may be applicable to the location. This is optional
    * @return alert
   */
   
-  @Schema(name = "alert", description = "List of alert codes that may be applicable to the location. This is optional", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @Schema(name = "alert", description = "Alert code that may be applicable to the location. This is optional", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("alert")
-  public List<String> getAlert() {
+  public String getAlert() {
     return alert;
   }
 
-  public void setAlert(List<String> alert) {
+  public void setAlert(String alert) {
     this.alert = alert;
   }
 

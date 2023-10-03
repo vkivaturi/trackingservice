@@ -18,7 +18,7 @@ import javax.annotation.Generated;
  * LocationAlert
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-09-27T12:21:55.533675300+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-03T18:26:55.344646900+05:30[Asia/Calcutta]")
 public class LocationAlert {
 
   private String code;

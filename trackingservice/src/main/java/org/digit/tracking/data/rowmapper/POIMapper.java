@@ -15,11 +15,10 @@ public class POIMapper implements RowMapper<POI> {
         poi.setType(POI.TypeEnum.valueOf(rs.getString("type").toUpperCase()));
         poi.setLocationName(rs.getString("locationName"));
         poi.setLocationDetails(dbUtil.getLocationDetailsFromSpatial(rs));
-        poi.setAlert(dbUtil.dbJsonToList(rs, "alert", String.class));
+        poi.setAlert(rs.getString("alert"));
         poi.setStatus(POI.StatusEnum.valueOf(rs.getString("status").toUpperCase()));
         poi.setUserId(rs.getString("userId"));
         poi.setDistanceMeters(rs.getInt("distanceMeters"));
-        //poi.setAudit(DbUtil.getAuditDetails(rs));
         return poi;
     }
 }
