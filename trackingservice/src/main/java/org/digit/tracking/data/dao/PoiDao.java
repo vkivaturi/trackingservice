@@ -28,13 +28,16 @@ public class PoiDao {
     final String sqlFetchPoiById = "SELECT id, locationName, status, type, alert, userId, " +
             "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
             "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI where id = ?";
+
+    //Query filter is slightly complicated as it has to handle scenario where input field is null and data in table is also null.
+    //In such case, COALESCE is incorrect as MySQL returns a false for null = null check
     final String sqlFetchPoiByFilters = "SELECT id, locationName, status, type, alert, userId, " +
             "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
             "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI " +
             "where " +
-            "userId = COALESCE(:userId, userId) and " +
-            "locationName like COALESCE(:locationName, locationName) and " +
-            "(:isAlertLocation is null) or (NOT(:isAlertLocation) and alert like 'null') or (:isAlertLocation and NOT(alert like 'null')) " +
+            "tenantId = :tenantId " +
+            "and locationName like COALESCE(:locationName, locationName) " +
+            "and ((alert is null and :alert is null) or (alert = COALESCE(:alert, alert))) " +
             ";";
 
     final String sqlSearchNearbyOfLocation = "SELECT id, locationName, status, type, alert, userId, " +
@@ -87,11 +90,14 @@ public class PoiDao {
         return poiList;
     }
 
-    public List<POI> fetchPOIbyFilters(String locationName, String userId, Boolean isAlertLocation, String tenantId) {
+    public List<POI> fetchPOIbyFilters(String locationName, String alert, String tenantId) {
         logger.info("## fetchPOIbyFilters");
+
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         Map<String,Object> params = new HashMap<String,Object>();
-        params.put("userId", userId);
+        params.put("tenantId", tenantId);
+        params.put("alert", alert);
+
         //Partial search is supported for location name
         if (locationName != null) {
             params.put("locationName", "%"+locationName+"%");
@@ -99,8 +105,6 @@ public class PoiDao {
             params.put("locationName", null);
         }
 
-        //params.put("locationName", "%"+locationName+"%");
-        params.put("isAlertLocation", isAlertLocation);
         List<POI> poiList = namedParameterJdbcTemplate.query(sqlFetchPoiByFilters, params, new POIMapper());
 
         return poiList;

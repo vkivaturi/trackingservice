@@ -20,16 +20,16 @@ http://localhost:8080/swagger-ui.html
 
 Change default port value in application.properties
 
+# Generate API model and stubs 
 openapi-generator-cli generate -i trackingservice_api.yaml -g spring
 
-
-64.227.176.181
-167.71.225.156
-
+# Maven build from source code
 mvn clean package -Dmaven.test.skip=true
 
+# Docker image creation
 docker build --build-arg JAR_FILE=openapi-spring-1.0.11.jar -t trackingservice .
 
+# Docker run
 docker run -d --env-file env.txt -p 8080:8080 trackingservice
 
 

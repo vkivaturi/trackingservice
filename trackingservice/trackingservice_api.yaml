@@ -75,10 +75,9 @@ paths:
       description: Search POIs based on multiple filters
       operationId: findPOI
       parameters:
-        - name: userId
+        - name: tenantId
           in: query
-          description: userId to be considered for filter
-          required: false
+          required: true
           explode: true
           schema:
             type: string
@@ -89,25 +88,13 @@ paths:
           explode: true
           schema:
             type: string
-        - name: isAlertLocation
+        - name: alert
           in: query
-          description: set true if only alert locations are needed. Omit this parameter to fetch all locations
+          description: Alert value set for the location. For example - Stoppage
           required: false
           explode: true
           schema:
             type: string
-        - name: pageSize
-          in: query
-          required: false
-          explode: true
-          schema:
-            type: integer
-        - name: pageNumber
-          in: query
-          required: false
-          explode: true
-          schema:
-            type: integer
 
       responses:
         '200':

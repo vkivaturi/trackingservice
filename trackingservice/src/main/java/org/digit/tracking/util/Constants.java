@@ -11,5 +11,6 @@ public class Constants {
     final public static String FMS_VEHICLE_TRIP_URL = "https://unified-dev.digit.org/vehicle/trip/v1/";
     final public static String ILLEGAL_DUMP_YARD_STOPPAGE_CODE = "Stoppage";
     final public static int ILLEGAL_DUMP_YARD_STOPPAGE_THRESHOLD = 5;
+    final public static int TRIP_PROGRESS_FETCH_LIMIT = 1000;
 
 }

@@ -25,12 +25,12 @@ public class POISao {
 
     @Autowired
     PoiDao poiDao;
-    //Destination location POI id of a trip is the FS treatment plant for the tenant id
+    //Destination location POI id of a trip is from the FS treatment plant for the tenant id
     public String getDesitationLocation(String tenantId, String authToken, String mdmsUrl) {
         logger.info("## getDesitationLocation" );
         String poiIdDestination = "";
         //TODO - Since there destination to tenant mapping is evolving, we are using a fixed POI from database. This has to change to REST API call
-        List<POI> poiList = poiDao.fetchPOIbyFilters("FSTP", "VTS", false, tenantId);
+        List<POI> poiList = poiDao.fetchPOIbyFilters("FSTP", null, tenantId);
         if (poiList.size() > 0) {
             //Fetch the first element in location since this ia POINT spatial with single part of LatLong
             poiIdDestination = poiList.get(0).getId();

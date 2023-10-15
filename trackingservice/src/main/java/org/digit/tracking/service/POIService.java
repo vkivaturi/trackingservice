@@ -14,8 +14,8 @@ public class POIService {
 
     @Autowired
     PoiDao poiDao;
-    public List<POI> getPOIsBySearch(String locationName, String userId, Boolean isAlertLocation, String tenantId) {
-        return poiDao.fetchPOIbyFilters(locationName, userId, isAlertLocation, tenantId);
+    public List<POI> getPOIsBySearch(String locationName, String alert, String tenantId) {
+        return poiDao.fetchPOIbyFilters(locationName, alert, tenantId);
     }
 
     public List<POI> searchNearby(Location userLocation, int distanceMeters) {

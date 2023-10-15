@@ -22,7 +22,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "TripProgress", description = "Trip progress is shared by the client continuously as the operator is moving")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-03T18:26:55.344646900+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-15T14:30:43.795517100+05:30[Asia/Calcutta]")
 public class TripProgress {
 
   private String id;

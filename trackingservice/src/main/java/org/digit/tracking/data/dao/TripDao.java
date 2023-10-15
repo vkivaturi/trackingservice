@@ -43,8 +43,9 @@ public class TripDao {
     final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, " +
             "plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
             "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
-    final String sqlUpdateTrip = "update Trip set routeId = COALESCE(?, routeId), status = COALESCE(?, status), locationAlerts = COALESCE(?, locationAlerts), " +
-            "updatedDate = ? , updatedBy = ?" +
+    final String sqlUpdateTrip = "update Trip set routeId = COALESCE(?, routeId), " +
+            "status = COALESCE(?, status), " +
+            "updatedDate = ? , updatedBy = ? " +
             "where id = ?";
 
     private DataSource dataSource;

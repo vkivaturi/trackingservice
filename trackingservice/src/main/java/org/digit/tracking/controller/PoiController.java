@@ -23,6 +23,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.Generated;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -51,22 +52,13 @@ public class PoiController implements PoiApi {
 
     @Override
     public ResponseEntity<List<POI>> findPOI(
-            @Parameter(name = "userId", description = "userId to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
+            @NotNull @Parameter(name = "tenantId", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = true) String tenantId,
             @Parameter(name = "locationName", description = "Location name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "locationName", required = false) String locationName,
-            @Parameter(name = "isAlertLocation", description = "set true if only alert locations are needed. Omit this parameter to fetch all locations", in = ParameterIn.QUERY) @Valid @RequestParam(value = "isAlertLocation", required = false) String isAlertLocation,
-            @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-            @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
+            @Parameter(name = "alert", description = "Alert value set for the location. For example - Stoppage", in = ParameterIn.QUERY) @Valid @RequestParam(value = "alert", required = false) String alert
     ) {
         logger.info("## findPOI is invoked");
-        logger.info(" ## isAlertLocation " + isAlertLocation);
 
-        Boolean flag = null;
-        if (isAlertLocation != null && isAlertLocation.length() != 0) {
-            flag = Boolean.valueOf(isAlertLocation);
-        }
-
-        //TODO - Capture tenant id in input request
-        List<POI> pois = poiService.getPOIsBySearch(locationName, userId, flag, null);
+        List<POI> pois = poiService.getPOIsBySearch(locationName, alert, tenantId);
         TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(pois));
         return new ResponseEntity<>(HttpStatus.OK);
     }

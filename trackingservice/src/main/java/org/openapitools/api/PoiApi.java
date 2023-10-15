@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-03T18:26:55.344646900+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-15T14:30:43.795517100+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "POI", description = "Points of interest (POI) are a combination of location and additional details about that specific location. A POI can be a single LatLong or a polygon (combination of multiple LatLongs)")
 public interface PoiApi {
@@ -87,11 +87,9 @@ public interface PoiApi {
      * GET /poi/_search : Finds POIs based on a specific parameters
      * Search POIs based on multiple filters
      *
-     * @param userId userId to be considered for filter (optional)
+     * @param tenantId  (required)
      * @param locationName Location name that needs to be considered for filter (optional)
-     * @param isAlertLocation set true if only alert locations are needed. Omit this parameter to fetch all locations (optional)
-     * @param pageSize  (optional)
-     * @param pageNumber  (optional)
+     * @param alert Alert value set for the location. For example - Stoppage (optional)
      * @return successful operation (status code 200)
      */
     @Operation(
@@ -111,11 +109,9 @@ public interface PoiApi {
         produces = { "application/json" }
     )
     default ResponseEntity<List<POI>> findPOI(
-        @Parameter(name = "userId", description = "userId to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "userId", required = false) String userId,
+        @NotNull @Parameter(name = "tenantId", description = "", required = true, in = ParameterIn.QUERY) @Valid @RequestParam(value = "tenantId", required = true) String tenantId,
         @Parameter(name = "locationName", description = "Location name that needs to be considered for filter", in = ParameterIn.QUERY) @Valid @RequestParam(value = "locationName", required = false) String locationName,
-        @Parameter(name = "isAlertLocation", description = "set true if only alert locations are needed. Omit this parameter to fetch all locations", in = ParameterIn.QUERY) @Valid @RequestParam(value = "isAlertLocation", required = false) String isAlertLocation,
-        @Parameter(name = "pageSize", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize,
-        @Parameter(name = "pageNumber", description = "", in = ParameterIn.QUERY) @Valid @RequestParam(value = "pageNumber", required = false) Integer pageNumber
+        @Parameter(name = "alert", description = "Alert value set for the location. For example - Stoppage", in = ParameterIn.QUERY) @Valid @RequestParam(value = "alert", required = false) String alert
     ) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {

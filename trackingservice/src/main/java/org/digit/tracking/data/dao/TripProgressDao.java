@@ -3,6 +3,7 @@ package org.digit.tracking.data.dao;
 import org.digit.tracking.data.rowmapper.TripMapper;
 import org.digit.tracking.data.rowmapper.TripProgressMapper;
 import org.digit.tracking.data.rowmapper.TripProgressResponseMapper;
+import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.DbUtil;
 import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Location;
@@ -35,8 +36,8 @@ public class TripProgressDao {
 
     final String sqlGetTripProgressById = "SELECT id, tripId, progressReportedTime, userId, ST_AStext(positionPoint) as positionPoint, progressTime, " +
             " matchedPoiId " +
-            " FROM TripProgress where id = COALESCE(?, id) and tripId = COALESCE(?, tripId) " +
-            "order by progressTime asc";
+            " FROM TripProgress where id = COALESCE(:tripProgressId, id) and tripId = COALESCE(:tripId, tripId) " +
+            "order by progressTime asc limit :maxRows";
     private DataSource dataSource;
 
     //Datasource bean is injected
@@ -88,10 +89,12 @@ public class TripProgressDao {
     //Get trip progress data based on progress id or trip id
     public List<TripProgressResponse> getTripProgress(String tripProgressId, String tripId) {
         logger.info("## getTripProgressById");
-        //TODO - Convert to named parameters
-        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
-        Object[] args = new Object[]{tripProgressId, tripId};
-        List<TripProgressResponse> tripProgressResponseList = jdbcTemplateObject.query(sqlGetTripProgressById, new TripProgressResponseMapper(), args);
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("tripProgressId", tripProgressId);
+        params.put("tripId", tripId);
+        params.put("maxRows", Constants.TRIP_PROGRESS_FETCH_LIMIT);
+        List<TripProgressResponse> tripProgressResponseList = namedParameterJdbcTemplate.query(sqlGetTripProgressById, params, new TripProgressResponseMapper());
         return tripProgressResponseList;
     }
 
