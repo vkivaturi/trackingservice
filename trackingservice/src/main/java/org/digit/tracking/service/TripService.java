@@ -8,6 +8,7 @@ import org.digit.tracking.data.sao.TripSao;
 import org.digit.tracking.monitoring.RuleEngine;
 import org.digit.tracking.service.helper.TripServiceHelper;
 import org.digit.tracking.util.Constants;
+import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
 import org.openapitools.model.TripProgressProgressDataInner;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.digit.tracking.util.Constants.RULE_LOAD_METHOD;
 
@@ -46,9 +48,13 @@ public class TripService {
         //TODO Switch to passing multiple application nos to target API
         for (FsmApplication fsmApplication : fsmApplicationList) {
             //Fetch the trip list for the application and add list back to the main applications list
-            fsmApplication.setFsmVehicleTripList(
-                    tripSao.fetchFsmTripsForApplication(
-                            fsmApplication.getApplicationNo(), tenantId, authToken, Constants.FMS_VEHICLE_TRIP_URL));
+
+            String tripResponseJson = tripSao.fetchFsmTrips(
+                    fsmApplication.getApplicationNo(), null, tenantId, authToken, Constants.FMS_VEHICLE_TRIP_URL);
+            fsmApplication.setFsmVehicleTripList(JsonUtil.getFSMVehicleTripObjectFromJson(tripResponseJson));
+//            fsmApplication.setFsmVehicleTripList(
+//                    tripSao.fetchFsmTripsForApplication(
+//                            fsmApplication.getApplicationNo(), tenantId, authToken, Constants.FMS_VEHICLE_TRIP_URL));
         }
 
         //TODO - Can use a common Trip entity in future
@@ -88,8 +94,25 @@ public class TripService {
         return tripDao.createTrip(trip);
     }
 
-    public String updateTrip(Trip trip) {
-        return tripDao.updateTrip(trip);
+    //Update function to manage both VTS and FSM trip status updates
+    public String updateTrip(Trip trip, String authToken) {
+        //Step 1 - Update trip status in vehicle tracking application
+        String tripId =  tripDao.updateTrip(trip);
+
+        if (trip.getStatus() == Trip.StatusEnum.COMPLETED) {
+            //Step 2 - Update trip status in FSM vehicle trip application
+            //Step 2.1 - Fetch trip details from FSM
+            String tripResponseJson = tripSao.fetchFsmTrips(
+                    null, trip.getId(), trip.getTenantId(), authToken, Constants.FMS_VEHICLE_TRIP_URL);
+
+            //Step 2.2 - Update FSM vehicle trip map entity
+            Map<String, Object> updatedVehicleTrip = JsonUtil.updateFsmTripEndActionJson(tripResponseJson);
+
+            //Step 2.3 - Call FSM vehicle trip API and update trip status
+            tripSao.updateFsmEndTripForApplication(updatedVehicleTrip, authToken, Constants.FMS_VEHICLE_TRIP_URL);
+        }
+        //Final - Return trip id of the updated trip to the client
+        return tripId;
     }
 
     public String createdTripProgress(TripProgress tripProgress) {

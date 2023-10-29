@@ -144,7 +144,7 @@ public class TripController implements TripApi {
     ) {
         logger.info("## updateTrip is invoked");
 
-        String tripId = tripService.updateTrip(trip);
+        String tripId = tripService.updateTrip(trip, xAuthToken);
         ACK ack = new ACK();
 
         if (tripId != null) {

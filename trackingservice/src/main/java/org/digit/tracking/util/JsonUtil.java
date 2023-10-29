@@ -11,14 +11,17 @@ import org.openapitools.model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class JsonUtil {
     static Logger logger = LoggerFactory.getLogger(JsonUtil.class);
 
-    public static String getJsonFromObject(Object obj){
+    public static String getJsonFromObject(Object obj) {
         ObjectMapper converter = new ObjectMapper();
         converter.registerModule(new JavaTimeModule());
         try {
@@ -29,7 +32,7 @@ public class JsonUtil {
     }
 
     //FSM entity data is required for vehicle tracking of FSM use cases. Application number and pickup coordinates are the most important ones
-    public static List<FsmApplication> getFSMObjectFromJson(String jsonString){
+    public static List<FsmApplication> getFSMObjectFromJson(String jsonString) {
         Map<String, Object> result = getStringObjectMap(jsonString);
 
         //Fetch data in this json path - /fsm/address/geoLocation
@@ -45,13 +48,13 @@ public class JsonUtil {
     }
 
     //Identify location of FSTP
-    public static Location getLocationObjectFromJson(String jsonString){
+    public static Location getLocationObjectFromJson(String jsonString) {
         Map<String, Object> result = getStringObjectMap(jsonString);
 
         //TODO - Parsing JSON this way is not clean. Replace with better code.
         //Fetch data in this json path - /fsm/address/geoLocation
-        Map<String,Object> mdm = (Map<String,Object>) result.get("MdmsRes");
-        Map<String,Object> fsm = (Map<String,Object>) mdm.get("FSM");
+        Map<String, Object> mdm = (Map<String, Object>) result.get("MdmsRes");
+        Map<String, Object> fsm = (Map<String, Object>) mdm.get("FSM");
         List<Object> plantList = (List<Object>) fsm.get("FSTPPlantInfo");
 
         //TODO - since FSM application currently does not provide destination, pick the first record. This will work for Odisha but will not be correct in future
@@ -72,18 +75,22 @@ public class JsonUtil {
 
         List<FsmVehicleTrip> fsmVehicleTripList = new ArrayList<>();
 
-        for (Object vehicleTrip : listOfTrips) {
-            FsmVehicleTrip fsmVehicleTrip = new FsmVehicleTrip();
-            Map<String, Object> mapOfVehicleTrip = (Map<String, Object>) vehicleTrip;
+        if (listOfTrips != null) {
 
-            fsmVehicleTrip.setTripApplicationNo(String.valueOf(mapOfVehicleTrip.get("applicationNo")));
-            fsmVehicleTrip.setTripApplicationStatus(String.valueOf(mapOfVehicleTrip.get("applicationStatus")));
-            fsmVehicleTrip.setBusinessService(String.valueOf(mapOfVehicleTrip.get("businessService")));
-            //Add to applications list
-            fsmVehicleTripList.add(fsmVehicleTrip);
+            for (Object vehicleTrip : listOfTrips) {
+                FsmVehicleTrip fsmVehicleTrip = new FsmVehicleTrip();
+                Map<String, Object> mapOfVehicleTrip = (Map<String, Object>) vehicleTrip;
+
+                fsmVehicleTrip.setTripApplicationNo(String.valueOf(mapOfVehicleTrip.get("applicationNo")));
+                fsmVehicleTrip.setTripApplicationStatus(String.valueOf(mapOfVehicleTrip.get("applicationStatus")));
+                fsmVehicleTrip.setBusinessService(String.valueOf(mapOfVehicleTrip.get("businessService")));
+                //Add to applications list
+                fsmVehicleTripList.add(fsmVehicleTrip);
+            }
         }
         return fsmVehicleTripList;
     }
+
     private static Map<String, Object> getStringObjectMap(String jsonString) {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode jsonObj;
@@ -92,7 +99,8 @@ public class JsonUtil {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        Map<String, Object> result = mapper.convertValue(jsonObj, new TypeReference<Map<String, Object>>(){});
+        Map<String, Object> result = mapper.convertValue(jsonObj, new TypeReference<Map<String, Object>>() {
+        });
         return result;
     }
 
@@ -112,5 +120,56 @@ public class JsonUtil {
         fsmApplication.setPickupLocationLatitude(String.valueOf(mapOfLocation.get("latitude")));
         fsmApplication.setPickupLocationLongitude(String.valueOf(mapOfLocation.get("longitude")));
         return fsmApplication;
+    }
+
+    //FSM trip status is updated for in the input string. It is assumed that the json string has data for only one trip.
+    //This method updates 3 fields in the json input - adds a workflow status, updates end time, updates volume carried
+    public static Map<String, Object> updateFsmTripEndActionJson(String jsonString) {
+        logger.info("## Invoked updateFsmTripEndActionJson");
+        logger.info(jsonString);
+        Map<String, Object> result = getStringObjectMap(jsonString);
+
+        List<Object> listOfTrips = (List<Object>) result.get("vehicleTrip");
+
+        //Invalid use case for update - json input provided must have exactly one trip in it
+        if (listOfTrips.size() != 1) {
+            logger.error("## Number of trips is not equal to 1 : " + listOfTrips.size());
+            return null;
+        }
+
+        //Update 3 trip fields to indicate closure
+        Map<String, Object> mapOfVehicleTrip = (Map<String, Object>) listOfTrips.get(0);
+
+        //Step 1 - Prep data to set
+        long currentTime = System.currentTimeMillis();
+
+        List<Object> listOfTripDetails = (List<Object>) mapOfVehicleTrip.get("tripDetails");
+        Map<String, Object> mapOfTripDetails = (Map<String, Object>) listOfTripDetails.get(0);
+        double volumeCarried = (Double) mapOfTripDetails.get("volume");
+
+        Map<String, Object> actionMap = Collections.singletonMap("action", Constants.FSM_TRIP_COMPLETION_STATUS);
+
+        //Step 2 - Set data to output
+        mapOfVehicleTrip.put("tripEndTime", currentTime);
+        mapOfVehicleTrip.put("volumeCarried", volumeCarried);
+        result.put("workflow", actionMap);
+        result.remove("responseInfo");
+        result.remove("totalCount");
+
+        logger.info(" ## result string : " + JsonUtil.getJsonFromObject(result));
+
+        return result;
+    }
+
+    public static String convertMapToJsonString(Map<String, Object> result) {
+        ObjectMapper mapper = new ObjectMapper();
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        try {
+            mapper.writeValue(bout, result);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        byte[] objectBytes = bout.toByteArray();
+        return(new String(objectBytes));
     }
 }
