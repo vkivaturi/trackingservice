@@ -101,21 +101,13 @@ public class TripService {
 
         if (trip.getStatus() == Trip.StatusEnum.COMPLETED) {
             //Step 2 - Update trip status in FSM vehicle trip application
-            //Step 2.1 - Fetch trip details from FSM
-            String tripResponseJson = tripSao.fetchFsmTrips(
-                    null, trip.getId(), trip.getTenantId(), authToken, Constants.FMS_VEHICLE_TRIP_URL);
-
-            //Step 2.2 - Update FSM vehicle trip map entity
-            Map<String, Object> updatedVehicleTrip = JsonUtil.updateFsmTripEndActionJson(tripResponseJson);
-
-            //Step 2.3 - Call FSM vehicle trip API and update trip status
-            tripSao.updateFsmEndTripForApplication(updatedVehicleTrip, authToken, Constants.FMS_VEHICLE_TRIP_URL);
+            tripServiceHelper.updateFSMTripStatus(trip, authToken, tripSao);
         }
         //Final - Return trip id of the updated trip to the client
         return tripId;
     }
 
-    public String createdTripProgress(TripProgress tripProgress) {
+    public String createTripProgress(TripProgress tripProgress, String authToken) {
 
         //Usually the API receives only one location update. But in case the client app comes back from offline more, there could be bulk updates in a single json
         //progressTime is the time when the actual geo position was recorded
@@ -124,9 +116,8 @@ public class TripService {
             String progressId = tripProgressDao.createTripProgress(tripProgressProgressDataInner.getLocation(), tripProgress.getProgressReportedTime(),
                     tripProgressProgressDataInner.getProgressTime(), tripProgress.getTripId(), tripProgress.getUserId());
             //TODO - Remove this call once monitoring service is live
-            ruleEngine.executeAllRules(progressId);
+            ruleEngine.executeAllRules(progressId, authToken);
         }
-        //return tripDao.createTripProgress(tripProgress);
         return tripProgress.getTripId();
     }
 

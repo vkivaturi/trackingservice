@@ -83,7 +83,7 @@ public class TripController implements TripApi {
             @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
     ) {
         logger.info("## progressTrip is invoked");
-        String tripProgressId = tripService.createdTripProgress(tripProgress);
+        String tripProgressId = tripService.createTripProgress(tripProgress, xAuthToken);
 
         //Initialise response object
         ACK ack = new ACK();

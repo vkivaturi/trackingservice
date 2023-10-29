@@ -4,6 +4,9 @@ import org.digit.tracking.data.dao.PoiDao;
 import org.digit.tracking.data.dao.RouteDao;
 import org.digit.tracking.data.dao.TripDao;
 import org.digit.tracking.data.sao.POISao;
+import org.digit.tracking.data.sao.TripSao;
+import org.digit.tracking.util.Constants;
+import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Location;
 import org.openapitools.model.POI;
 import org.openapitools.model.Route;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 //A helper class simplify logic in the trip service code
 @Service
@@ -86,4 +90,16 @@ public class TripServiceHelper {
 
         return tripDao.createTrip(trip);
     }
+
+    public void updateFSMTripStatus(Trip trip, String authToken, TripSao tripSao) {
+        String tripResponseJson = tripSao.fetchFsmTrips(
+                null, trip.getId(), trip.getTenantId(), authToken, Constants.FMS_VEHICLE_TRIP_URL);
+
+        //Step 2.2 - Update FSM vehicle trip map entity
+        Map<String, Object> updatedVehicleTrip = JsonUtil.updateFsmTripEndActionJson(tripResponseJson);
+
+        //Step 2.3 - Call FSM vehicle trip API and update trip status
+        tripSao.updateFsmEndTripForApplication(updatedVehicleTrip, authToken, Constants.FMS_VEHICLE_TRIP_URL);
+    }
+
 }

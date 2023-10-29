@@ -35,9 +35,10 @@ public class RuleEngine {
 
     //Dynamically execute all rule methods
     @Async
-    public void executeAllRules(String progressId){
+    public void executeAllRules(String progressId, String authToken){
         //Initialise Rule Model for this execution of all rules
         RuleModel ruleModel = new RuleModel();
+        ruleModel.setAuthToken(authToken);
 
         //Step 1 - Execute the load method so that data model in Rules is populated
         this.executeSingleRuleMethod(RULE_LOAD_METHOD, progressId, ruleModel);

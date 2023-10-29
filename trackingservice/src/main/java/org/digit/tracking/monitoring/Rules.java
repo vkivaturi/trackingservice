@@ -2,6 +2,8 @@ package org.digit.tracking.monitoring;
 
 import org.digit.tracking.data.dao.*;
 import org.digit.tracking.data.model.TripAlert;
+import org.digit.tracking.data.sao.TripSao;
+import org.digit.tracking.service.helper.TripServiceHelper;
 import org.openapitools.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,11 @@ public class Rules {
 
     @Autowired
     RouteDao routeDao;
+
+    @Autowired
+    TripServiceHelper tripServiceHelper;
+    @Autowired
+    TripSao tripSao;
 
     //Stage 1 - Fetch data from relevant sources and populate the RuleMode. This model is then used by rest of rule action methods
     public RuleModel loadModel(String progressId, RuleModel ruleModel) {
@@ -116,7 +123,10 @@ public class Rules {
             Trip trip = new Trip();
             trip.setId(ruleModel.getTripId());
             trip.setStatus(Trip.StatusEnum.COMPLETED);
+            //Update trip status in VTS
             tripDao.updateTrip(trip);
+            //Update trip stats in FMS
+            tripServiceHelper.updateFSMTripStatus(trip, ruleModel.getAuthToken(), tripSao);
         }
     }
 
