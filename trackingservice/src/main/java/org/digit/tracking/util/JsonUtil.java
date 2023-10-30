@@ -124,7 +124,7 @@ public class JsonUtil {
 
     //FSM trip status is updated for in the input string. It is assumed that the json string has data for only one trip.
     //This method updates 3 fields in the json input - adds a workflow status, updates end time, updates volume carried
-    public static Map<String, Object> updateFsmTripEndActionJson(String jsonString) {
+    public static Map<String, Object> updateFsmTripEndActionJson(String jsonString, String endType) {
         logger.info("## Invoked updateFsmTripEndActionJson");
         logger.info(jsonString);
         Map<String, Object> result = getStringObjectMap(jsonString);
@@ -152,6 +152,7 @@ public class JsonUtil {
         //Step 2 - Set data to output
         mapOfVehicleTrip.put("tripEndTime", currentTime);
         mapOfVehicleTrip.put("volumeCarried", volumeCarried);
+        mapOfVehicleTrip.put("endType", endType);
         result.put("workflow", actionMap);
         result.remove("responseInfo");
         result.remove("totalCount");

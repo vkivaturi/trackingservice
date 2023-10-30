@@ -4,6 +4,7 @@ import org.digit.tracking.data.dao.*;
 import org.digit.tracking.data.model.TripAlert;
 import org.digit.tracking.data.sao.TripSao;
 import org.digit.tracking.service.helper.TripServiceHelper;
+import org.digit.tracking.util.Constants;
 import org.openapitools.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,7 +127,7 @@ public class Rules {
             //Update trip status in VTS
             tripDao.updateTrip(trip);
             //Update trip stats in FMS
-            tripServiceHelper.updateFSMTripStatus(trip, ruleModel.getAuthToken(), tripSao);
+            tripServiceHelper.updateFSMTripStatus(trip, ruleModel.getAuthToken(), tripSao, Constants.TRIP_CLOSE_SYSTEM);
         }
     }
 

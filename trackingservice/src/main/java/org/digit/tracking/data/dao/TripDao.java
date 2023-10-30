@@ -42,11 +42,13 @@ public class TripDao {
             ;
     final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, " +
             "plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
-            "createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?)";
-    final String sqlUpdateTrip = "update Trip set routeId = COALESCE(?, routeId), " +
-            "status = COALESCE(?, status), " +
-            "updatedDate = ? , updatedBy = ? " +
-            "where id = ?";
+            "createdDate, createdBy, updatedDate, updatedBy, tenantId, referenceNo) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?)";
+    final String sqlUpdateTrip = "update Trip set routeId = COALESCE(:routeId, routeId), " +
+            "status = COALESCE(:status, status), " +
+            "actualStartTime = COALESCE(:actualStartTime, actualStartTime), " +
+            "actualEndTime = COALESCE(:actualEndTime, actualEndTime), " +
+            "updatedDate = :updatedDate , updatedBy = :updatedBy " +
+            "where id = :tripId";
 
     private DataSource dataSource;
 
@@ -66,7 +68,6 @@ public class TripDao {
     }
     public List<Trip> fetchTripbyFilters(String status, String userId, String operatorId, String tenantId, String businessService, String referenceNos ) {
         logger.info("## fetchTripbyFilters");
-        //JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
 
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         Map<String,Object> params = new HashMap<String,Object>();
@@ -80,6 +81,7 @@ public class TripDao {
     //Create Trip and save it in database
     public String createTrip(Trip trip) {
         logger.info("## createTrip in table");
+        //TODO - Change to named parameters
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         //Prepare input data for the SQL
@@ -98,7 +100,7 @@ public class TripDao {
         Object[] args = new Object[]{idLocal, JsonUtil.getJsonFromObject(trip.getOperator()), trip.getServiceCode(), trip.getStatus().toString(),
                 trip.getRouteId(), createdBy, trip.getPlannedStartTime(), trip.getPlannedEndTime(), trip.getActualStartTime(),
                 trip.getActualEndTime(), currentDateString,
-                createdBy, currentDateString, updatedBy};
+                createdBy, currentDateString, updatedBy, trip.getTenantId(), trip.getReferenceNo()};
 
         int result = jdbcTemplate.update(sqlCreateTrip, args);
         if (result != 0) {
@@ -113,19 +115,28 @@ public class TripDao {
     //Update trip using an id and the supported list of attributes
     public String updateTrip(Trip trip) {
         logger.info("## updateTrip inside DAO");
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
 
         String statusLocal = (trip.getStatus() != null) ? trip.getStatus().toString() : null;
-        //String alerts = (trip.getAlerts() != null) ? trip.getAlerts() : null;
+        String startTime = (statusLocal.equals(Trip.StatusEnum.ONGOING.getValue())) ? currentDateString : null;
+        String endTime = (statusLocal.equals(Trip.StatusEnum.COMPLETED.getValue())) ? currentDateString : null;
+
         //Audit information
         String updatedBy = trip.getUserId();
 
-        Object[] args = new Object[]{trip.getRouteId(), statusLocal,
-                currentDateString, updatedBy, trip.getId()};
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("routeId", trip.getRouteId());
+        params.put("status", statusLocal);
+        params.put("updatedDate", currentDateString);
+        params.put("updatedBy", updatedBy);
+        params.put("tripId", trip.getId());
+        params.put("actualStartTime", startTime);
+        params.put("actualEndTime", endTime);
 
-        int result = jdbcTemplate.update(sqlUpdateTrip, args);
+        int result = namedParameterJdbcTemplate.update(sqlUpdateTrip, params);
         if (result != 0) {
             logger.info("Trip updated with id " + trip.getId());
             return trip.getId();

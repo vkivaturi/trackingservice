@@ -91,12 +91,12 @@ public class TripServiceHelper {
         return tripDao.createTrip(trip);
     }
 
-    public void updateFSMTripStatus(Trip trip, String authToken, TripSao tripSao) {
+    public void updateFSMTripStatus(Trip trip, String authToken, TripSao tripSao, String endType) {
         String tripResponseJson = tripSao.fetchFsmTrips(
                 null, trip.getId(), trip.getTenantId(), authToken, Constants.FMS_VEHICLE_TRIP_URL);
 
         //Step 2.2 - Update FSM vehicle trip map entity
-        Map<String, Object> updatedVehicleTrip = JsonUtil.updateFsmTripEndActionJson(tripResponseJson);
+        Map<String, Object> updatedVehicleTrip = JsonUtil.updateFsmTripEndActionJson(tripResponseJson, endType);
 
         //Step 2.3 - Call FSM vehicle trip API and update trip status
         tripSao.updateFsmEndTripForApplication(updatedVehicleTrip, authToken, Constants.FMS_VEHICLE_TRIP_URL);

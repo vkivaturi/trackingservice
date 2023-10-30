@@ -52,9 +52,6 @@ public class TripService {
             String tripResponseJson = tripSao.fetchFsmTrips(
                     fsmApplication.getApplicationNo(), null, tenantId, authToken, Constants.FMS_VEHICLE_TRIP_URL);
             fsmApplication.setFsmVehicleTripList(JsonUtil.getFSMVehicleTripObjectFromJson(tripResponseJson));
-//            fsmApplication.setFsmVehicleTripList(
-//                    tripSao.fetchFsmTripsForApplication(
-//                            fsmApplication.getApplicationNo(), tenantId, authToken, Constants.FMS_VEHICLE_TRIP_URL));
         }
 
         //TODO - Can use a common Trip entity in future
@@ -101,7 +98,7 @@ public class TripService {
 
         if (trip.getStatus() == Trip.StatusEnum.COMPLETED) {
             //Step 2 - Update trip status in FSM vehicle trip application
-            tripServiceHelper.updateFSMTripStatus(trip, authToken, tripSao);
+            tripServiceHelper.updateFSMTripStatus(trip, authToken, tripSao, Constants.TRIP_CLOSE_DRIVER);
         }
         //Final - Return trip id of the updated trip to the client
         return tripId;
