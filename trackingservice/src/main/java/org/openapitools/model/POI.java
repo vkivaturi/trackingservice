@@ -22,12 +22,14 @@ import javax.annotation.Generated;
  * POI
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-03T17:14:16.741413300+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-03T21:38:25.371094500+05:30[Asia/Calcutta]")
 public class POI {
 
   private String id;
 
   private String locationName;
+
+  private String tenantId;
 
   /**
    * POI status to help to exclude or include this in route planning
@@ -152,6 +154,26 @@ public class POI {
 
   public void setLocationName(String locationName) {
     this.locationName = locationName;
+  }
+
+  public POI tenantId(String tenantId) {
+    this.tenantId = tenantId;
+    return this;
+  }
+
+  /**
+   * Get tenantId
+   * @return tenantId
+  */
+  
+  @Schema(name = "tenantId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("tenantId")
+  public String getTenantId() {
+    return tenantId;
+  }
+
+  public void setTenantId(String tenantId) {
+    this.tenantId = tenantId;
   }
 
   public POI status(StatusEnum status) {
@@ -293,6 +315,7 @@ public class POI {
     POI POI = (POI) o;
     return Objects.equals(this.id, POI.id) &&
         Objects.equals(this.locationName, POI.locationName) &&
+        Objects.equals(this.tenantId, POI.tenantId) &&
         Objects.equals(this.status, POI.status) &&
         Objects.equals(this.type, POI.type) &&
         Objects.equals(this.locationDetails, POI.locationDetails) &&
@@ -303,7 +326,7 @@ public class POI {
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, locationName, status, type, locationDetails, alert, userId, distanceMeters);
+    return Objects.hash(id, locationName, tenantId, status, type, locationDetails, alert, userId, distanceMeters);
   }
 
   @Override
@@ -312,6 +335,7 @@ public class POI {
     sb.append("class POI {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    locationName: ").append(toIndentedString(locationName)).append("\n");
+    sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    locationDetails: ").append(toIndentedString(locationDetails)).append("\n");

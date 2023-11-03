@@ -639,6 +639,8 @@ components:
         locationName:
           type: string
           example: Any name assigned to the location
+        tenantId:
+          type: string
         status:
           type: string
           description: POI status to help to exclude or include this in route planning

@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-03T17:14:16.741413300+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-03T21:38:25.371094500+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Route", description = "Route is a sequence of POIs. Route indicate the path the operator should take while delivering a service.")
 public interface RouteApi {

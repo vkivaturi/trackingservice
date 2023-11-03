@@ -52,9 +52,9 @@ public class PoiDao {
             "FROM POI poi " +
             "HAVING distanceMeters <= ? " +
             "order by distanceMeters asc;";
-    final String sqlCreatePoi = "insert into POI (id, locationName, status, type, alert, " +
+    final String sqlCreatePoi = "insert into POI (id, tenantId, locationName, status, type, alert, " +
             "createdDate, createdBy, updatedDate, updatedBy, userId, positionPoint, positionPolygon, positionLine) " +
-            "values (?,?,?,?,?,?,?,?,?,?, " +
+            "values (?,?,?,?,?,?,?,?,?,?,?, " +
             "ST_PointFromText(?, 4326, 'axis-order=lat-long'), " +
             "ST_GeomFromText(?, 4326, 'axis-order=lat-long'), " +
             "ST_GeomFromText(?, 4326, 'axis-order=lat-long') )";
@@ -186,7 +186,7 @@ public class PoiDao {
         String createdBy = poi.getUserId();
         String updatedBy = poi.getUserId();
 
-        Object[] args = new Object[]{idLocal, poi.getLocationName(), poi.getStatus().toString(),
+        Object[] args = new Object[]{idLocal, poi.getTenantId(), poi.getLocationName(), poi.getStatus().toString(),
                 poi.getType().toString(), alerts, currentDateString,
                 createdBy, currentDateString, updatedBy, poi.getUserId(), positionPoint, positionPolygon, positionLine};
 
