@@ -1,5 +1,8 @@
 package org.digit.tracking.data.model;
 
+import org.openapitools.model.Address;
+import org.openapitools.model.Citizen;
+
 import java.util.List;
 
 //Entity with fields retrieved from FSM system's citizen application
@@ -10,6 +13,10 @@ public class FsmApplication {
     private String pickupLocationLatitude;
     private String pickupLocationLongitude;
     private String driverId;
+    private Citizen citizen;
+
+    private Address pickupAddress;
+    private Address dropAddress;
     private List<FsmVehicleTrip> fsmVehicleTripList;
 
     public String getTenantId() {
@@ -67,4 +74,25 @@ public class FsmApplication {
     public void setFsmVehicleTripList(List<FsmVehicleTrip> fsmVehicleTripList) {
         this.fsmVehicleTripList = fsmVehicleTripList;
     }
+    public Citizen getCitizen() {
+        return citizen;
+    }
+    public void setCitizen(Citizen citizen) {
+        this.citizen = citizen;
+    }
+
+    public Address getPickupAddress() {
+        return pickupAddress;
+    }
+
+    public void setPickupAddress(Address pickupAddress) {
+        this.pickupAddress = pickupAddress;
+    }
+    public Address getDropAddress() {
+        return dropAddress;
+    }
+    public void setDropAddress(Address dropAddress) {
+        this.dropAddress = dropAddress;
+    }
+
 }

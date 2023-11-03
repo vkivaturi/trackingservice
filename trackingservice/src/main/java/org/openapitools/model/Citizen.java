@@ -15,41 +15,17 @@ import java.util.*;
 import javax.annotation.Generated;
 
 /**
- * Role
+ * Citizen
  */
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-03T17:14:16.741413300+05:30[Asia/Calcutta]")
-public class Role {
-
-  private Long id;
+public class Citizen {
 
   private String name;
 
-  private String code;
+  private String contactNumber;
 
-  private String tenantId;
-
-  public Role id(Long id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Get id
-   * @return id
-  */
-  
-  @Schema(name = "id", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("id")
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public Role name(String name) {
+  public Citizen name(String name) {
     this.name = name;
     return this;
   }
@@ -69,44 +45,24 @@ public class Role {
     this.name = name;
   }
 
-  public Role code(String code) {
-    this.code = code;
+  public Citizen contactNumber(String contactNumber) {
+    this.contactNumber = contactNumber;
     return this;
   }
 
   /**
-   * Get code
-   * @return code
+   * Get contactNumber
+   * @return contactNumber
   */
   
-  @Schema(name = "code", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("code")
-  public String getCode() {
-    return code;
+  @Schema(name = "contactNumber", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("contactNumber")
+  public String getContactNumber() {
+    return contactNumber;
   }
 
-  public void setCode(String code) {
-    this.code = code;
-  }
-
-  public Role tenantId(String tenantId) {
-    this.tenantId = tenantId;
-    return this;
-  }
-
-  /**
-   * Get tenantId
-   * @return tenantId
-  */
-  
-  @Schema(name = "tenantId", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("tenantId")
-  public String getTenantId() {
-    return tenantId;
-  }
-
-  public void setTenantId(String tenantId) {
-    this.tenantId = tenantId;
+  public void setContactNumber(String contactNumber) {
+    this.contactNumber = contactNumber;
   }
 
   @Override
@@ -117,26 +73,22 @@ public class Role {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Role role = (Role) o;
-    return Objects.equals(this.id, role.id) &&
-        Objects.equals(this.name, role.name) &&
-        Objects.equals(this.code, role.code) &&
-        Objects.equals(this.tenantId, role.tenantId);
+    Citizen citizen = (Citizen) o;
+    return Objects.equals(this.name, citizen.name) &&
+        Objects.equals(this.contactNumber, citizen.contactNumber);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, code, tenantId);
+    return Objects.hash(name, contactNumber);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Role {\n");
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("class Citizen {\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
-    sb.append("    tenantId: ").append(toIndentedString(tenantId)).append("\n");
+    sb.append("    contactNumber: ").append(toIndentedString(contactNumber)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.digit.tracking.data.model.FsmApplication;
 import org.digit.tracking.data.model.FsmVehicleTrip;
+import org.openapitools.model.Address;
+import org.openapitools.model.Citizen;
 import org.openapitools.model.Location;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,6 +109,9 @@ public class JsonUtil {
     private static FsmApplication getFsmApplication(Map<String, Object> listOfApplication) {
         FsmApplication fsmApplication = new FsmApplication();
         Map<String, Object> mapOfApplication = listOfApplication;
+        Citizen citizen = new Citizen();
+        Address pickupAddress = new Address();
+        Address dropAddress = new Address();
 
         //Fetch application level attributes
         fsmApplication.setApplicationNo(String.valueOf(mapOfApplication.get("applicationNo")));
@@ -114,11 +119,35 @@ public class JsonUtil {
         fsmApplication.setTenantId(String.valueOf(mapOfApplication.get("tenantId")));
         fsmApplication.setDriverId(String.valueOf(mapOfApplication.get("driverId")));
 
-        //Fetch address and geolocation attributes
+        //Fetch address details
         Map<String, Object> mapOfAddress = (Map<String, Object>) mapOfApplication.get("address");
+        //Fetch geolocation attributes
         Map<String, Object> mapOfLocation = (Map<String, Object>) mapOfAddress.get("geoLocation");
         fsmApplication.setPickupLocationLatitude(String.valueOf(mapOfLocation.get("latitude")));
         fsmApplication.setPickupLocationLongitude(String.valueOf(mapOfLocation.get("longitude")));
+
+        //Fetch citizen details
+        Map<String, Object> mapOfCitizen = (Map<String, Object>) mapOfApplication.get("citizen");
+        citizen.setContactNumber(String.valueOf(mapOfCitizen.get("mobileNumber")));
+        citizen.setName(String.valueOf(mapOfCitizen.get("name")));
+        fsmApplication.setCitizen(citizen);
+
+        //Fetch pickup location details from Fsm response
+
+        pickupAddress.setDoorNo(String.valueOf(mapOfAddress.get("doorNo")));
+        pickupAddress.setPlotNo(String.valueOf(mapOfAddress.get("plotNo")));
+        pickupAddress.setCity(String.valueOf(mapOfAddress.get("city")));
+        pickupAddress.setDistrict(String.valueOf(mapOfAddress.get("district")));
+        pickupAddress.setLandmark(String.valueOf(mapOfAddress.get("landmark")));
+        pickupAddress.setState(String.valueOf(mapOfAddress.get("state")));
+        pickupAddress.setCountry(String.valueOf(mapOfAddress.get("country")));
+        pickupAddress.setPincode(String.valueOf(mapOfAddress.get("pincode")));
+        fsmApplication.setPickupAddress(pickupAddress);
+
+        //Fetch drop location from predefined POIs for FSTP of the tenant id
+
+        fsmApplication.setDropAddress(dropAddress);
+
         return fsmApplication;
     }
 

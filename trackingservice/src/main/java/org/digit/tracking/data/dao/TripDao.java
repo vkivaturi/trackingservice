@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+//VTS database access methods. Helps rune search, create and update actions
 @Service
 public class TripDao {
     Logger logger = LoggerFactory.getLogger(TripDao.class);

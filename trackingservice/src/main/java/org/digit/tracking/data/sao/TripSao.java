@@ -2,6 +2,7 @@ package org.digit.tracking.data.sao;
 
 import org.digit.tracking.data.model.FsmApplication;
 import org.digit.tracking.data.model.FsmVehicleTrip;
+import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.JsonUtil;
 import org.digit.tracking.util.exception.RestTemplateResponseErrorHandler;
 import org.slf4j.Logger;
@@ -59,7 +60,7 @@ public class TripSao {
     public String fetchFsmTrips(String referenceApplicationNo, String tripId, String tenantId, String authToken, String vehicleTripUrl) {
         logger.info("## fetchFsmTripsForApplication is invoked");
         HttpEntity<Map<String, Object>> entity = getMapHttpEntity(authToken, null);
-        StringBuilder searchUrl = new StringBuilder().append(vehicleTripUrl).append("/").append("_search?tenantId=").append(tenantId);
+        StringBuilder searchUrl = new StringBuilder().append(vehicleTripUrl).append("/").append("_search?tenantId=").append(tenantId).append("&applicationStatus=").append(Constants.FSM_TRIP_SEARCH_STATUS_FILTER);
         if (referenceApplicationNo != null) {
             searchUrl.append("&refernceNos=").append(referenceApplicationNo);
         }

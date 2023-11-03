@@ -20,7 +20,7 @@ import javax.annotation.Generated;
  */
 
 @Schema(name = "TripProgressResponse", description = "Trip progress response is returned by the service")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-28T22:00:51.463459500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-03T17:14:16.741413300+05:30[Asia/Calcutta]")
 public class TripProgressResponse {
 
   private String id;

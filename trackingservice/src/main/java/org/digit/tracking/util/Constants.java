@@ -15,6 +15,8 @@ public class Constants {
     final public static int ILLEGAL_DUMP_YARD_STOPPAGE_THRESHOLD = 5;
     final public static int TRIP_PROGRESS_FETCH_LIMIT = 1000;
     final public static String FSM_TRIP_COMPLETION_STATUS = "DISPOSE";
+    final public static String FSM_TRIP_SEARCH_STATUS_FILTER = "WAITING_FOR_DISPOSAL";
+
     final public static String TRIP_CLOSE_SYSTEM = "System verified";
     final public static String TRIP_CLOSE_DRIVER = "Driver initiated";
 

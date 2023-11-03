@@ -747,6 +747,36 @@ components:
           type: string
           description: Vehicle number of the operator
 
+    Citizen:
+      type: object
+      properties:
+        name:
+          type: string
+        contactNumber:
+          type: string
+
+    Address:
+      type: object
+      properties:
+        addressTitle:
+          type: string
+        doorNo:
+          type: string
+        plotNo:
+          type: string
+        landmark:
+          type: string
+        city:
+          type: string
+        district:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        pincode:
+          type: string
+
     Trip:
       type: object
       properties:
@@ -781,6 +811,8 @@ components:
           description: End type code for the trip (system, FSTPO, driver etc )
         operator:
           $ref: '#/components/schemas/Operator'
+        citizen:
+          $ref: '#/components/schemas/Citizen'
         plannedStartTime:
           type: string
           example: 2023-07-30T10:24:10.547Z
@@ -797,6 +829,10 @@ components:
           type: string
           example: 2023-07-30T10:24:10.547Z
           description: Date and time in ISO_DATE_TIME format
+        pickupLocation:
+          $ref: '#/components/schemas/Address'
+        dropLocation:
+          $ref: '#/components/schemas/Address'
         userId:
           type: string
           description: DIGIT Id of the user performing this action

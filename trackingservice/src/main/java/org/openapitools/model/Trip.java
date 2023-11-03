@@ -5,6 +5,8 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
+import org.openapitools.model.Address;
+import org.openapitools.model.Citizen;
 import org.openapitools.model.Operator;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
@@ -20,7 +22,7 @@ import javax.annotation.Generated;
  * Trip
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-10-28T22:00:51.463459500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-03T17:14:16.741413300+05:30[Asia/Calcutta]")
 public class Trip {
 
   private String id;
@@ -80,6 +82,8 @@ public class Trip {
 
   private Operator operator;
 
+  private Citizen citizen;
+
   private String plannedStartTime;
 
   private String plannedEndTime;
@@ -87,6 +91,10 @@ public class Trip {
   private String actualStartTime;
 
   private String actualEndTime;
+
+  private Address pickupLocation;
+
+  private Address dropLocation;
 
   private String userId;
 
@@ -270,6 +278,26 @@ public class Trip {
     this.operator = operator;
   }
 
+  public Trip citizen(Citizen citizen) {
+    this.citizen = citizen;
+    return this;
+  }
+
+  /**
+   * Get citizen
+   * @return citizen
+  */
+  @Valid 
+  @Schema(name = "citizen", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("citizen")
+  public Citizen getCitizen() {
+    return citizen;
+  }
+
+  public void setCitizen(Citizen citizen) {
+    this.citizen = citizen;
+  }
+
   public Trip plannedStartTime(String plannedStartTime) {
     this.plannedStartTime = plannedStartTime;
     return this;
@@ -350,6 +378,46 @@ public class Trip {
     this.actualEndTime = actualEndTime;
   }
 
+  public Trip pickupLocation(Address pickupLocation) {
+    this.pickupLocation = pickupLocation;
+    return this;
+  }
+
+  /**
+   * Get pickupLocation
+   * @return pickupLocation
+  */
+  @Valid 
+  @Schema(name = "pickupLocation", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("pickupLocation")
+  public Address getPickupLocation() {
+    return pickupLocation;
+  }
+
+  public void setPickupLocation(Address pickupLocation) {
+    this.pickupLocation = pickupLocation;
+  }
+
+  public Trip dropLocation(Address dropLocation) {
+    this.dropLocation = dropLocation;
+    return this;
+  }
+
+  /**
+   * Get dropLocation
+   * @return dropLocation
+  */
+  @Valid 
+  @Schema(name = "dropLocation", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("dropLocation")
+  public Address getDropLocation() {
+    return dropLocation;
+  }
+
+  public void setDropLocation(Address dropLocation) {
+    this.dropLocation = dropLocation;
+  }
+
   public Trip userId(String userId) {
     this.userId = userId;
     return this;
@@ -388,16 +456,19 @@ public class Trip {
         Objects.equals(this.status, trip.status) &&
         Objects.equals(this.tripEndType, trip.tripEndType) &&
         Objects.equals(this.operator, trip.operator) &&
+        Objects.equals(this.citizen, trip.citizen) &&
         Objects.equals(this.plannedStartTime, trip.plannedStartTime) &&
         Objects.equals(this.plannedEndTime, trip.plannedEndTime) &&
         Objects.equals(this.actualStartTime, trip.actualStartTime) &&
         Objects.equals(this.actualEndTime, trip.actualEndTime) &&
+        Objects.equals(this.pickupLocation, trip.pickupLocation) &&
+        Objects.equals(this.dropLocation, trip.dropLocation) &&
         Objects.equals(this.userId, trip.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, tenantId, referenceNo, routeId, name, serviceCode, status, tripEndType, operator, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, userId);
+    return Objects.hash(id, tenantId, referenceNo, routeId, name, serviceCode, status, tripEndType, operator, citizen, plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, pickupLocation, dropLocation, userId);
   }
 
   @Override
@@ -413,10 +484,13 @@ public class Trip {
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    tripEndType: ").append(toIndentedString(tripEndType)).append("\n");
     sb.append("    operator: ").append(toIndentedString(operator)).append("\n");
+    sb.append("    citizen: ").append(toIndentedString(citizen)).append("\n");
     sb.append("    plannedStartTime: ").append(toIndentedString(plannedStartTime)).append("\n");
     sb.append("    plannedEndTime: ").append(toIndentedString(plannedEndTime)).append("\n");
     sb.append("    actualStartTime: ").append(toIndentedString(actualStartTime)).append("\n");
     sb.append("    actualEndTime: ").append(toIndentedString(actualEndTime)).append("\n");
+    sb.append("    pickupLocation: ").append(toIndentedString(pickupLocation)).append("\n");
+    sb.append("    dropLocation: ").append(toIndentedString(dropLocation)).append("\n");
     sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
     return sb.toString();
