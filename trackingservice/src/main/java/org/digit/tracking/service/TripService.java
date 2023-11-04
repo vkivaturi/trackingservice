@@ -8,6 +8,7 @@ import org.digit.tracking.data.sao.TripSao;
 import org.digit.tracking.monitoring.RuleEngine;
 import org.digit.tracking.service.helper.TripServiceHelper;
 import org.digit.tracking.util.Constants;
+import org.digit.tracking.util.ConverterUtil;
 import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Trip;
 import org.openapitools.model.TripProgress;
@@ -68,8 +69,8 @@ public class TripService {
                 trip.setReferenceNo(fsmApplication.getApplicationNo());
                 trip.setServiceCode(fsmVehicleTrip.getBusinessService());
                 trip.setCitizen(fsmApplication.getCitizen());
-                trip.setPickupLocation(fsmApplication.getPickupAddress());
-                trip.setDropLocation(fsmApplication.getDropAddress());
+                trip.setPickupLocation(ConverterUtil.addressToString(fsmApplication.getPickupAddress()));
+                trip.setDropLocation(ConverterUtil.addressToString(fsmApplication.getDropAddress()));
                 trip.setOperator(fsmVehicleTrip.getOperator());
 
                 //Check if trip exists in VTS database. Insert it if it is not available locally. If already exists, fetch the status from VTS

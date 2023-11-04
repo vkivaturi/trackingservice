@@ -13,7 +13,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // Log request details
-        logger.info("Received request: {} from {}", request.getRequestURL(), request.getRemoteAddr());
+        logger.info("Received request: {} {} from {}", request.getRequestURL(), request.getQueryString(), request.getRemoteAddr());
         return true;
     }
 

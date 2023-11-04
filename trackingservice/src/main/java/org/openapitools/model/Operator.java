@@ -18,7 +18,7 @@ import javax.annotation.Generated;
  * Operator
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-03T21:38:25.371094500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-04T08:13:50.335144900+05:30[Asia/Calcutta]")
 public class Operator {
 
   private String id;

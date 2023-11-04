@@ -832,9 +832,9 @@ components:
           example: 2023-07-30T10:24:10.547Z
           description: Date and time in ISO_DATE_TIME format
         pickupLocation:
-          $ref: '#/components/schemas/Address'
+          type: string
         dropLocation:
-          $ref: '#/components/schemas/Address'
+          type: string
         userId:
           type: string
           description: DIGIT Id of the user performing this action

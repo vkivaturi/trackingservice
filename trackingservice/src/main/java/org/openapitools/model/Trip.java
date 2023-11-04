@@ -5,7 +5,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
-import org.openapitools.model.Address;
 import org.openapitools.model.Citizen;
 import org.openapitools.model.Operator;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -22,7 +21,7 @@ import javax.annotation.Generated;
  * Trip
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-03T21:38:25.371094500+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-04T08:13:50.335144900+05:30[Asia/Calcutta]")
 public class Trip {
 
   private String id;
@@ -92,9 +91,9 @@ public class Trip {
 
   private String actualEndTime;
 
-  private Address pickupLocation;
+  private String pickupLocation;
 
-  private Address dropLocation;
+  private String dropLocation;
 
   private String userId;
 
@@ -378,7 +377,7 @@ public class Trip {
     this.actualEndTime = actualEndTime;
   }
 
-  public Trip pickupLocation(Address pickupLocation) {
+  public Trip pickupLocation(String pickupLocation) {
     this.pickupLocation = pickupLocation;
     return this;
   }
@@ -387,18 +386,18 @@ public class Trip {
    * Get pickupLocation
    * @return pickupLocation
   */
-  @Valid 
+  
   @Schema(name = "pickupLocation", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("pickupLocation")
-  public Address getPickupLocation() {
+  public String getPickupLocation() {
     return pickupLocation;
   }
 
-  public void setPickupLocation(Address pickupLocation) {
+  public void setPickupLocation(String pickupLocation) {
     this.pickupLocation = pickupLocation;
   }
 
-  public Trip dropLocation(Address dropLocation) {
+  public Trip dropLocation(String dropLocation) {
     this.dropLocation = dropLocation;
     return this;
   }
@@ -407,14 +406,14 @@ public class Trip {
    * Get dropLocation
    * @return dropLocation
   */
-  @Valid 
+  
   @Schema(name = "dropLocation", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
   @JsonProperty("dropLocation")
-  public Address getDropLocation() {
+  public String getDropLocation() {
     return dropLocation;
   }
 
-  public void setDropLocation(Address dropLocation) {
+  public void setDropLocation(String dropLocation) {
     this.dropLocation = dropLocation;
   }
 
