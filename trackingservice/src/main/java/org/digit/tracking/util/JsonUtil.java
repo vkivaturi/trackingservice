@@ -10,6 +10,7 @@ import org.digit.tracking.data.model.FsmVehicleTrip;
 import org.openapitools.model.Address;
 import org.openapitools.model.Citizen;
 import org.openapitools.model.Location;
+import org.openapitools.model.Vehicle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +92,13 @@ public class JsonUtil {
                 Map<String, Object> mapOfAuditDetails = (Map<String, Object>) mapOfVehicleTrip.get("auditDetails");
                 long epochStartTme = (long) mapOfAuditDetails.get("createdTime");
                 fsmVehicleTrip.setTripStartTime(dbUtil.epochToDateFormat(epochStartTme));
+
+                //Fetch vehicle details
+                Map<String, Object> mapOfVehicle = (Map<String, Object>) mapOfVehicleTrip.get("vehicle");
+                Vehicle vehicle = new Vehicle();
+                vehicle.setRegistrationNumber(String.valueOf(mapOfVehicle.get("registrationNumber")));
+                fsmVehicleTrip.setVehicle(vehicle);
+
                 //Add to applications list
                 fsmVehicleTripList.add(fsmVehicleTrip);
             }

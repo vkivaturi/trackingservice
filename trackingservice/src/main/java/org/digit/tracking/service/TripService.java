@@ -66,11 +66,13 @@ public class TripService {
 
                 String tripId = fsmVehicleTrip.getTripApplicationNo();
                 trip.setId(tripId);
+                trip.tenantId(tenantId);
                 trip.setReferenceNo(fsmApplication.getApplicationNo());
                 trip.setServiceCode(fsmVehicleTrip.getBusinessService());
                 trip.setCitizen(fsmApplication.getCitizen());
                 trip.setPickupLocation(ConverterUtil.addressToString(fsmApplication.getPickupAddress()));
                 trip.setPlannedStartTime(fsmVehicleTrip.getTripStartTime());
+                trip.setVehicle(fsmVehicleTrip.getVehicle());
 
                 //Drop location is the FSTP location for that tenant id. Partial search on location name is performed
                 //TODO - This can be cached as data rarely changes

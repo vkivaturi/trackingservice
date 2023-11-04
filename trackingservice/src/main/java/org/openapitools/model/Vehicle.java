@@ -15,54 +15,32 @@ import java.util.*;
 import javax.annotation.Generated;
 
 /**
- * Location
+ * Vehicle
  */
 
 @Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-04T20:11:10.510420400+05:30[Asia/Calcutta]")
-public class Location {
+public class Vehicle {
 
-  private Float latitude;
+  private String registrationNumber;
 
-  private Float longitude;
-
-  public Location latitude(Float latitude) {
-    this.latitude = latitude;
+  public Vehicle registrationNumber(String registrationNumber) {
+    this.registrationNumber = registrationNumber;
     return this;
   }
 
   /**
-   * Get latitude
-   * @return latitude
+   * Get registrationNumber
+   * @return registrationNumber
   */
   
-  @Schema(name = "latitude", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("latitude")
-  public Float getLatitude() {
-    return latitude;
+  @Schema(name = "registrationNumber", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("registrationNumber")
+  public String getRegistrationNumber() {
+    return registrationNumber;
   }
 
-  public void setLatitude(Float latitude) {
-    this.latitude = latitude;
-  }
-
-  public Location longitude(Float longitude) {
-    this.longitude = longitude;
-    return this;
-  }
-
-  /**
-   * Get longitude
-   * @return longitude
-  */
-  
-  @Schema(name = "longitude", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
-  @JsonProperty("longitude")
-  public Float getLongitude() {
-    return longitude;
-  }
-
-  public void setLongitude(Float longitude) {
-    this.longitude = longitude;
+  public void setRegistrationNumber(String registrationNumber) {
+    this.registrationNumber = registrationNumber;
   }
 
   @Override
@@ -73,22 +51,20 @@ public class Location {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Location location = (Location) o;
-    return Objects.equals(this.latitude, location.latitude) &&
-        Objects.equals(this.longitude, location.longitude);
+    Vehicle vehicle = (Vehicle) o;
+    return Objects.equals(this.registrationNumber, vehicle.registrationNumber);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(latitude, longitude);
+    return Objects.hash(registrationNumber);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Location {\n");
-    sb.append("    latitude: ").append(toIndentedString(latitude)).append("\n");
-    sb.append("    longitude: ").append(toIndentedString(longitude)).append("\n");
+    sb.append("class Vehicle {\n");
+    sb.append("    registrationNumber: ").append(toIndentedString(registrationNumber)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -1,6 +1,7 @@
 package org.digit.tracking.data.model;
 
 import org.openapitools.model.Operator;
+import org.openapitools.model.Vehicle;
 
 //Entity to manage FSM Vehicle Trip information
 public class FsmVehicleTrip {
@@ -11,6 +12,8 @@ public class FsmVehicleTrip {
     private String tripEndTime;
     private String businessService;
     private Operator operator;
+
+    private Vehicle vehicle;
 
     public String getTripApplicationNo() {
         return tripApplicationNo;
@@ -55,6 +58,13 @@ public class FsmVehicleTrip {
     }
     public void setOperator(Operator operator) {
         this.operator = operator;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
 }

@@ -757,6 +757,12 @@ components:
         contactNumber:
           type: string
 
+    Vehicle:
+      type: object
+      properties:
+        registrationNumber:
+          type: string
+
     Address:
       type: object
       properties:
@@ -815,6 +821,8 @@ components:
           $ref: '#/components/schemas/Operator'
         citizen:
           $ref: '#/components/schemas/Citizen'
+        vehicle:
+          $ref: '#/components/schemas/Vehicle'
         plannedStartTime:
           type: string
           example: 2023-07-30T10:24:10.547Z
