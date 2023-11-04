@@ -35,4 +35,9 @@ public class DbUtilTest {
         assertEquals(2, locationList.size());
         assertEquals(17.470797f, locationList.get(1).getLongitude());
     }
+
+    @Test
+    public void testEpochToOffsetDate() {
+        assertEquals(dbUtil.epochToDateFormat(Long.valueOf("1698741386671")), "2023-10-31T08:36:26.671Z");
+    }
 }

@@ -1,5 +1,6 @@
 package org.digit.tracking.service;
 
+import org.digit.tracking.data.dao.PoiDao;
 import org.digit.tracking.data.dao.TripDao;
 import org.digit.tracking.data.dao.TripProgressDao;
 import org.digit.tracking.data.model.FsmApplication;
@@ -10,10 +11,7 @@ import org.digit.tracking.service.helper.TripServiceHelper;
 import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.ConverterUtil;
 import org.digit.tracking.util.JsonUtil;
-import org.openapitools.model.Trip;
-import org.openapitools.model.TripProgress;
-import org.openapitools.model.TripProgressProgressDataInner;
-import org.openapitools.model.TripProgressResponse;
+import org.openapitools.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,8 @@ import java.util.List;
 public class TripService {
     @Autowired
     TripDao tripDao;
+    @Autowired
+    PoiDao poiDao;
 
     @Autowired
     TripProgressDao tripProgressDao;
@@ -70,7 +70,17 @@ public class TripService {
                 trip.setServiceCode(fsmVehicleTrip.getBusinessService());
                 trip.setCitizen(fsmApplication.getCitizen());
                 trip.setPickupLocation(ConverterUtil.addressToString(fsmApplication.getPickupAddress()));
-                trip.setDropLocation(ConverterUtil.addressToString(fsmApplication.getDropAddress()));
+                trip.setPlannedStartTime(fsmVehicleTrip.getTripStartTime());
+
+                //Drop location is the FSTP location for that tenant id. Partial search on location name is performed
+                //TODO - This can be cached as data rarely changes
+                List<POI> poiList = poiDao.fetchPOIbyFilters("FSTP", null, tenantId);
+                if (poiList !=null && !poiList.isEmpty()) {
+                    POI endPoi = poiList.get(0);
+                    trip.setDropLocation(endPoi.getLocationName());
+                } else {
+                    trip.setDropLocation("");
+                }
                 trip.setOperator(fsmVehicleTrip.getOperator());
 
                 //Check if trip exists in VTS database. Insert it if it is not available locally. If already exists, fetch the status from VTS
@@ -78,7 +88,7 @@ public class TripService {
                 if (vtsTrip == null){
                     tripServiceHelper.createTripWithFsmData(tripId, tenantId, trip.getReferenceNo(),
                             Float.valueOf(fsmApplication.getPickupLocationLatitude()), Float.valueOf(fsmApplication.getPickupLocationLongitude()),
-                            trip.getServiceCode());
+                            trip.getServiceCode(), trip.getPlannedStartTime());
                 } else {
                     //Since trip already exists in VTS, use status from here since the mobile app understands VTS trip status
                     trip.setStatus(vtsTrip.getStatus());

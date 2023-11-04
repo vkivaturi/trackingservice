@@ -71,6 +71,7 @@ public class JsonUtil {
 
     public static List<FsmVehicleTrip> getFSMVehicleTripObjectFromJson(String jsonString) {
         Map<String, Object> result = getStringObjectMap(jsonString);
+        DbUtil dbUtil = new DbUtil();
 
         //Fetch data in this json path - /vehicleTrip
         List<Object> listOfTrips = (List<Object>) result.get("vehicleTrip");
@@ -86,6 +87,10 @@ public class JsonUtil {
                 fsmVehicleTrip.setTripApplicationNo(String.valueOf(mapOfVehicleTrip.get("applicationNo")));
                 fsmVehicleTrip.setTripApplicationStatus(String.valueOf(mapOfVehicleTrip.get("applicationStatus")));
                 fsmVehicleTrip.setBusinessService(String.valueOf(mapOfVehicleTrip.get("businessService")));
+
+                Map<String, Object> mapOfAuditDetails = (Map<String, Object>) mapOfVehicleTrip.get("auditDetails");
+                long epochStartTme = (long) mapOfAuditDetails.get("createdTime");
+                fsmVehicleTrip.setTripStartTime(dbUtil.epochToDateFormat(epochStartTme));
                 //Add to applications list
                 fsmVehicleTripList.add(fsmVehicleTrip);
             }
@@ -155,7 +160,6 @@ public class JsonUtil {
     //This method updates 3 fields in the json input - adds a workflow status, updates end time, updates volume carried
     public static Map<String, Object> updateFsmTripEndActionJson(String jsonString, String endType) {
         logger.info("## Invoked updateFsmTripEndActionJson");
-        logger.info(jsonString);
         Map<String, Object> result = getStringObjectMap(jsonString);
 
         List<Object> listOfTrips = (List<Object>) result.get("vehicleTrip");
@@ -185,8 +189,6 @@ public class JsonUtil {
         result.put("workflow", actionMap);
         result.remove("responseInfo");
         result.remove("totalCount");
-
-        logger.info(" ## result string : " + JsonUtil.getJsonFromObject(result));
 
         return result;
     }

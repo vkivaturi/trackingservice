@@ -12,6 +12,9 @@ import com.google.common.base.Strings;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 // Common util class to implement id (primary key) generation logic for each entity
@@ -135,4 +138,12 @@ public class DbUtil {
         return location;
     }
 
+    //Convert epoch date into the standard format supported by VTS
+    public String epochToDateFormat(long epoch) {
+        Date date = new Date(epoch);
+        OffsetDateTime offsetDateTime = date.toInstant()
+                .atOffset(ZoneOffset.UTC);
+        //OffsetDateTime offsetDateTime = OffsetDateTime.now();
+        return offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
+    }
 }

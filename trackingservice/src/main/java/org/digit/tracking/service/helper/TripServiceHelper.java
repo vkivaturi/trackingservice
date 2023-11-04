@@ -39,7 +39,7 @@ public class TripServiceHelper {
 
     //Orchestrate creation of a new trip, which includes creates start and end POIs, route id and finally the trip in VTS
     public void createTripWithFsmData(String tripId, String tenantId, String referenceNo,
-                                       Float latitude, Float longitude, String serviceCode) {
+                                       Float latitude, Float longitude, String serviceCode, String startTime) {
         //Step 1 - Start POI id is provided as input in FSM response
         String startPoiId = createPOI(latitude, longitude);
         logger.info("## startPoiId " + startPoiId);
@@ -50,8 +50,7 @@ public class TripServiceHelper {
         String routeId = createRoute(startPoiId, endPoiId);
         logger.info("## routeId " + routeId);
         //Step 4 - Create trip
-        String tripIdLocal = createTrip(tripId, referenceNo, tenantId, serviceCode, routeId);
-        logger.info("## tripIdLocal " + tripIdLocal);
+        String tripIdLocal = createTrip(tripId, referenceNo, tenantId, serviceCode, routeId, startTime);
         logger.info("## tripId " + tripId);
     }
 
@@ -66,7 +65,7 @@ public class TripServiceHelper {
         poi.setType(POI.TypeEnum.POINT);
         poi.setStatus(POI.StatusEnum.ACTIVE);
         //TODO - Pickup location name can be set to something else
-        poi.locationName("Citizen pickup location");
+        poi.locationName("");
 
         return poiDao.createPOI(poi);
     }
@@ -79,13 +78,14 @@ public class TripServiceHelper {
         return routeDao.createRoute(route);
     }
 
-    private String createTrip(String tripId, String referenceNo, String tenantId, String serviceCode, String routeId) {
+    private String createTrip(String tripId, String referenceNo, String tenantId, String serviceCode, String routeId, String startTime) {
         Trip trip = new Trip();
         trip.setId(tripId);
         trip.setReferenceNo(referenceNo);
         trip.setServiceCode(serviceCode);
         trip.setTenantId(tenantId);
         trip.setRouteId(routeId);
+        trip.setPlannedStartTime(startTime);
         trip.setStatus(Trip.StatusEnum.NOTSTARTED);
 
         return tripDao.createTrip(trip);

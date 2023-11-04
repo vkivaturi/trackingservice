@@ -4,6 +4,7 @@ import org.digit.tracking.data.model.FsmApplication;
 import org.digit.tracking.data.model.FsmVehicleTrip;
 import org.digit.tracking.util.Constants;
 import org.digit.tracking.util.JsonUtil;
+import org.digit.tracking.util.SaoUtil;
 import org.digit.tracking.util.exception.RestTemplateResponseErrorHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +34,7 @@ public class TripSao {
         logger.info("## searchFsmApplicationsForDriver is invoked");
         List<FsmApplication> fsmApplicationList = new ArrayList<>();
 
-        HttpEntity<Map<String, Object>> entity = getMapHttpEntity(authToken, null);
+        HttpEntity<Map<String, Object>> entity = SaoUtil.getMapHttpEntity(authToken, null);
         StringBuilder searchUrl = new StringBuilder().append(fsmUrl).append("/").append("_search?tenantId=").append(tenantId);
         if(driverId != null) {
             searchUrl.append("&driverId=").append(driverId);
@@ -59,7 +60,7 @@ public class TripSao {
 
     public String fetchFsmTrips(String referenceApplicationNo, String tripId, String tenantId, String authToken, String vehicleTripUrl) {
         logger.info("## fetchFsmTripsForApplication is invoked");
-        HttpEntity<Map<String, Object>> entity = getMapHttpEntity(authToken, null);
+        HttpEntity<Map<String, Object>> entity = SaoUtil.getMapHttpEntity(authToken, null);
         StringBuilder searchUrl = new StringBuilder().append(vehicleTripUrl).append("/").append("_search?tenantId=").append(tenantId).append("&applicationStatus=").append(Constants.FSM_TRIP_SEARCH_STATUS_FILTER);
         if (referenceApplicationNo != null) {
             searchUrl.append("&refernceNos=").append(referenceApplicationNo);
@@ -93,7 +94,7 @@ public class TripSao {
         List<FsmVehicleTrip> fsmVehicleTripList = new ArrayList<>();
 
         //Create http header and request body
-        HttpEntity<Map<String, Object>> entity = getMapHttpEntity(authToken, vehicleTripMap);
+        HttpEntity<Map<String, Object>> entity = SaoUtil.getMapHttpEntity(authToken, vehicleTripMap);
 
         StringBuilder updateUrl = new StringBuilder().append(vehicleTripUrl).append("/").append("_update?_=1698562201046");
         logger.info("## " + updateUrl);
@@ -114,29 +115,4 @@ public class TripSao {
         }
         return fsmVehicleTripList;
     }
-
-    private HttpEntity<Map<String, Object>> getMapHttpEntity(String authToken, Map<String, Object> additionalData) {
-        logger.info("## Invoked getMapHttpEntity ");
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        Map<String, Object> mapInner = new HashMap<>();
-        mapInner.put("apiId", "Rainmaker");
-        if (authToken != null)
-            mapInner.put("authToken", authToken);
-        mapInner.put("msgId", "1694796531963|en_IN");
-
-        Map<String, Object> mapOuter = new HashMap<>();
-        mapOuter.put("RequestInfo", mapInner);
-        //In case additional data payload map is provided, add it to the request body
-        if(additionalData != null){
-            mapOuter.putAll(additionalData);
-        }
-
-        logger.info(JsonUtil.convertMapToJsonString(mapOuter));
-
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(mapOuter, headers);
-        return entity;
-    }
-
 }
