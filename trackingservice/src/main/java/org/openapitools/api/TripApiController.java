@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-04T20:11:10.510420400+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-05T21:04:25.997911700+05:30[Asia/Calcutta]")
 @Controller
 @RequestMapping("${openapi.trackingService.base-path:/api/v3}")
 public class TripApiController implements TripApi {

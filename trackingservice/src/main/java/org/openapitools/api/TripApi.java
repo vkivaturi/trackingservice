@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-04T20:11:10.510420400+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-05T21:04:25.997911700+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "Trip", description = "Assignment of a route to an operator forms a trip. This is the actual work done by the operator. Monitoring of distance covered, route taken, anomalies, service delivery and payment are linked to completion of trip.")
 public interface TripApi {
@@ -176,7 +176,7 @@ public interface TripApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "[ { \"alert\" : \"alert\", \"applicationNo\" : \"applicationNo\", \"tenantId\" : \"tenantId\", \"alertDateTime\" : \"alertDateTime\", \"tripId\" : \"tripId\", \"alertId\" : \"alertId\" }, { \"alert\" : \"alert\", \"applicationNo\" : \"applicationNo\", \"tenantId\" : \"tenantId\", \"alertDateTime\" : \"alertDateTime\", \"tripId\" : \"tripId\", \"alertId\" : \"alertId\" } ]";
+                    String exampleString = "[ { \"alert\" : \"alert\", \"applicationNo\" : \"applicationNo\", \"tenantId\" : \"tenantId\", \"alertDateTime\" : \"alertDateTime\", \"tripId\" : \"tripId\", \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"alertId\" : \"alertId\" }, { \"alert\" : \"alert\", \"applicationNo\" : \"applicationNo\", \"tenantId\" : \"tenantId\", \"alertDateTime\" : \"alertDateTime\", \"tripId\" : \"tripId\", \"location\" : { \"latitude\" : 0.8008282, \"longitude\" : 6.0274563 }, \"alertId\" : \"alertId\" } ]";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

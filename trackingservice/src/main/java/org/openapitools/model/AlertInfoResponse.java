@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import org.openapitools.model.Location;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.time.OffsetDateTime;
 import javax.validation.Valid;
@@ -18,7 +19,7 @@ import javax.annotation.Generated;
  * AlertInfoResponse
  */
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-04T20:11:10.510420400+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-05T21:04:25.997911700+05:30[Asia/Calcutta]")
 public class AlertInfoResponse {
 
   private String tenantId;
@@ -32,6 +33,8 @@ public class AlertInfoResponse {
   private String alert;
 
   private String alertDateTime;
+
+  private Location location;
 
   public AlertInfoResponse tenantId(String tenantId) {
     this.tenantId = tenantId;
@@ -153,6 +156,26 @@ public class AlertInfoResponse {
     this.alertDateTime = alertDateTime;
   }
 
+  public AlertInfoResponse location(Location location) {
+    this.location = location;
+    return this;
+  }
+
+  /**
+   * Get location
+   * @return location
+  */
+  @Valid 
+  @Schema(name = "location", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+  @JsonProperty("location")
+  public Location getLocation() {
+    return location;
+  }
+
+  public void setLocation(Location location) {
+    this.location = location;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -167,12 +190,13 @@ public class AlertInfoResponse {
         Objects.equals(this.tripId, alertInfoResponse.tripId) &&
         Objects.equals(this.alertId, alertInfoResponse.alertId) &&
         Objects.equals(this.alert, alertInfoResponse.alert) &&
-        Objects.equals(this.alertDateTime, alertInfoResponse.alertDateTime);
+        Objects.equals(this.alertDateTime, alertInfoResponse.alertDateTime) &&
+        Objects.equals(this.location, alertInfoResponse.location);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(tenantId, applicationNo, tripId, alertId, alert, alertDateTime);
+    return Objects.hash(tenantId, applicationNo, tripId, alertId, alert, alertDateTime, location);
   }
 
   @Override
@@ -185,6 +209,7 @@ public class AlertInfoResponse {
     sb.append("    alertId: ").append(toIndentedString(alertId)).append("\n");
     sb.append("    alert: ").append(toIndentedString(alert)).append("\n");
     sb.append("    alertDateTime: ").append(toIndentedString(alertDateTime)).append("\n");
+    sb.append("    location: ").append(toIndentedString(location)).append("\n");
     sb.append("}");
     return sb.toString();
   }

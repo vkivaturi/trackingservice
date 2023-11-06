@@ -863,6 +863,8 @@ components:
           type: string
         alertDateTime:
           type: string
+        location:
+          $ref: '#/components/schemas/Location'
 
     LocationAlert:
       type: object
