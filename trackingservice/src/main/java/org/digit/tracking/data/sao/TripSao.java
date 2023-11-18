@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.digit.tracking.util.exception.FsmInvalidTokenException;
@@ -28,6 +29,8 @@ public class TripSao {
         this.restTemplate = this.restTemplateBuilder
                 .errorHandler(new RestTemplateResponseErrorHandler())
                 .build();
+        this.restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+
     }
 
     public List<FsmApplication> searchFsmApplicationsForDriver(String driverId, String tenantId, String authToken, String fsmUrl) {

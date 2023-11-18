@@ -31,5 +31,9 @@ public class POIService {
     public String updatePOI(POI poi) {
         return poiDao.updatePOI(poi);
     }
+
+    public String inactivatePOI(POI poi) {
+        return poiDao.inactivatePOI(poi);
+    }
 }
 

@@ -1,6 +1,7 @@
 package org.digit.tracking.data.dao;
 
 import org.digit.tracking.data.rowmapper.POIMapper;
+import org.digit.tracking.util.DaoUtil;
 import org.digit.tracking.util.DbUtil;
 import org.digit.tracking.util.JsonUtil;
 import org.openapitools.model.Location;
@@ -27,7 +28,7 @@ public class PoiDao {
     DbUtil dbUtil;
     final String sqlFetchPoiById = "SELECT id, locationName, status, type, alert, userId, " +
             "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
-            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI where id = ?";
+            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI where id = ? and status = 'active' ";
 
     //Query filter is slightly complicated as it has to handle scenario where input field is null and data in table is also null.
     //In such case, COALESCE is incorrect as MySQL returns a false for null = null check
@@ -36,6 +37,7 @@ public class PoiDao {
             "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI " +
             "where " +
             "tenantId = :tenantId " +
+            "and status = 'active' " +
             "and locationName like COALESCE(:locationName, locationName) " +
             "and ((alert is null and :alert is null) or (alert = COALESCE(:alert, alert))) " +
             ";";
@@ -50,6 +52,7 @@ public class PoiDao {
             "WHEN type = 'polygon' THEN ST_Distance(positionPolygon, ST_GeomFromText( ?, 4326 )) " +
             "END AS distanceMeters " +
             "FROM POI poi " +
+            "where status = 'active' " +
             "HAVING distanceMeters <= ? " +
             "order by distanceMeters asc;";
     final String sqlCreatePoi = "insert into POI (id, tenantId, locationName, status, type, alert, " +
@@ -58,9 +61,23 @@ public class PoiDao {
             "ST_PointFromText(?, 4326, 'axis-order=lat-long'), " +
             "ST_GeomFromText(?, 4326, 'axis-order=lat-long'), " +
             "ST_GeomFromText(?, 4326, 'axis-order=lat-long') )";
-    final String sqlUpdatePoi = "update POI set locationName = COALESCE(?, locationName), status = COALESCE(?, status), " +
-            "updatedDate = ? , updatedBy = ?" +
-            "where id = ?";
+    final String sqlUpdatePoi = "update POI " +
+            "set " +
+            "type = :type, " +
+            "positionPoint = ST_PointFromText(:positionPoint, 4326, 'axis-order=lat-long'), " +
+            "positionPolygon = ST_GeomFromText(:positionPolygon, 4326, 'axis-order=lat-long'), " +
+            "positionLine = ST_GeomFromText(:positionLine, 4326, 'axis-order=lat-long'), " +
+            "updatedDate = :currentDateString , " +
+            "updatedBy = :updatedBy " +
+            "where id = :poiId " +
+            "and tenantId = :tenantId";
+    final String sqlUpdateInactivatePoi = "update POI " +
+            "set " +
+            "status = :status, " +
+            "updatedDate = :currentDateString , " +
+            "updatedBy = :updatedBy " +
+            "where id = :poiId " +
+            "and tenantId = :tenantId";
 
     private DataSource dataSource;
 
@@ -113,18 +130,23 @@ public class PoiDao {
     //Update POI based on supported fields
     public String updatePOI(POI poi) {
         logger.info("## updatePOI inside DAO");
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
 
-        String statusLocal = (poi.getStatus() != null) ? poi.getStatus().toString() : null;
-        //Audit information
-        String updatedBy = poi.getUserId();
+        Map<String, String> positionsMap = DaoUtil.getPositionStringMap(poi);
 
-        Object[] args = new Object[]{poi.getLocationName(), statusLocal,
-                currentDateString, updatedBy, poi.getId()};
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("tenantId", poi.getTenantId());
+        params.put("poiId", poi.getId());
+        params.put("type", poi.getType().getValue());
+        params.put("positionPoint", positionsMap.get("positionPoint"));
+        params.put("positionPolygon", positionsMap.get("positionPolygon"));
+        params.put("positionLine", positionsMap.get("positionLine"));
+        params.put("currentDateString", currentDateString);
+        params.put("updatedBy", poi.getUserId());
 
-        int result = jdbcTemplate.update(sqlUpdatePoi, args);
+        int result = namedParameterJdbcTemplate.update(sqlUpdatePoi, params);
         if (result != 0) {
             logger.info("POI updated with id " + poi.getId());
             return poi.getId();
@@ -137,47 +159,14 @@ public class PoiDao {
     //Create POI and save it in database
     public String createPOI(POI poi) {
         logger.info("## createPOI");
+        //TODO - Convert this to named jdbc template
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         //Prepare input data for the SQL
         String idLocal = dbUtil.getId();
-        //String locationDetails = JsonUtil.getJsonFromObject(poi.getLocationDetails());
         String alerts = JsonUtil.getJsonFromObject(poi.getAlert());
 
-        //Initialise spatial position fields
-        String positionPoint = "POINT(0.0 0.0)";;
-        String positionPolygon = "POLYGON((0.0 0.0, 0.1 0.1, 0.1 0.1, 0.0 0.0))";
-        String positionLine = "LINESTRING(0.0 0.0, 0.1 0.1)";
-
-        //TODO - Optimise the entire block of code here
-        if (poi.getType() == POI.TypeEnum.POINT) {
-            //In case of a POINT, only one LatLong pair will be sent by client app in locationDetails
-            positionPoint = "POINT(" + poi.getLocationDetails().get(0).getLatitude() + " " + poi.getLocationDetails().get(0).getLongitude() + ")";
-        } else if (poi.getType() == POI.TypeEnum.POLYGON) {
-            StringBuilder polyBuffStr = new StringBuilder();
-            int indx = 1;
-            for (Location location : poi.getLocationDetails()) {
-                polyBuffStr.append(location.getLatitude()).append(" ").append(location.getLongitude());
-                //Avoid a comma after the last element in concatenated list
-                if (indx < poi.getLocationDetails().size()) {
-                    indx++;
-                    polyBuffStr.append(" , ");
-                }
-            }
-            positionPolygon = "POLYGON((" + polyBuffStr + "))";
-        } else {
-            StringBuilder polyBuffStr = new StringBuilder();
-            int indx = 1;
-            for (Location location : poi.getLocationDetails()) {
-                polyBuffStr.append(location.getLatitude()).append(" ").append(location.getLongitude());
-                //Avoid a comma after the last element in concatenated list
-                if (indx < poi.getLocationDetails().size()) {
-                    indx++;
-                    polyBuffStr.append(" , ");
-                }
-            }
-            positionLine = "LINESTRING(" + polyBuffStr + ")";
-        }
+        Map<String, String> positionsMap = DaoUtil.getPositionStringMap(poi);
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
@@ -188,7 +177,8 @@ public class PoiDao {
 
         Object[] args = new Object[]{idLocal, poi.getTenantId(), poi.getLocationName(), poi.getStatus().toString(),
                 poi.getType().toString(), alerts, currentDateString,
-                createdBy, currentDateString, updatedBy, poi.getUserId(), positionPoint, positionPolygon, positionLine};
+                createdBy, currentDateString, updatedBy, poi.getUserId(), positionsMap.get("positionPoint"),
+                positionsMap.get("positionPolygon"), positionsMap.get("positionLine")};
 
         int result = jdbcTemplate.update(sqlCreatePoi, args);
         if (result != 0) {
@@ -196,6 +186,29 @@ public class PoiDao {
             return idLocal;
         } else {
             logger.error("POI creation failed with id, locationName " + idLocal + " " + poi.getLocationName());
+            return null;
+        }
+    }
+
+    public String inactivatePOI(POI poi) {
+        logger.info("## inactivatePOI inside DAO");
+        OffsetDateTime offsetDateTime = OffsetDateTime.now();
+        String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
+
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("tenantId", poi.getTenantId());
+        params.put("poiId", poi.getId());
+        params.put("updatedBy", poi.getUserId());
+        params.put("status", POI.StatusEnum.INACTIVE.getValue());
+        params.put("currentDateString", currentDateString);
+
+        int result = namedParameterJdbcTemplate.update(sqlUpdateInactivatePoi, params);
+        if (result != 0) {
+            logger.info("POI inactivated with id " + poi.getId());
+            return poi.getId();
+        } else {
+            logger.error("POI inactivation failed with id " + poi.getId());
             return null;
         }
     }

@@ -114,14 +114,24 @@ public class PoiController implements PoiApi {
     }
 
 
+    //Update POI location details
     @Override
     public ResponseEntity<Void> updatePOI(
-            @Parameter(name = "POI", description = "Update an existent POI in the system", required = true) @Valid @RequestBody POI POI
+            @Parameter(name = "POI", description = "Update an existent POI in the system", required = true) @Valid @RequestBody POI POI,
+            @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
     ) {
         logger.info("## updatePOI is invoked in controller");
+        ACK ack = new ACK();
+
+        //Check if mandatory parameters are present in the request
+        if(POI.getTenantId() == null || POI.getId() == null || POI.getType() == null || POI.getLocationDetails() == null) {
+            ack.setResponseCode("CODE-003");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_MANDATORY_MISSING + " - Should include Poi Id, tenant id, type, location deails");
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
 
         String poiId = poiService.updatePOI(POI);
-        ACK ack = new ACK();
 
         if (poiId != null) {
             ack.setId(poiId);
@@ -136,5 +146,39 @@ public class PoiController implements PoiApi {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Override
+    public ResponseEntity<Void> inactivatePOI(
+            @Parameter(name = "POI", description = "", required = true) @Valid @RequestBody POI POI,
+            @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
+    ) {
+        logger.info("## inactivatePOI is invoked in controller");
+
+        ACK ack = new ACK();
+
+        //Check if mandatory parameters are present in the request
+        if(POI.getTenantId() == null || POI.getId() == null) {
+            ack.setResponseCode("CODE-003");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_MANDATORY_MISSING + " - Should include Poi Id, tenant id");
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        String poiId = poiService.inactivatePOI(POI);
+
+        if (poiId != null) {
+            ack.setId(poiId);
+            ack.setResponseCode("CODE-001");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_SUCCESS_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else {
+            ack.setResponseCode("CODE-002");
+            ack.setResponseMessage(Constants.MSG_RESPONSE_ERROR_SAVE);
+            TrackingApiUtil.setResponse(request, JsonUtil.getJsonFromObject(ack));
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 }

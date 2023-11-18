@@ -27,15 +27,42 @@ tags:
     description: Tracking service requires certain configuration information. This includes the list of services supported and types of anomalies for which notifications should be sent out. Configuration information is attached to a trip.
 
 paths:
-  /poi/_update:
+  /poi/_updateLocation:
     put:
       tags:
         - POI
-      summary: Update an existing POI using its id
+      summary: Update an existing POI geo coordinates using its id, type and location details
       description: Update an existing POI by Id
       operationId: updatePOI
+      parameters:
+        - name: X-authToken
+          in: header
+          schema:
+            type: string
       requestBody:
         description: Update an existent POI in the system
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/POI'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+
+  /poi/_inactivate:
+    put:
+      tags:
+        - POI
+      summary: Update an existing POI status using its id
+      description: Update an existing POI by Id
+      operationId: inactivatePOI
+      parameters:
+        - name: X-authToken
+          in: header
+          schema:
+            type: string
+      requestBody:
         content:
           application/json:
             schema:

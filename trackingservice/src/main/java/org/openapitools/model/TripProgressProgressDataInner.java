@@ -21,7 +21,7 @@ import javax.annotation.Generated;
  */
 
 @JsonTypeName("TripProgress_progressData_inner")
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-05T21:04:25.997911700+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-18T09:48:22.341527800+05:30[Asia/Calcutta]")
 public class TripProgressProgressDataInner {
 
   private String progressTime;

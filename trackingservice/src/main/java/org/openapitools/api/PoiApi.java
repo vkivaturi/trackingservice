@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.Optional;
 import javax.annotation.Generated;
 
-@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-05T21:04:25.997911700+05:30[Asia/Calcutta]")
+@Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2023-11-18T09:48:22.341527800+05:30[Asia/Calcutta]")
 @Validated
 @Tag(name = "POI", description = "Points of interest (POI) are a combination of location and additional details about that specific location. A POI can be a single LatLong or a polygon (combination of multiple LatLongs)")
 public interface PoiApi {
@@ -168,6 +168,37 @@ public interface PoiApi {
 
 
     /**
+     * PUT /poi/_inactivate : Update an existing POI status using its id
+     * Update an existing POI by Id
+     *
+     * @param POI  (required)
+     * @param xAuthToken  (optional)
+     * @return Successful operation (status code 200)
+     */
+    @Operation(
+        operationId = "inactivatePOI",
+        summary = "Update an existing POI status using its id",
+        description = "Update an existing POI by Id",
+        tags = { "POI" },
+        responses = {
+            @ApiResponse(responseCode = "200", description = "Successful operation")
+        }
+    )
+    @RequestMapping(
+        method = RequestMethod.PUT,
+        value = "/poi/_inactivate",
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<Void> inactivatePOI(
+        @Parameter(name = "POI", description = "", required = true) @Valid @RequestBody POI POI,
+        @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
+    ) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * GET /poi/_searchNearby/{latitude}/{longitude}/{distanceMeters} : Find POIs near a user location
      * Returns a multiple POIs
      *
@@ -212,15 +243,16 @@ public interface PoiApi {
 
 
     /**
-     * PUT /poi/_update : Update an existing POI using its id
+     * PUT /poi/_updateLocation : Update an existing POI geo coordinates using its id, type and location details
      * Update an existing POI by Id
      *
      * @param POI Update an existent POI in the system (required)
+     * @param xAuthToken  (optional)
      * @return Successful operation (status code 200)
      */
     @Operation(
         operationId = "updatePOI",
-        summary = "Update an existing POI using its id",
+        summary = "Update an existing POI geo coordinates using its id, type and location details",
         description = "Update an existing POI by Id",
         tags = { "POI" },
         responses = {
@@ -229,11 +261,12 @@ public interface PoiApi {
     )
     @RequestMapping(
         method = RequestMethod.PUT,
-        value = "/poi/_update",
+        value = "/poi/_updateLocation",
         consumes = { "application/json" }
     )
     default ResponseEntity<Void> updatePOI(
-        @Parameter(name = "POI", description = "Update an existent POI in the system", required = true) @Valid @RequestBody POI POI
+        @Parameter(name = "POI", description = "Update an existent POI in the system", required = true) @Valid @RequestBody POI POI,
+        @Parameter(name = "X-authToken", description = "", in = ParameterIn.HEADER) @RequestHeader(value = "X-authToken", required = false) String xAuthToken
     ) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
