@@ -48,6 +48,7 @@ public class TripDao {
             "status = COALESCE(:status, status), " +
             "actualStartTime = COALESCE(:actualStartTime, actualStartTime), " +
             "actualEndTime = COALESCE(:actualEndTime, actualEndTime), " +
+            "tripEndType = COALESCE(:tripEndType, tripEndType), " +
             "updatedDate = :updatedDate , updatedBy = :updatedBy " +
             "where id = :tripId";
 
@@ -136,6 +137,7 @@ public class TripDao {
         params.put("tripId", trip.getId());
         params.put("actualStartTime", startTime);
         params.put("actualEndTime", endTime);
+        params.put("tripEndType", trip.getTripEndType());
 
         int result = namedParameterJdbcTemplate.update(sqlUpdateTrip, params);
         if (result != 0) {

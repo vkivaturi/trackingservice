@@ -116,13 +116,16 @@ public class TripService {
 
     //Update function to manage both VTS and FSM trip status updates
     public String updateTrip(Trip trip, String authToken) {
-        //Step 1 - Update trip status in vehicle tracking application
-        String tripId =  tripDao.updateTrip(trip);
 
         if (trip.getStatus() == Trip.StatusEnum.COMPLETED) {
-            //Step 2 - Update trip status in FSM vehicle trip application
-            tripServiceHelper.updateFSMTripStatus(trip, authToken, tripSao, Constants.TRIP_CLOSE_DRIVER);
+            trip.setTripEndType(Constants.TRIP_CLOSE_DRIVER);
+            //Step 1 - Update trip status in FSM vehicle trip application
+            tripServiceHelper.updateFSMTripStatus(trip, authToken, tripSao);
         }
+
+        //Step 2 - Update trip status in vehicle tracking application
+        String tripId =  tripDao.updateTrip(trip);
+
         //Final - Return trip id of the updated trip to the client
         return tripId;
     }

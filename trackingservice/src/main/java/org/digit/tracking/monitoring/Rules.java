@@ -124,10 +124,12 @@ public class Rules {
             Trip trip = new Trip();
             trip.setId(ruleModel.getTripId());
             trip.setStatus(Trip.StatusEnum.COMPLETED);
+            trip.setTripEndType(Constants.TRIP_CLOSE_SYSTEM);
+            //Update trip stats in FMS
+            tripServiceHelper.updateFSMTripStatus(trip, ruleModel.getAuthToken(), tripSao);
+
             //Update trip status in VTS
             tripDao.updateTrip(trip);
-            //Update trip stats in FMS
-            tripServiceHelper.updateFSMTripStatus(trip, ruleModel.getAuthToken(), tripSao, Constants.TRIP_CLOSE_SYSTEM);
         }
     }
 
