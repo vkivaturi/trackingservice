@@ -28,13 +28,13 @@ public class PoiDao {
     DbUtil dbUtil;
     final String sqlFetchPoiById = "SELECT id, locationName, status, type, alert, userId, " +
             "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
-            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI where id = ? and status = 'active' ";
+            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM \"POI\" where id = ? and status = 'active' ";
 
     //Query filter is slightly complicated as it has to handle scenario where input field is null and data in table is also null.
     //In such case, COALESCE is incorrect as MySQL returns a false for null = null check
     final String sqlFetchPoiByFilters = "SELECT id, locationName, status, type, alert, userId, " +
             "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
-            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM POI " +
+            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM \"POI\" " +
             "where " +
             "tenantId = :tenantId " +
             "and status = 'active' " +
@@ -42,26 +42,18 @@ public class PoiDao {
             "and ((alert is null and :alert is null) or (alert = COALESCE(:alert, alert))) " +
             ";";
 
-    final String sqlSearchNearbyOfLocation = "SELECT id, locationName, status, type, alert, userId, " +
-            "ST_AStext(positionPoint) as positionPoint, " +
-            "ST_AStext(positionPolygon) as positionPolygon, " +
-            "ST_AStext(positionLine) as positionLine, " +
-            "CASE " +
-            "WHEN type = 'point' THEN ST_Distance(positionPoint, ST_GeomFromText( ?, 4326 )) " +
-            "WHEN type = 'line' THEN ST_Distance(positionLine, ST_GeomFromText( ?, 4326 )) " +
-            "WHEN type = 'polygon' THEN ST_Distance(positionPolygon, ST_GeomFromText( ?, 4326 )) " +
-            "END AS distanceMeters " +
-            "FROM POI poi " +
+    //TODO - Distance meters clause can be optimised. Lot of repeated code. Postgres restrictions.
+    final String sqlSearchNearbyOfLocation = "SELECT id, location_name, status, type, alert, user_id, tenant_id, " +
+            "ST_AStext(position) as position, " +
+            "ST_DistanceSphere(position, ST_MakePoint(:searchLongitude, :searchLatitude)) as distance_meters " +
+            "FROM poi " +
             "where status = 'active' " +
-            "HAVING distanceMeters <= ? " +
-            "order by distanceMeters asc;";
-    final String sqlCreatePoi = "insert into POI (id, tenantId, locationName, status, type, alert, " +
-            "createdDate, createdBy, updatedDate, updatedBy, userId, positionPoint, positionPolygon, positionLine) " +
-            "values (?,?,?,?,?,?,?,?,?,?,?, " +
-            "ST_PointFromText(?, 4326, 'axis-order=lat-long'), " +
-            "ST_GeomFromText(?, 4326, 'axis-order=lat-long'), " +
-            "ST_GeomFromText(?, 4326, 'axis-order=lat-long') )";
-    final String sqlUpdatePoi = "update POI " +
+            "and ST_DistanceSphere(position, ST_MakePoint(:searchLongitude, :searchLatitude)) <= :searchDistance " +
+            "order by ST_DistanceSphere(position, ST_MakePoint(:searchLongitude, :searchLatitude)) asc;";
+    final String sqlCreatePoi = "insert into poi (id, tenant_id, location_name, status, type, alert, " +
+            "created_date, created_by, updated_date, updated_by, user_id, position) " +
+            "values (?,?,?,?,?,?,?,?,?,?,?,ST_GeometryFromText(?))";
+    final String sqlUpdatePoi = "update \"POI\" " +
             "set " +
             "type = :type, " +
             "positionPoint = ST_PointFromText(:positionPoint, 4326, 'axis-order=lat-long'), " +
@@ -71,7 +63,7 @@ public class PoiDao {
             "updatedBy = :updatedBy " +
             "where id = :poiId " +
             "and tenantId = :tenantId";
-    final String sqlUpdateInactivatePoi = "update POI " +
+    final String sqlUpdateInactivatePoi = "update \"POI\" " +
             "set " +
             "status = :status, " +
             "updatedDate = :currentDateString , " +
@@ -98,13 +90,14 @@ public class PoiDao {
 
     public List<POI> searchNearby(Location userLocation, int distanceMeters) {
         logger.info("## searchNearby in Dao");
-        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         String positionPoint = " POINT(" + userLocation.getLatitude() + " " + userLocation.getLongitude() + ")";
-        //TODO - Try to avoid repetition of same argument. Use named parameters
-        Object[] args = new Object[]{positionPoint, positionPoint, positionPoint, distanceMeters};
-        List<POI> poiList = jdbcTemplateObject.query(sqlSearchNearbyOfLocation, new POIMapper(), args);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("searchLongitude", userLocation.getLongitude());
+        params.put("searchLatitude", userLocation.getLatitude());
+        params.put("searchDistance", distanceMeters);
 
-        return poiList;
+        return namedParameterJdbcTemplate.query(sqlSearchNearbyOfLocation, params, new POIMapper());
     }
 
     public List<POI> fetchPOIbyFilters(String locationName, String alert, String tenantId) {
@@ -133,7 +126,7 @@ public class PoiDao {
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
 
-        Map<String, String> positionsMap = DaoUtil.getPositionStringMap(poi);
+        Map<String, String> positionsMap = DaoUtil.getPositionStringMapMySQL(poi);
 
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         Map<String,Object> params = new HashMap<String,Object>();
@@ -166,8 +159,8 @@ public class PoiDao {
         String idLocal = dbUtil.getId();
         String alerts = JsonUtil.getJsonFromObject(poi.getAlert());
 
-        Map<String, String> positionsMap = DaoUtil.getPositionStringMap(poi);
-
+        //Map<String, String> positionsMap = DaoUtil.getPositionStringMapMySQL(poi);
+        String positionGeom = DaoUtil.getGeometryPositionPostgresSQL(poi);
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
 
@@ -177,8 +170,7 @@ public class PoiDao {
 
         Object[] args = new Object[]{idLocal, poi.getTenantId(), poi.getLocationName(), poi.getStatus().toString(),
                 poi.getType().toString(), alerts, currentDateString,
-                createdBy, currentDateString, updatedBy, poi.getUserId(), positionsMap.get("positionPoint"),
-                positionsMap.get("positionPolygon"), positionsMap.get("positionLine")};
+                createdBy, currentDateString, updatedBy, poi.getUserId(), positionGeom};
 
         int result = jdbcTemplate.update(sqlCreatePoi, args);
         if (result != 0) {

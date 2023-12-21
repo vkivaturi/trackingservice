@@ -13,12 +13,13 @@ public class POIMapper implements RowMapper<POI> {
         POI poi = new POI();
         poi.setId(rs.getString("id"));
         poi.setType(POI.TypeEnum.valueOf(rs.getString("type").toUpperCase()));
-        poi.setLocationName(rs.getString("locationName"));
+        poi.setLocationName(rs.getString("location_name"));
         poi.setLocationDetails(dbUtil.getLocationDetailsFromSpatial(rs));
         poi.setAlert(rs.getString("alert"));
         poi.setStatus(POI.StatusEnum.valueOf(rs.getString("status").toUpperCase()));
-        poi.setUserId(rs.getString("userId"));
-        poi.setDistanceMeters(rs.getInt("distanceMeters"));
+        poi.setUserId(rs.getString("user_id"));
+        poi.setTenantId(rs.getString("tenant_id"));
+        poi.setDistanceMeters(rs.getInt("distance_meters"));
         return poi;
     }
 }

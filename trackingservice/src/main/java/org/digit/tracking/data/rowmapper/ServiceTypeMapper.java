@@ -11,7 +11,7 @@ public class ServiceTypeMapper implements RowMapper<ServiceType> {
         ServiceType serviceType = new ServiceType();
         serviceType.setCode(rs.getString("code"));
         serviceType.setName(rs.getString("name"));
-        serviceType.setTenantId(rs.getString("tenantId"));
+        serviceType.setTenantId(rs.getString("tenant_id"));
 
         return serviceType;
     }

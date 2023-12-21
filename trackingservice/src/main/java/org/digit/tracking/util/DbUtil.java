@@ -77,21 +77,10 @@ public class DbUtil {
     public List<Location> getLocationDetailsFromSpatial(ResultSet rs) {
         logger.info("## getLocationDetailsFromSpatial in progress ");
         //Initialise
-        String dbPosition;
-        String dbColumn;
         String spatialDataString;
-
-        //TODO - optimise
-        Map<String, String> locationMap = new HashMap<>();
-        locationMap.put("point", "positionPoint");
-        locationMap.put("polygon", "positionPolygon");
-        locationMap.put("line", "positionLine");
-
         //Spatial data can be in any of the 3 position* columns. Hence check the "type" column and identify the correct position* column to use
         try {
-            dbPosition = rs.getString("type");
-            dbColumn = locationMap.get(dbPosition);
-            spatialDataString = rs.getString(dbColumn);
+            spatialDataString = rs.getString("position");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

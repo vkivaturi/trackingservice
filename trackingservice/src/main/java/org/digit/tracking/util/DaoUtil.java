@@ -7,8 +7,42 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DaoUtil {
+    //Create a geometry position compatible with PostgresSQL PostGIS extension
+    public static String getGeometryPositionPostgresSQL(POI poi) {
+        String geomPosition = "";
+        if (poi.getType() == POI.TypeEnum.POINT) {
+            //In case of a POINT, only one LatLong pair will be sent by client app in locationDetails
+            geomPosition = "POINT(" + poi.getLocationDetails().get(0).getLongitude() + " " + poi.getLocationDetails().get(0).getLatitude() + ")";
+        } else if (poi.getType() == POI.TypeEnum.POLYGON) {
+            StringBuilder polyBuffStr = new StringBuilder();
+            int indx = 1;
+            for (Location location : poi.getLocationDetails()) {
+                polyBuffStr.append(location.getLongitude()).append(" ").append(location.getLatitude());
+                //Avoid a comma after the last element in concatenated list
+                if (indx < poi.getLocationDetails().size()) {
+                    indx++;
+                    polyBuffStr.append(" , ");
+                }
+            }
+            geomPosition = "POLYGON((" + polyBuffStr + "))";
+        } else {
+            StringBuilder polyBuffStr = new StringBuilder();
+            int indx = 1;
+            for (Location location : poi.getLocationDetails()) {
+                polyBuffStr.append(location.getLongitude()).append(" ").append(location.getLatitude());
+                //Avoid a comma after the last element in concatenated list
+                if (indx < poi.getLocationDetails().size()) {
+                    indx++;
+                    polyBuffStr.append(" , ");
+                }
+            }
+            geomPosition = "LINESTRING(" + polyBuffStr + ")";
+        }
+        return geomPosition;
+    }
     //Create position POINT, LINE and POLYGON strings that comply with MySQL spatial datatype. Null values are not allowed and hence defaults are set
-    public static Map<String, String> getPositionStringMap(POI poi){
+    @Deprecated
+    public static Map<String, String> getPositionStringMapMySQL(POI poi){
         //Initialise spatial position fields
         String positionPoint = "POINT(0.0 0.0)";;
         String positionPolygon = "POLYGON((0.0 0.0, 0.1 0.1, 0.1 0.1, 0.0 0.0))";

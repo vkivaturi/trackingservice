@@ -1,96 +1,97 @@
-CREATE TABLE "POI" (
+CREATE TABLE "poi" (
   "id" varchar(100) NOT NULL,
-  "locationName" varchar(100) NOT NULL,
+  "location_name" varchar(100) NOT NULL,
   "status" varchar(100) DEFAULT NULL,
   "type" varchar(100) DEFAULT NULL,
-  "createdDate" varchar(100) DEFAULT NULL,
-  "createdBy" varchar(100) DEFAULT NULL,
-  "updatedDate" varchar(100) DEFAULT NULL,
-  "updatedBy" varchar(100) DEFAULT NULL,
-  "userId" varchar(100) DEFAULT NULL,
+  "created_date" varchar(100) DEFAULT NULL,
+  "created_by" varchar(100) DEFAULT NULL,
+  "updated_date" varchar(100) DEFAULT NULL,
+  "updated_by" varchar(100) DEFAULT NULL,
+  "user_id" varchar(100) DEFAULT NULL,
   "position" geometry NOT NULL,
-  "tenantId" varchar(100) DEFAULT NULL,
+  "tenant_id" varchar(100) DEFAULT NULL,
   "alert" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id"),
-  CONSTRAINT "POI_locationName_IDX" UNIQUE ("locationName"),
-  CONSTRAINT "POI_userId_IDX" UNIQUE ("userId")
+  CONSTRAINT "POI_locationName_IDX" UNIQUE ("location_name"),
+  CONSTRAINT "POI_userId_IDX" UNIQUE ("user_id")
 );
+CREATE INDEX poi_position_idx ON public."poi" ("position");
 
-CREATE TABLE "Route" (
+CREATE TABLE "route" (
   "id" varchar(100) NOT NULL,
-  "startPoi" varchar(100) DEFAULT NULL,
-  "endPoi" varchar(100) DEFAULT NULL,
+  "start_poi" varchar(100) DEFAULT NULL,
+  "end_poi" varchar(100) DEFAULT NULL,
   "name" varchar(100) DEFAULT NULL,
   "status" varchar(100) DEFAULT NULL,
-  "intermediatePois" jsonb DEFAULT NULL,
-  "createdDate" varchar(100) DEFAULT NULL,
-  "createdBy" varchar(100) DEFAULT NULL,
-  "updatedDate" varchar(100) DEFAULT NULL,
-  "updatedBy" varchar(100) DEFAULT NULL,
-  "userId" varchar(100) DEFAULT NULL,
+  "intermediate_pois" jsonb DEFAULT NULL,
+  "created_date" varchar(100) DEFAULT NULL,
+  "created_by" varchar(100) DEFAULT NULL,
+  "updated_date" varchar(100) DEFAULT NULL,
+  "updated_by" varchar(100) DEFAULT NULL,
+  "user_id" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id"),
   CONSTRAINT "Route_name_IDX" UNIQUE ("name"),
-  CONSTRAINT "Route_userId_IDX" UNIQUE ("userId")
+  CONSTRAINT "Route_userId_IDX" UNIQUE ("user_id")
 );
 
-CREATE TABLE "Trip" (
+CREATE TABLE "trip" (
   "id" varchar(100) NOT NULL,
   "operator" jsonb DEFAULT NULL,
-  "serviceCode" varchar(100) DEFAULT NULL,
+  "service_code" varchar(100) DEFAULT NULL,
   "status" varchar(100) DEFAULT NULL,
-  "routeId" varchar(100) DEFAULT NULL,
-  "plannedStartTime" varchar(100) DEFAULT NULL,
-  "plannedEndTime" varchar(100) DEFAULT NULL,
-  "actualStartTime" varchar(100) DEFAULT NULL,
-  "actualEndTime" varchar(100) DEFAULT NULL,
-  "userId" varchar(100) DEFAULT NULL,
-  "createdDate" varchar(100) DEFAULT NULL,
-  "createdBy" varchar(100) DEFAULT NULL,
-  "updatedDate" varchar(100) DEFAULT NULL,
-  "updatedBy" varchar(100) DEFAULT NULL,
-  "tenantId" varchar(100) DEFAULT NULL,
-  "tripEndType" varchar(100) DEFAULT NULL,
-  "referenceNo" varchar(100) DEFAULT NULL,
+  "route_id" varchar(100) DEFAULT NULL,
+  "planned_start_time" varchar(100) DEFAULT NULL,
+  "planned_end_time" varchar(100) DEFAULT NULL,
+  "actual_start_time" varchar(100) DEFAULT NULL,
+  "actual_end_time" varchar(100) DEFAULT NULL,
+  "user_id" varchar(100) DEFAULT NULL,
+  "created_date" varchar(100) DEFAULT NULL,
+  "created_by" varchar(100) DEFAULT NULL,
+  "updated_date" varchar(100) DEFAULT NULL,
+  "updated_by" varchar(100) DEFAULT NULL,
+  "tenant_id" varchar(100) DEFAULT NULL,
+  "trip_end_type" varchar(100) DEFAULT NULL,
+  "reference_no" varchar(100) DEFAULT NULL,
   "alerts" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id")
 );
 
-CREATE TABLE "TripProgress" (
+CREATE TABLE "trip_progress" (
   "id" varchar(100) NOT NULL,
-  "tripId" varchar(100) DEFAULT NULL,
-  "progressReportedTime" varchar(100) DEFAULT NULL,
-  "userId" varchar(100) DEFAULT NULL,
-  "positionPoint" geometry DEFAULT NULL,
-  "progressTime" varchar(100) DEFAULT NULL,
-  "matchedPoiId" varchar(100) DEFAULT NULL,
-  "createdBy" varchar(100) DEFAULT NULL,
-  "createdDate" varchar(100) DEFAULT NULL,
-  "updatedDate" varchar(100) DEFAULT NULL,
-  "updatedBy" varchar(100) DEFAULT NULL,
-  "locationAlertCode" varchar(100) DEFAULT NULL,
+  "trip_id" varchar(100) DEFAULT NULL,
+  "progress_reported_time" varchar(100) DEFAULT NULL,
+  "user_id" varchar(100) DEFAULT NULL,
+  "position_point" geometry DEFAULT NULL,
+  "progress_time" varchar(100) DEFAULT NULL,
+  "matched_poi_id" varchar(100) DEFAULT NULL,
+  "created_by" varchar(100) DEFAULT NULL,
+  "created_date" varchar(100) DEFAULT NULL,
+  "updated_date" varchar(100) DEFAULT NULL,
+  "updated_by" varchar(100) DEFAULT NULL,
+  "location_alert_code" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id")
 );
 
-CREATE TABLE "ServiceType" (
-  "Code" varchar(100) NOT NULL,
-  "Name" varchar(100) NOT NULL,
-  "tenantId" varchar(100) DEFAULT NULL,
-  PRIMARY KEY ("Code")
+CREATE TABLE "service_type" (
+  "code" varchar(100) NOT NULL,
+  "name" varchar(100) NOT NULL,
+  "tenant_id" varchar(100) DEFAULT NULL,
+  PRIMARY KEY ("code")
 );
 
-CREATE TABLE "LocationAlert" (
+CREATE TABLE "location_alert" (
   "code" varchar(100) NOT NULL,
   "title" varchar(100) NOT NULL,
   PRIMARY KEY ("code")
 );
 
-CREATE TABLE "TripAlert" (
+CREATE TABLE "trip_alert" (
   "id" varchar(100) NOT NULL,
-  "tripId" varchar(100) DEFAULT NULL,
-  "tripProgressId" varchar(100) DEFAULT NULL,
+  "trip_id" varchar(100) DEFAULT NULL,
+  "trip_progress_id" varchar(100) DEFAULT NULL,
   "alert" varchar(100) DEFAULT NULL,
-  "alertDateTime" varchar(100) DEFAULT NULL,
-  "tenantId" varchar(100) DEFAULT NULL,
+  "alert_date_time" varchar(100) DEFAULT NULL,
+  "tenant_id" varchar(100) DEFAULT NULL,
   PRIMARY KEY ("id"),
-  CONSTRAINT "TripAlert_tripId_IDX" FOREIGN KEY ("tripId") REFERENCES "Trip"("id")
+  CONSTRAINT "TripAlert_tripId_IDX" FOREIGN KEY ("trip_id") REFERENCES "trip"("id")
 );

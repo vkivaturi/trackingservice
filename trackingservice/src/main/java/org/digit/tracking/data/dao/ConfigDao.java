@@ -15,8 +15,8 @@ import java.util.List;
 @Service
 public class ConfigDao {
     Logger logger = LoggerFactory.getLogger(ConfigDao.class);
-    final String sqlFetchServiceTypes = "SELECT * FROM ServiceType";
-    final String sqlFetchLocationAlerts = "SELECT * FROM LocationAlert";
+    final String sqlFetchServiceTypes = "SELECT * FROM service_type";
+    final String sqlFetchLocationAlerts = "SELECT * FROM location_alert";
 
     private DataSource dataSource;
 
