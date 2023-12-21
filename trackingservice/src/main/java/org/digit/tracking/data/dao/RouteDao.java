@@ -26,17 +26,17 @@ public class RouteDao {
 
     @Autowired
     DbUtil dbUtil;
-    final String sqlFetchRouteById = "SELECT id, startPoi, endPoi, name, status, intermediatePois, " +
-            "userId FROM Route where id = ?";
-    final String sqlFetchRouteByFilters = "SELECT id, startPoi, endPoi, name, status, intermediatePois, userId " +
-            "FROM Route " +
+    final String sqlFetchRouteById = "SELECT id, start_poi, end_poi, name, status, intermediate_pois, " +
+            "user_id FROM route where id = ?";
+    final String sqlFetchRouteByFilters = "SELECT id, start_poi, end_poi, name, status, intermediate_pois, user_id " +
+            "FROM route " +
             "where " +
-            "userId = COALESCE(:userId, userId) " +
+            "user_id = COALESCE(:userId, user_id) " +
             "and name like COALESCE(:name, name) " +
             ";";
 
-    final String sqlCreateRoute = "insert into Route (id, startPoi, endPoi, name, status, intermediatePois, " +
-            "userId, createdDate, createdBy, updatedDate, updatedBy) values (?,?,?,?,?, ?,?,?,?,?,?)";
+    final String sqlCreateRoute = "insert into route (id, start_poi, end_poi, name, status,  " +
+            "user_id, created_date, created_by, updated_date, updated_by) values (?,?,?,?, ?,?,?,?,?,?)";
     private DataSource dataSource;
 
     //Datasource bean is injected
@@ -71,10 +71,13 @@ public class RouteDao {
     //Create Route and save it in database
     public String createRoute(Route route) {
         logger.info("## createRoute");
+        //TODO - Change to named jdbc template
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         //Prepare input data for the SQL
         String idLocal = dbUtil.getId();
+
+        //TODO - Intermediate pois are not added currently due to Postres handling issues. Need to fix this. No use case currently
         String intermediatePois = JsonUtil.getJsonFromObject(route.getIntermediatePois());
 
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
@@ -85,7 +88,7 @@ public class RouteDao {
         String updatedBy = route.getUserId();
 
         Object[] args = new Object[]{idLocal, route.getStartPoi(), route.getEndPoi(), route.getName(), route.getStatus().toString(),
-                intermediatePois, route.getUserId(), currentDateString,
+                route.getUserId(), currentDateString,
                 createdBy, currentDateString, updatedBy};
 
         int result = jdbcTemplate.update(sqlCreateRoute, args);

@@ -13,13 +13,12 @@ public class RouteMapper implements RowMapper<Route> {
     public Route mapRow(ResultSet rs, int rowNum) throws SQLException {
         Route route = new Route();
         route.setId(rs.getString("id"));
-        route.setStartPoi(rs.getString("startPoi"));
-        route.setEndPoi(rs.getString("endPoi"));
+        route.setStartPoi(rs.getString("start_poi"));
+        route.setEndPoi(rs.getString("end_poi"));
         route.setName(rs.getString("name"));
         route.setStatus(Route.StatusEnum.valueOf(rs.getString("status").toUpperCase()));
-        route.setIntermediatePois(dbUtil.dbJsonToList(rs, "intermediatePois", String.class));
-        route.setUserId(rs.getString("userId"));
-        //route.setAudit(DbUtil.getAuditDetails(rs));
+        route.setIntermediatePois(dbUtil.dbJsonToList(rs, "intermediate_pois", String.class));
+        route.setUserId(rs.getString("user_id"));
         return route;
     }
 }
