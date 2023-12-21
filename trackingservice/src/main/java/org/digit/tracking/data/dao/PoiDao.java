@@ -26,20 +26,20 @@ public class PoiDao {
 
     @Autowired
     DbUtil dbUtil;
-    final String sqlFetchPoiById = "SELECT id, locationName, status, type, alert, userId, " +
-            "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
-            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM \"POI\" where id = ? and status = 'active' ";
+    final String sqlFetchPoiById = "SELECT id, location_name, status, type, alert, user_id, tenant_id, " +
+            "ST_AStext(position) as position, " +
+            "0 as distance_meters FROM poi where id = :poiId and status = 'active' ";
 
     //Query filter is slightly complicated as it has to handle scenario where input field is null and data in table is also null.
     //In such case, COALESCE is incorrect as MySQL returns a false for null = null check
-    final String sqlFetchPoiByFilters = "SELECT id, locationName, status, type, alert, userId, " +
-            "ST_AStext(positionPoint) as positionPoint, ST_AStext(positionPolygon) as positionPolygon, " +
-            "ST_AStext(positionLine) as positionLine, 0 as distanceMeters FROM \"POI\" " +
+    final String sqlFetchPoiByFilters = "SELECT id, location_name, status, type, alert, user_id, tenant_id, " +
+            "ST_AStext(position) as position, " +
+            "0 as distance_meters FROM poi " +
             "where " +
-            "tenantId = :tenantId " +
+            "tenant_id = :tenantId " +
             "and status = 'active' " +
-            "and locationName like COALESCE(:locationName, locationName) " +
-            "and ((alert is null and :alert is null) or (alert = COALESCE(:alert, alert))) " +
+            "and location_name like COALESCE(:locationName, location_name) " +
+            "and (:alert = 'null' or :alert = alert) " +
             ";";
 
     //TODO - Distance meters clause can be optimised. Lot of repeated code. Postgres restrictions.
@@ -53,23 +53,21 @@ public class PoiDao {
     final String sqlCreatePoi = "insert into poi (id, tenant_id, location_name, status, type, alert, " +
             "created_date, created_by, updated_date, updated_by, user_id, position) " +
             "values (?,?,?,?,?,?,?,?,?,?,?,ST_GeometryFromText(?))";
-    final String sqlUpdatePoi = "update \"POI\" " +
+    final String sqlUpdatePoi = "update poi " +
             "set " +
             "type = :type, " +
-            "positionPoint = ST_PointFromText(:positionPoint, 4326, 'axis-order=lat-long'), " +
-            "positionPolygon = ST_GeomFromText(:positionPolygon, 4326, 'axis-order=lat-long'), " +
-            "positionLine = ST_GeomFromText(:positionLine, 4326, 'axis-order=lat-long'), " +
-            "updatedDate = :currentDateString , " +
-            "updatedBy = :updatedBy " +
+            "position = ST_GeometryFromText(:position), " +
+            "updated_date = :currentDateString , " +
+            "updated_by = :updatedBy " +
             "where id = :poiId " +
-            "and tenantId = :tenantId";
-    final String sqlUpdateInactivatePoi = "update \"POI\" " +
+            "and tenant_id = :tenantId";
+    final String sqlUpdateInactivatePoi = "update poi " +
             "set " +
             "status = :status, " +
-            "updatedDate = :currentDateString , " +
-            "updatedBy = :updatedBy " +
+            "updated_date = :currentDateString , " +
+            "updated_by = :updatedBy " +
             "where id = :poiId " +
-            "and tenantId = :tenantId";
+            "and tenant_id = :tenantId";
 
     private DataSource dataSource;
 
@@ -81,17 +79,16 @@ public class PoiDao {
 
     public List<POI> fetchPOIbyId(String poiId) {
         logger.info("## fetchPOIbyId");
-        JdbcTemplate jdbcTemplateObject = new JdbcTemplate(dataSource);
-        Object[] args = new Object[]{poiId};
-        List<POI> poiList = jdbcTemplateObject.query(sqlFetchPoiById, new POIMapper(), args);
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("poiId", poiId);
 
-        return poiList;
+        return namedParameterJdbcTemplate.query(sqlFetchPoiById, params, new POIMapper());
     }
 
     public List<POI> searchNearby(Location userLocation, int distanceMeters) {
         logger.info("## searchNearby in Dao");
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
-        String positionPoint = " POINT(" + userLocation.getLatitude() + " " + userLocation.getLongitude() + ")";
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("searchLongitude", userLocation.getLongitude());
         params.put("searchLatitude", userLocation.getLatitude());
@@ -102,11 +99,12 @@ public class PoiDao {
 
     public List<POI> fetchPOIbyFilters(String locationName, String alert, String tenantId) {
         logger.info("## fetchPOIbyFilters");
-
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("tenantId", tenantId);
+        if (alert == null || alert.isEmpty()) alert = "null";
         params.put("alert", alert);
+        params.put("locationName", locationName);
 
         //Partial search is supported for location name
         if (locationName != null) {
@@ -115,9 +113,7 @@ public class PoiDao {
             params.put("locationName", null);
         }
 
-        List<POI> poiList = namedParameterJdbcTemplate.query(sqlFetchPoiByFilters, params, new POIMapper());
-
-        return poiList;
+        return namedParameterJdbcTemplate.query(sqlFetchPoiByFilters, params, new POIMapper());
     }
 
     //Update POI based on supported fields
@@ -126,16 +122,14 @@ public class PoiDao {
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
 
-        Map<String, String> positionsMap = DaoUtil.getPositionStringMapMySQL(poi);
+        String positionGeom = DaoUtil.getGeometryPositionPostgresSQL(poi);
 
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         Map<String,Object> params = new HashMap<String,Object>();
         params.put("tenantId", poi.getTenantId());
         params.put("poiId", poi.getId());
         params.put("type", poi.getType().getValue());
-        params.put("positionPoint", positionsMap.get("positionPoint"));
-        params.put("positionPolygon", positionsMap.get("positionPolygon"));
-        params.put("positionLine", positionsMap.get("positionLine"));
+        params.put("position", positionGeom);
         params.put("currentDateString", currentDateString);
         params.put("updatedBy", poi.getUserId());
 
@@ -159,7 +153,6 @@ public class PoiDao {
         String idLocal = dbUtil.getId();
         String alerts = JsonUtil.getJsonFromObject(poi.getAlert());
 
-        //Map<String, String> positionsMap = DaoUtil.getPositionStringMapMySQL(poi);
         String positionGeom = DaoUtil.getGeometryPositionPostgresSQL(poi);
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
         String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
