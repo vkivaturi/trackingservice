@@ -5,6 +5,7 @@ import org.digit.tracking.data.model.TripAlert;
 import org.digit.tracking.data.rowmapper.RouteMapper;
 import org.digit.tracking.data.rowmapper.TripAlertMapper;
 import org.digit.tracking.util.Constants;
+import org.digit.tracking.util.DbUtil;
 import org.openapitools.model.Route;
 import org.openapitools.model.Trip;
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ import java.util.Map;
 public class TripAlertDao {
     Logger logger = LoggerFactory.getLogger(TripAlertDao.class);
     private DataSource dataSource;
+    @Autowired
+    DbUtil dbUtil;
 
     //Datasource bean is injected
     @Autowired
@@ -33,16 +36,23 @@ public class TripAlertDao {
     }
 
     //Fetch trip alerts and map them to the application numbers
-    final String sqlFetchTripAlertsByFilters = "SELECT ta.tripId as tripId, ta.tenantId as tenantId, ta.tripProgressId as tripProgressId, " +
-            "ta.alert as alert, max(ta.alertDateTime) as alertDateTime, tr.referenceNo as applicationNo, '' as id "+
-            "FROM TripAlert ta, Trip tr " +
+    final String sqlFetchTripAlertsByFilters = "SELECT ta.trip_id as trip_id, ta.tenant_id as tenant_id, " +
+            "ta.trip_progress_id as trip_progress_id, " +
+            "ta.alert as alert, max(ta.alert_date_time) as alert_date_time, tr.reference_no as application_no, '' as id "+
+            "FROM trip_alert ta, trip tr " +
             "where " +
-            "ta.tenantId = COALESCE(:tenantId, ta.tenantId) and " +
-            "ta.tripId = COALESCE(:tripId, ta.tripId) and " +
-            "ta.alertDateTime BETWEEN COALESCE(:startDate, ta.alertDateTime) and COALESCE(:endDate, ta.alertDateTime) and " +
-            "ta.tripId = tr.id and " +
-            "tr.referenceNo = COALESCE(:applicationNo, tr.referenceNo) " +
-            "group by ta.tripId, ta.tenantId, ta.tripProgressId, ta.alert, tr.referenceNo having count(ta.alert) > (case when ta.alert = :stoppageAlertCode then :stoppageAlertThreshold else 0 end);";
+            "ta.tenant_id = COALESCE(:tenantId, ta.tenant_id) and " +
+            "ta.trip_id = COALESCE(:tripId, ta.trip_id) and " +
+            "ta.alert_date_time BETWEEN COALESCE(:startDate, ta.alert_date_time) and COALESCE(:endDate, ta.alert_date_time) and " +
+            "ta.trip_id = tr.id and " +
+            "tr.reference_no = COALESCE(:applicationNo, tr.reference_no) " +
+            "group by ta.trip_id, ta.tenant_id, ta.trip_progress_id, ta.alert, " +
+                "tr.reference_no having count(ta.alert) > " +
+                    "(case when ta.alert = :stoppageAlertCode then :stoppageAlertThreshold else 0 end);";
+
+    final String sqlCreateTripAlert = "insert into trip_alert (id, trip_id, trip_progress_id, alert, " +
+            "alert_date_time, tenant_id) " +
+            "values (:id, :tripId, :tripProgressId, :alert, :alertDateTime, :tenantId )";
 
     //Search for TripAlerts based on filters
     public List<TripAlert> fetchTripAlertsByFilters(String tenantId, String applicationNo, String tripId, String startDate, String endDate) {
@@ -61,16 +71,21 @@ public class TripAlertDao {
         return tripAlertList;
     }
 
-    public String updateTripAlert(TripAlert tripAlert) {
+    public String updateTripAlert(TripAlert tripAlert, String tenantId) {
         logger.info("## updateTripAlert inside DAO");
         NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
         Map<String,Object> params = new HashMap<String,Object>();
+        String idLocal = dbUtil.getId();
+
+        params.put("id", idLocal);
+        params.put("tripId", tripAlert.getTripId());
         params.put("tripProgressId", tripAlert.getTripProgressId());
         params.put("alert", tripAlert.getAlert());
         params.put("alertDateTime", tripAlert.getAlertDateTime());
+        params.put("tenantId", tenantId);
 
-        int rowsUpdated = namedParameterJdbcTemplate.update(sqlFetchTripAlertsByFilters, params);
+        int rowsUpdated = namedParameterJdbcTemplate.update(sqlCreateTripAlert, params);
 
         if (rowsUpdated != 0) {
             logger.info("Trip alert updated with id " + tripAlert.getTripProgressId());

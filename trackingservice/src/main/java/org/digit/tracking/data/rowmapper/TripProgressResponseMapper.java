@@ -15,10 +15,10 @@ public class TripProgressResponseMapper implements RowMapper<TripProgressRespons
     public TripProgressResponse mapRow(ResultSet rs, int rowNum) throws SQLException {
         TripProgressResponse tripProgress = new TripProgressResponse();
         tripProgress.setId(rs.getString("id"));
-        tripProgress.setTripId(rs.getString("tripId"));
-        tripProgress.setProgressReportedTime(rs.getString("progressReportedTime"));
-        tripProgress.setProgressTime(rs.getString("progressTime"));
-        tripProgress.setLocation(dbUtil.convertSpatialSinglePointToLocation(rs.getString("positionPoint")));
+        tripProgress.setTripId(rs.getString("trip_id"));
+        tripProgress.setProgressReportedTime(rs.getString("progress_reported_time"));
+        tripProgress.setProgressTime(rs.getString("progress_time"));
+        tripProgress.setLocation(dbUtil.convertSpatialSinglePointToLocation(rs.getString("position_point")));
         return tripProgress;
     }
 }

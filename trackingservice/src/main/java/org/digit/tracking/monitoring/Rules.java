@@ -102,17 +102,18 @@ public class Rules {
     //Rule - If the moving asset is spotted at a POI with alert mapped, update trip progress and send notification
     public void ruleUpdateTripProgressAndNotifyAlert(RuleModel ruleModel) {
         logger.info("## ruleUpdateTripProgressAndNotifyAlert method");
-        if (ruleModel.getAlert() != null ){
-            //Update trip progress record with alert string
+        if (ruleModel.getAlert() != null && !ruleModel.getAlert().isEmpty()){
+            //Update trip alert record with alert string
             TripAlert tripAlert = new TripAlert();
             tripAlert.setTripProgressId(ruleModel.getProgressId());
             tripAlert.setAlert(ruleModel.getAlert());
+            tripAlert.setTripId(ruleModel.getTripId());
 
             OffsetDateTime offsetDateTime = OffsetDateTime.now();
             String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
             tripAlert.setAlertDateTime(currentDateString);
 
-            tripAlertDao.updateTripAlert(tripAlert);
+            tripAlertDao.updateTripAlert(tripAlert, "");
         }
     }
 

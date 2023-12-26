@@ -14,17 +14,17 @@ public class TripMapper implements RowMapper<Trip> {
         Trip trip = new Trip();
         trip.setId(rs.getString("id"));
         trip.setOperator(dbUtil.dbJsonToOperator(rs, "operator", Operator.class));
-        trip.setServiceCode(rs.getString("serviceCode"));
+        trip.setServiceCode(rs.getString("service_code"));
         trip.setStatus(Trip.StatusEnum.valueOf(rs.getString("status").toUpperCase()));
-        trip.setRouteId(rs.getString("routeId"));
-        trip.setActualEndTime(rs.getString("actualEndTime"));
-        trip.setActualStartTime(rs.getString("actualStartTime"));
-        trip.setPlannedStartTime(rs.getString("plannedStartTime"));
-        trip.setPlannedEndTime(rs.getString("plannedEndTime"));
-        trip.setUserId(rs.getString("userId"));
-        trip.setTenantId(rs.getString("tenantId"));
-        trip.setReferenceNo(rs.getString("referenceNo"));
-        trip.setTripEndType(rs.getString("tripEndType"));
+        trip.setRouteId(rs.getString("route_id"));
+        trip.setActualEndTime(rs.getString("actual_end_time"));
+        trip.setActualStartTime(rs.getString("actual_start_time"));
+        trip.setPlannedStartTime(rs.getString("planned_start_time"));
+        trip.setPlannedEndTime(rs.getString("planned_end_time"));
+        trip.setUserId(rs.getString("user_id"));
+        trip.setTenantId(rs.getString("tenant_id"));
+        trip.setReferenceNo(rs.getString("reference_no"));
+        trip.setTripEndType(rs.getString("trip_end_type"));
         return trip;
     }
 }

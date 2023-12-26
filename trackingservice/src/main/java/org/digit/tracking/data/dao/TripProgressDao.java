@@ -30,14 +30,15 @@ public class TripProgressDao {
     @Autowired
     DbUtil dbUtil;
 
-    final String sqlCreateTripProgressPoint = "insert into TripProgress (id, tripId, progressReportedTime, progressTime, positionPoint, userId) " +
-            "values (?,?,?,?,ST_GeomFromText(?, 4326),?)";
-    final String sqlUpdateTripProgress = "update TripProgress set matchedPoiId = ?, updatedDate = ? , updatedBy = ? where id = ?";
+    final String sqlCreateTripProgressPoint = "insert into trip_progress (id, trip_id, progress_reported_time, progress_time, " +
+            "position_point, user_id) " +
+            "values (?,?,?,?,ST_GeometryFromText(?),?)";
+    final String sqlUpdateTripProgress = "update trip_progress set matched_poi_id = ?, updated_date = ? , updated_by = ? where id = ?";
 
-    final String sqlGetTripProgressById = "SELECT id, tripId, progressReportedTime, userId, ST_AStext(positionPoint) as positionPoint, progressTime, " +
-            " matchedPoiId " +
-            " FROM TripProgress where id = COALESCE(:tripProgressId, id) and tripId = COALESCE(:tripId, tripId) " +
-            "order by progressTime asc limit :maxRows";
+    final String sqlGetTripProgressById = "SELECT id, trip_id, progress_reported_time, user_id, ST_AStext(position_point) as position_point, progress_time, " +
+            " matched_poi_id " +
+            " FROM trip_progress where id = COALESCE(:tripProgressId, id) and trip_id = COALESCE(:tripId, trip_id) " +
+            "order by progress_time asc limit :maxRows";
     private DataSource dataSource;
 
     //Datasource bean is injected

@@ -45,7 +45,7 @@ public class TripService {
     public List<Trip> getFsmTripsForDriver(String driverId, String authToken, String tenantId) {
         logger.info("## getFsmTripsForDriver is invoked");
         //Step 1 - Fetch from FSM the list of applications based on driver id
-        List<FsmApplication> fsmApplicationList = tripSao.searchFsmApplicationsForDriver(driverId, tenantId, authToken, Constants.FMS_APPLICATION_URL);
+        List<FsmApplication> fsmApplicationList = tripSao.searchFsmApplicationsForDriver(driverId, tenantId, authToken, Constants.DIGIT_FSM_URL);
 
         //Step 2 - Fetch from FSM list of trips mapped to each application
         //TODO Switch to passing multiple application nos to target API
@@ -53,7 +53,7 @@ public class TripService {
             //Fetch the trip list for the application and add list back to the main applications list
 
             String tripResponseJson = tripSao.fetchFsmTrips(
-                    fsmApplication.getApplicationNo(), null, tenantId, authToken, Constants.FMS_VEHICLE_TRIP_URL);
+                    fsmApplication.getApplicationNo(), null, tenantId, authToken, Constants.DIGIT_VEHICLE_TRIP_URL);
             fsmApplication.setFsmVehicleTripList(JsonUtil.getFSMVehicleTripObjectFromJson(tripResponseJson));
         }
 

@@ -14,11 +14,11 @@ public class TripAlertMapper implements RowMapper<TripAlert> {
     public TripAlert mapRow(ResultSet rs, int rowNum) throws SQLException {
         TripAlert tripAlert = new TripAlert();
         tripAlert.setId(rs.getString("id"));
-        tripAlert.setTripId(rs.getString("tripId"));
-        tripAlert.setTripProgressId(rs.getString("tripProgressId"));
+        tripAlert.setTripId(rs.getString("trip_id"));
+        tripAlert.setTripProgressId(rs.getString("trip_progress_id"));
         tripAlert.setAlert(rs.getString("alert"));
-        tripAlert.setApplicationNo(rs.getString("applicationNo"));
-        tripAlert.setAlertDateTime(rs.getString("alertDateTime"));
+        tripAlert.setApplicationNo(rs.getString("application_no"));
+        tripAlert.setAlertDateTime(rs.getString("alert_date_time"));
         return tripAlert;
     }
 }

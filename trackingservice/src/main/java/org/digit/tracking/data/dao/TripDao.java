@@ -28,28 +28,29 @@ public class TripDao {
     @Autowired
     DbUtil dbUtil;
 
-    final String sqlFetchTripById = "SELECT id, operator, serviceCode, status, routeId, userId, " +
-            " plannedStartTime, plannedEndTime, actualStartTime, actualEndTime, tenantId, referenceNo, tripEndType " +
-            " FROM Trip where id = ?";
+    final String sqlFetchTripById = "SELECT id, operator, service_code, status, route_id, user_id, " +
+            " planned_start_time, planned_end_time, actual_start_time, actual_end_time, tenant_id, reference_no, " +
+            "trip_end_type " +
+            " FROM trip where id = ?";
     //Join multiple tables to fetch trip related information
-    final String sqlFetchTripByFilters = "SELECT tr.id, tr.operator, tr.serviceCode, tr.status, tr.routeId, tr.userId," +
-            " tr.plannedStartTime, tr.plannedEndTime, tr.actualStartTime, tr.actualEndTime, tr.tenantId, " +
-            " tr.tripEndType, tr.referenceNo" +
-            " FROM Trip tr " +
+    final String sqlFetchTripByFilters = "SELECT tr.id, tr.operator, tr.service_code, tr.status, tr.route_id, tr.user_id," +
+            " tr.planned_start_time, tr.planned_end_time, tr.actual_start_time, tr.actual_end_time, tr.tenant_id, " +
+            " tr.trip_end_type, tr.reference_no" +
+            " FROM trip tr " +
             "where " +
-            "tr.tenantId = COALESCE(:tenantId, tr.tenantId) and " +
-            "tr.serviceCode = COALESCE(:serviceCode, tr.serviceCode) and " +
-            "tr.referenceNo = COALESCE(:referenceNos, tr.referenceNo)  "
+            "tr.tenant_id = COALESCE(:tenantId, tr.tenant_id) and " +
+            "tr.service_code = COALESCE(:serviceCode, tr.service_code) and " +
+            "tr.reference_no = COALESCE(:referenceNos, tr.reference_no)  "
             ;
-    final String sqlCreateTrip = "insert into Trip (id, operator, serviceCode, status, routeId, userId, " +
-            "plannedStartTime, plannedEndTime, actualStartTime, actualEndTime," +
-            "createdDate, createdBy, updatedDate, updatedBy, tenantId, referenceNo) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?)";
-    final String sqlUpdateTrip = "update Trip set routeId = COALESCE(:routeId, routeId), " +
+    final String sqlCreateTrip = "insert into Trip (id, operator, service_code, status, route_id, user_id, " +
+            "planned_start_time, planned_end_time, actual_start_time, actual_end_time," +
+            "created_date, created_by, updated_date, updated_by, tenant_id, reference_no) values (?,?,?,?,?, ?,?,?,?,?,?,?,?,?,?,?)";
+    final String sqlUpdateTrip = "update trip set route_id = COALESCE(:routeId, route_id), " +
             "status = COALESCE(:status, status), " +
-            "actualStartTime = COALESCE(:actualStartTime, actualStartTime), " +
-            "actualEndTime = COALESCE(:actualEndTime, actualEndTime), " +
-            "tripEndType = COALESCE(:tripEndType, tripEndType), " +
-            "updatedDate = :updatedDate , updatedBy = :updatedBy " +
+            "actual_start_time = COALESCE(:actualStartTime, actual_start_time), " +
+            "actual_end_time = COALESCE(:actualEndTime, actual_end_time), " +
+            "trip_end_type = COALESCE(:tripEndType, trip_end_type), " +
+            "updated_date = :updatedDate , updated_by = :updatedBy " +
             "where id = :tripId";
 
     private DataSource dataSource;
@@ -99,7 +100,8 @@ public class TripDao {
         String createdBy = trip.getUserId();
         String updatedBy = trip.getUserId();
 
-        Object[] args = new Object[]{idLocal, JsonUtil.getJsonFromObject(trip.getOperator()), trip.getServiceCode(), trip.getStatus().toString(),
+        Object[] args = new Object[]{idLocal, JsonUtil.getJsonFromObject(trip.getOperator()), trip.getServiceCode(),
+                trip.getStatus().toString(),
                 trip.getRouteId(), createdBy, trip.getPlannedStartTime(), trip.getPlannedEndTime(), trip.getActualStartTime(),
                 trip.getActualEndTime(), currentDateString,
                 createdBy, currentDateString, updatedBy, trip.getTenantId(), trip.getReferenceNo()};
