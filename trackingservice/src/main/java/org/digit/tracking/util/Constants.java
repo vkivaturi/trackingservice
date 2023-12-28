@@ -11,7 +11,7 @@ public class Constants {
 
     final public static String RULE_LOAD_METHOD = "loadModel";
     final public static String RULE_METHOD_PREFIX = "rule";
-    final public static int POI_MATCH_THRESHOLD_METERS = 200;
+    final public static int POI_MATCH_THRESHOLD_METERS = 100;
     final public static String MONITORING_USER_ID = "MonitoringService";
     @Value("${DIGIT_FSM_URL}")
     final public static String DIGIT_FSM_URL = "https://unified-dev.digit.org/fsm/v1/";

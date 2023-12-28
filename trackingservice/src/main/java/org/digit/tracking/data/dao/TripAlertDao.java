@@ -37,7 +37,7 @@ public class TripAlertDao {
 
     //Fetch trip alerts and map them to the application numbers
     final String sqlFetchTripAlertsByFilters = "SELECT ta.trip_id as trip_id, ta.tenant_id as tenant_id, " +
-            "ta.trip_progress_id as trip_progress_id, " +
+            "'none' as trip_progress_id, " +
             "ta.alert as alert, max(ta.alert_date_time) as alert_date_time, tr.reference_no as application_no, '' as id "+
             "FROM trip_alert ta, trip tr " +
             "where " +
@@ -46,9 +46,8 @@ public class TripAlertDao {
             "ta.alert_date_time BETWEEN COALESCE(:startDate, ta.alert_date_time) and COALESCE(:endDate, ta.alert_date_time) and " +
             "ta.trip_id = tr.id and " +
             "tr.reference_no = COALESCE(:applicationNo, tr.reference_no) " +
-            "group by ta.trip_id, ta.tenant_id, ta.trip_progress_id, ta.alert, " +
-                "tr.reference_no having count(ta.alert) > " +
-                    "(case when ta.alert = :stoppageAlertCode then :stoppageAlertThreshold else 0 end);";
+            "group by ta.trip_id, ta.tenant_id, ta.alert, " +
+                "tr.reference_no having count(ta.alert) > :stoppageAlertThreshold;";
 
     final String sqlCreateTripAlert = "insert into trip_alert (id, trip_id, trip_progress_id, alert, " +
             "alert_date_time, tenant_id) " +

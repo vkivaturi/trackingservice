@@ -82,6 +82,7 @@ public class Rules {
         ruleModel.setDistanceFromPoiMeters(matchingPoiList.get(0).getDistanceMeters());
         ruleModel.setProgressId(progressId);
         ruleModel.setTripId(tripId);
+        ruleModel.setTenantId(trip.getTenantId());
         ruleModel.setRouteEndPoi(route.getEndPoi());
 
         logger.info("## Matched POI, Distance from POI : " + ruleModel.getMatchedPoi() + " " + ruleModel.getDistanceFromPoiMeters());
@@ -113,7 +114,7 @@ public class Rules {
             String currentDateString = offsetDateTime.format(DateTimeFormatter.ISO_DATE_TIME);
             tripAlert.setAlertDateTime(currentDateString);
 
-            tripAlertDao.updateTripAlert(tripAlert, "");
+            tripAlertDao.updateTripAlert(tripAlert, ruleModel.getTenantId());
         }
     }
 
@@ -126,7 +127,8 @@ public class Rules {
             trip.setId(ruleModel.getTripId());
             trip.setStatus(Trip.StatusEnum.COMPLETED);
             trip.setTripEndType(Constants.TRIP_CLOSE_SYSTEM);
-            //Update trip stats in FMS
+            trip.tenantId(ruleModel.getTenantId());
+            //Update trip stats in FSM
             tripServiceHelper.updateFSMTripStatus(trip, ruleModel.getAuthToken(), tripSao);
 
             //Update trip status in VTS

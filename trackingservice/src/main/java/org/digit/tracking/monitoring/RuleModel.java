@@ -12,6 +12,7 @@ public class RuleModel {
     private String tripId;
     private String alert;
     private String routeEndPoi;
+    private String tenantId;
     private String authToken;
 
     public String getMatchedPoi() {
@@ -84,6 +85,13 @@ public class RuleModel {
     }
     public void setAuthToken(String authToken) {
         this.authToken = authToken;
+    }
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 
 

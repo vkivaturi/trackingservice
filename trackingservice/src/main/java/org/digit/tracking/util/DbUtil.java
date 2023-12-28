@@ -105,8 +105,8 @@ public class DbUtil {
             token = tokenizer.nextToken();
 
             location = new Location();
-            location.setLatitude(Float.valueOf(token.trim().split(" ")[0]));
-            location.setLongitude(Float.valueOf(token.trim().split(" ")[1]));
+            location.setLatitude(Float.valueOf(token.trim().split(" ")[1]));
+            location.setLongitude(Float.valueOf(token.trim().split(" ")[0]));
             locationList.add(location);
         }
         return locationList;
